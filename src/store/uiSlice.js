@@ -3,8 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     theme: "light",
     colors: {
-      taskbar: "#000000",
-      windowTitleBar: "#00aaff",
+      taskbar: "#FF00D4",
+      windowTitleBar: "#FF00D4",
       buttonBackground: "#ffffff",
     },
     fonts: {
@@ -16,7 +16,7 @@ const initialState = {
       opacity: 1,
     },
     contrast: "normal",
-    syncTaskbarAndTitlebarColors: false, // ✅ nuevo
+    syncTaskbarAndTitlebarColors: false, 
   };
 
 const uiSlice = createSlice({

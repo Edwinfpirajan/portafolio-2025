@@ -10,7 +10,6 @@ export default function StartButton() {
   const taskbarColor = useSelector((state) => state.ui.colors.taskbar);
   const contrast = useSelector((state) => state.ui.contrast); // opcional
 
-  // Color de borde según el tema
   const hoverShadow =
     theme === "dark"
       ? "hover:shadow-[0_0_5px_2px_rgba(255,255,255,0.2)]"
@@ -33,7 +32,7 @@ export default function StartButton() {
       <img
         src="/icons/start_btn.png"
         alt="Start"
-        className="w-6 h-6 object-contain"
+        className="w-8 h-8 object-contain"
       />
     </button>
   );
