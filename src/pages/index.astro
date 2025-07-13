@@ -1,11 +1,25 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import DesktopLayout from '../layouts/DesktopLayout.astro';
+import MobileLayout from '../layouts/MobileLayout.astro';
+// import Icon from '../components/desktop/Icon.astro'; // lo agregaremos luego
 ---
 
-<Layout>
-	<Welcome />
-</Layout>
+<!-- Escritorio (md y superior) -->
+<div class="hidden md:block">
+  <DesktopLayout>
+    <!-- Espacio para íconos o ventanas en versión escritorio -->
+    <div class="absolute top-10 left-10">
+      <!-- Aquí podrás insertar <Icon /> más adelante -->
+    </div>
+  </DesktopLayout>
+</div>
+
+<!-- Móvil (sm y md-) -->
+<div class="block md:hidden">
+  <MobileLayout>
+    <!-- Contenido móvil temporal -->
+    <p class="text-sm text-center font-retro p-4">
+      📱 Esta es la versión móvil de mi portafolio retro. Pronto podrás navegar entre apps.
+    </p>
+  </MobileLayout>
+</div>

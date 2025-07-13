@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-pastel-bg text-black font-retro;
+  }
+
+  .taskbar {
+    @apply bg-pastel-primary shadow-md;
+  }
+
+  .window {
+    @apply bg-white border border-pastel-primary rounded-lg shadow-lg;
+  }
+
+  .btn {
+    @apply px-3 py-1 rounded-md font-bold;
+  }
+
+  .btn-yes {
+    @apply bg-pastel-blue hover:bg-blue-200;
+  }
+
+  .btn-no {
+    @apply bg-pastel-accent hover:bg-pink-200;
+  }
+}
+
