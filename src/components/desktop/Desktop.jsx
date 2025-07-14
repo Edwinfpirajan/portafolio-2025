@@ -1,30 +1,49 @@
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import Icon from "../Icons/Icon";
-import { openWindow, closeWindow } from "../../store/windowsSlice";
+import { openWindow } from "../../store/windowsSlice";
 
 export default function Desktop() {
   const dispatch = useDispatch();
-  const windows = useSelector((state) => state.windows.windows);
+
+  // Mapeo de aplicaciones con su título e ícono
+  const appsMeta = {
+    about: {
+      title: "Sobre mí",
+      icon: "/icons/start_btn.png"
+    },
+    personalization: {
+      title: "Personalización",
+      icon: "/icons/start_btn.png"
+    },
+    // contact: {
+    //   title: "Contacto",
+    //   icon: "/icons/contact.png"
+    // },
+    // projects: {
+    //   title: "Proyectos",
+    //   icon: "/icons/projects.png"
+    // }
+  };
 
   const handleIconClick = (appName) => {
-    dispatch(openWindow(appName));
+    const meta = appsMeta[appName];
+    if (meta) {
+      dispatch(openWindow({ name: appName, ...meta }));
+    }
   };
 
   return (
     <div className="w-full h-full relative">
-      {/* Íconos */}
       <div className="absolute top-10 left-10 space-y-4">
-        <Icon
-          label="About"
-          iconPath="/icons/start_btn.png"
-          onClick={() => handleIconClick("about")}
-        />
-        <Icon
-          label="Personalización"
-          iconPath="/icons/start_btn.png"
-          onClick={() => handleIconClick("personalization")}
-        />
+        {Object.entries(appsMeta).map(([key, { title, icon }]) => (
+          <Icon
+            key={key}
+            label={title}
+            iconPath={icon}
+            onClick={() => handleIconClick(key)}
+          />
+        ))}
       </div>
     </div>
   );

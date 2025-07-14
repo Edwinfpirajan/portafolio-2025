@@ -12,23 +12,25 @@ const windowsSlice = createSlice({
   initialState,
   reducers: {
     openWindow(state, action) {
-      const name = action.payload;
-      if (!state.windows[name]) {
-        state.windows[name] = {
-          open: true,
-          minimized: false,
-          maximized: false,
-          x: 100,
-          y: 100,
-          width: 400,
-          height: 300,
-          zIndex: zCounter++
-        };
-      } else {
-        state.windows[name].open = true;
-        state.windows[name].zIndex = zCounter++;
-      }
-    },
+        const { name, title, icon } = action.payload;
+        if (!state.windows[name]) {
+          state.windows[name] = {
+            open: true,
+            minimized: false,
+            maximized: false,
+            x: 100,
+            y: 100,
+            width: 400,
+            height: 300,
+            zIndex: zCounter++,
+            title,
+            icon
+          };
+        } else {
+          state.windows[name].open = true;
+          state.windows[name].zIndex = zCounter++;
+        }
+      },      
     closeWindow(state, action) {
       const name = action.payload;
       if (state.windows[name]) state.windows[name].open = false;
