@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import Taskbar from "./Taskbar/Taskbar";
 import Window from "./windows/Window";
 import Desktop from "./Desktop";
-import Personalization from "./Personalization/Personalization";
+import { windowsMeta } from "./windowsMeta"; // Ajusta la ruta si está en otro lado
 
 export default function DesktopContent() {
   const windows = useSelector((state) => state.windows.windows);
@@ -12,35 +12,21 @@ export default function DesktopContent() {
     <>
       <Desktop />
       <Taskbar />
-
       {Object.entries(windows).map(([name, props]) =>
         props.open ? (
           <Window
             key={name}
-            title={
-              name === "about"
-                ? "Sobre mí"
-                : name === "contact"
-                ? "Contacto"
-                : name === "projects"
-                ? "Proyectos"
-                : name === "personalization"
-                ? "Personalización"
-                : name
-            }
+            title={windowsMeta[name]?.title || name}
             name={name}
           >
-            {name === "about" && (
-              <p>Hola, soy Edwin, desarrollador fullstack apasionado por lo retro.</p>
+            {windowsMeta[name]?.component ? (
+              React.createElement(windowsMeta[name].component)
+            ) : (
+              <p>Contenido no disponible</p>
             )}
-            {name === "contact" && <p>Email: edwin@example.com</p>}
-            {name === "projects" && <p>Estos son algunos de mis proyectos destacados.</p>}
-            {name === "personalization" && <Personalization />}
           </Window>
         ) : null
       )}
     </>
   );
 }
-
-

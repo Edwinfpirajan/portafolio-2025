@@ -5,6 +5,6 @@ const { children } = Astro.props;
 ---
 
 <div class="bg-[url('/bg.png')] bg-cover min-h-screen overflow-hidden font-retro relative w-screen h-screen">
-  <AppWrapper client:load />
+    <AppWrapper client:only="react" />
   {children}
 </div>
