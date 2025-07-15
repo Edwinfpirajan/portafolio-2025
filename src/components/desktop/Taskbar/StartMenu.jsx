@@ -1,10 +1,18 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { openWindow } from "../../../store/windowsSlice";
+import { windowsMeta } from "../windowsMeta"; 
 
 export default function StartMenu() {
   const isOpen = useSelector((state) => state.startMenu.isOpen);
   const dispatch = useDispatch();
+
+  const handleStartMenuClick = (appName) => {
+    const meta = windowsMeta[appName];
+    if (meta) {
+      dispatch(openWindow({ name: appName, title: meta.title, icon: meta.icon }));
+    }
+  };
 
   if (!isOpen) return null;
 
@@ -13,19 +21,19 @@ export default function StartMenu() {
       <ul className="space-y-2">
         <li
           className="cursor-pointer hover:bg-gray-100 p-1"
-          onClick={() => dispatch(openWindow("about"))}
+          onClick={() => handleStartMenuClick("about")}
         >
           🧑 Sobre mí
         </li>
         <li
           className="cursor-pointer hover:bg-gray-100 p-1"
-          onClick={() => dispatch(openWindow("projects"))}
+          onClick={() => handleStartMenuClick("projects")}
         >
           📁 Proyectos
         </li>
         <li
           className="cursor-pointer hover:bg-gray-100 p-1"
-          onClick={() => dispatch(openWindow("contact"))}
+          onClick={() => handleStartMenuClick("contact")}
         >
           📞 Contacto
         </li>
