@@ -7,7 +7,7 @@ import AnimatedBackground from "./desktop/Personalization/AnimateBackground";
 export default function AppWrapper() {
   return (
     <Provider store={store}>
-      <AnimatedBackground />
+      {/* <AnimatedBackground /> */}
       <DesktopContent />
     </Provider>
   );

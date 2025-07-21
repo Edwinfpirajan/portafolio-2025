@@ -3,21 +3,44 @@ import StartButton from "./StartButton";
 import StartMenu from "../Taskbar/StartMenu";
 import Clock from "../Clock";
 import { useSelector, useDispatch } from "react-redux";
-import { bringToFront } from "../../../store/windowsSlice";
+import { bringToFront, restoreWindow } from "../../../store/windowsSlice";
+
+// Función para oscurecer un color HEX
+function darkenColor(hex, percent) {
+  const num = parseInt(hex.replace("#", ""), 16);
+  const amt = Math.round(2.55 * percent);
+  const R = (num >> 16) - amt;
+  const G = ((num >> 8) & 0x00FF) - amt;
+  const B = (num & 0x0000FF) - amt;
+
+  return (
+    "#" +
+    (
+      0x1000000 +
+      (R < 255 ? (R < 0 ? 0 : R) : 255) * 0x10000 +
+      (G < 255 ? (G < 0 ? 0 : G) : 255) * 0x100 +
+      (B < 255 ? (B < 0 ? 0 : B) : 255)
+    )
+      .toString(16)
+      .slice(1)
+  );
+}
 
 export default function Taskbar() {
   const dispatch = useDispatch();
-  const taskbarColor = useSelector((state) => state.ui.colors.taskbar);
+  const taskbarColor = useSelector((state) => state.ui.colors.mainColor);
   const windows = useSelector((state) => state.windows.windows);
 
   const openWindows = Object.entries(windows).filter(
-    ([_, win]) => win.open && !win.minimized
+    ([_, win]) => win.open
   );
 
-  // Detectar ventana activa
-  const activeWindow = openWindows.reduce((acc, curr) =>
+  const activeWindow = openWindows
+  .filter(([_, win]) => !win.minimized) // ❗ excluir minimizadas
+  .reduce((acc, curr) =>
     curr[1].zIndex > (acc?.[1]?.zIndex ?? -1) ? curr : acc
   , null);
+
 
   return (
     <div
@@ -30,12 +53,26 @@ export default function Taskbar() {
 
         {openWindows.map(([key, win]) => {
           const isActive = activeWindow?.[0] === key;
+          const bg = isActive
+            ? darkenColor(taskbarColor, 25)
+            : darkenColor(taskbarColor, 10);
+
           return (
             <button
               key={key}
-              onClick={() => dispatch(bringToFront(key))}
-              className={`flex items-center space-x-1 px-2 py-1 text-sm border rounded 
-                ${isActive ? 'bg-pink-500 text-white border-black' : 'bg-white hover:bg-gray-100'}`}
+              onClick={() => {
+                if (win.minimized) {
+                  dispatch(restoreWindow(key));
+                } else {
+                  dispatch(bringToFront(key));
+                }
+              }}
+              className="flex items-center space-x-1 px-2 py-1 text-sm border rounded transition duration-150"
+              style={{
+                backgroundColor: bg,
+                color: "#fff",
+                borderColor: isActive ? "#000000" : "#333333",
+              }}
             >
               {win.icon && (
                 <img

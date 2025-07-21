@@ -7,7 +7,7 @@ export default function StartButton() {
 
   const isActive = useSelector((state) => state.startMenu.isOpen);
   const theme = useSelector((state) => state.ui.theme);
-  const taskbarColor = useSelector((state) => state.ui.colors.taskbar);
+  const taskbarColor = useSelector((state) => state.ui.colors.mainColor);
   const contrast = useSelector((state) => state.ui.contrast); // opcional
 
   const hoverShadow =

@@ -1,23 +1,23 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    theme: "light",
-    colors: {
-      taskbar: "#FF00D4",
-      windowTitleBar: "#FF00D4",
-      buttonBackground: "#ffffff",
-    },
-    fonts: {
-      system: "sans-serif",
-      windowContent: "sans-serif",
-    },
-    background: {
-      image: "",
-      opacity: 1,
-    },
-    contrast: "normal",
-    syncTaskbarAndTitlebarColors: false, 
-  };
+  theme: "light",
+  colors: {
+    mainColor: "#ADF017",
+    buttonBackground: "#ffffff",
+    buttonBackground: "#ffffff",
+  },
+  fonts: {
+    system: "sans-serif",
+    windowContent: "sans-serif",
+  },
+  background: {
+    image: "",
+    opacity: 1,
+  },
+  contrast: "normal",
+  syncTaskbarAndTitlebarColors: false,
+};
 
 const uiSlice = createSlice({
   name: "ui",
@@ -45,8 +45,8 @@ const uiSlice = createSlice({
       state.contrast = action.payload;
     },
     setSyncColors(state, action) {
-        state.syncTaskbarAndTitlebarColors = action.payload;
-      }
+      state.syncTaskbarAndTitlebarColors = action.payload;
+    }
   },
 });
 

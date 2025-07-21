@@ -1,4 +1,3 @@
-// store/windowsSlice.js
 import { createSlice } from '@reduxjs/toolkit';
 
 let zCounter = 1;
@@ -12,25 +11,26 @@ const windowsSlice = createSlice({
   initialState,
   reducers: {
     openWindow(state, action) {
-        const { name, title, icon } = action.payload;
-        if (!state.windows[name]) {
-          state.windows[name] = {
-            open: true,
-            minimized: false,
-            maximized: true,
-            x: 100,
-            y: 100,
-            width: 800,
-            height: 600,
-            zIndex: zCounter++,
-            title,
-            icon
-          };
-        } else {
-          state.windows[name].open = true;
-          state.windows[name].zIndex = zCounter++;
-        }
-      },      
+      const { name, title, icon } = action.payload;
+      if (!state.windows[name]) {
+        state.windows[name] = {
+          open: true,
+          minimized: false,
+          maximized: true,
+          x: 100,
+          y: 100,
+          width: 800,
+          height: 600,
+          zIndex: zCounter++,
+          title,
+          icon
+        };
+      } else {
+        state.windows[name].open = true;
+        state.windows[name].minimized = false; // ✅ Restaurar si ya existe
+        state.windows[name].zIndex = zCounter++;
+      }
+    },
     closeWindow(state, action) {
       const name = action.payload;
       if (state.windows[name]) state.windows[name].open = false;

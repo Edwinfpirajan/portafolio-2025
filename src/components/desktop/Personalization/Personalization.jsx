@@ -6,26 +6,12 @@ import {
   setFontFamily,
   setBackgroundImage,
   setContrast,
-  setSyncColors, // ✅ nuevo
 } from "../../../store/uiSlice";
 
 export default function Personalization() {
   const dispatch = useDispatch();
   const ui = useSelector((state) => state.ui);
   const [tab, setTab] = useState("theme");
-
-  const handleColorChange = (key, value) => {
-    dispatch(setColor({ element: key, value }));
-
-    // Si está activada la sincronización, se actualiza también el otro color
-    if (ui.syncTaskbarAndTitlebarColors) {
-      if (key === "taskbar") {
-        dispatch(setColor({ element: "windowTitleBar", value }));
-      } else if (key === "windowTitleBar") {
-        dispatch(setColor({ element: "taskbar", value }));
-      }
-    }
-  };
 
   const renderTab = () => {
     switch (tab) {
@@ -48,30 +34,14 @@ export default function Personalization() {
         return (
           <div className="space-y-2">
             <label className="block font-semibold mb-2">Colores:</label>
-            {Object.entries(ui.colors).map(([key, value]) => (
-              <div key={key}>
-                <label className="block capitalize">{key}</label>
-                <input
-                  type="color"
-                  value={value}
-                  onChange={(e) => handleColorChange(key, e.target.value)}
-                />
-              </div>
-            ))}
-
-            <div className="mt-4">
-              <label className="inline-flex items-center">
-                <input
-                  type="checkbox"
-                  className="mr-2"
-                  checked={ui.syncTaskbarAndTitlebarColors}
-                  onChange={(e) =>
-                    dispatch(setSyncColors(e.target.checked))
-                  }
-                />
-                Compartir color entre barra de tareas y barra de título
-              </label>
-            </div>
+            <label className="block">Color principal (barra de tareas y ventanas)</label>
+            <input
+              type="color"
+              value={ui.colors.mainColor}
+              onChange={(e) =>
+                dispatch(setColor({ element: "mainColor", value: e.target.value }))
+              }
+            />
           </div>
         );
 
@@ -83,9 +53,7 @@ export default function Personalization() {
               type="text"
               value={ui.fonts.system}
               onChange={(e) =>
-                dispatch(
-                  setFontFamily({ type: "system", value: e.target.value })
-                )
+                dispatch(setFontFamily({ type: "system", value: e.target.value }))
               }
               className="border px-2 py-1"
             />
@@ -94,12 +62,7 @@ export default function Personalization() {
               type="text"
               value={ui.fonts.windowContent}
               onChange={(e) =>
-                dispatch(
-                  setFontFamily({
-                    type: "windowContent",
-                    value: e.target.value,
-                  })
-                )
+                dispatch(setFontFamily({ type: "windowContent", value: e.target.value }))
               }
               className="border px-2 py-1"
             />
