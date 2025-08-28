@@ -18,20 +18,12 @@ export default function TerminalWindow() {
   const [history, setHistory] = useState(makeBanner());
   const [input, setInput] = useState("");
 
-  // Cuando cambie el idioma, re-renderiza el banner traducido
   useEffect(() => {
     setHistory(prev => {
-      // Si lo deseas, conserva el historial previo y solo cambia el encabezado:
-      // const rest = prev.slice(3);
-      // return [...makeBanner(), ...rest];
-
-      // O reinicia todo el historial (opción simple):
       return makeBanner();
     });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [i18n.language]);
 
-  // Auto-scroll al final
   useEffect(() => {
     if (terminalRef.current) {
       terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
@@ -42,14 +34,14 @@ export default function TerminalWindow() {
     if (e.key === "Enter") {
       e.preventDefault();
 
-      // ejemplo mínimo: solo muestra “comando no reconocido”
       setHistory(prev => ([
         ...prev,
         `${PROMPT_PATH}> ${input}`,
         t("unknownCommand"),
       ]));
       setInput("");
-    }
+    }      
+
   };
 
   return (

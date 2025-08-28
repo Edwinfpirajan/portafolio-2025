@@ -12,13 +12,13 @@ export const windowsMeta = {
   },
   cmd: {
     titleKey: "windows.cmd.title",
-    icon: "/icons/about.png",
+    icon: "/icons/terminal.png",
     component: TerminalWindow,
-    showInStartMenu: false,
+    showInStartMenu: true,
   },
   personalization: {
     titleKey: "windows.personalization.title",
-    icon: "/icons/about.png",
+    icon: "/icons/settings.png",
     component: Personalization,
     showInStartMenu: true,
   },
