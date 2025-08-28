@@ -1,0 +1,9 @@
+{
+    "banner": {
+      "line1": "Mikrosoft Guindos [Versión {{version}}]",
+      "line2": "(c) 2023 Mikrosoft. Todos los derechos reservados."
+    },
+    "prompt": "{{path}}> ",
+    "unknownCommand": "Comando no reconocido"
+  }
+  

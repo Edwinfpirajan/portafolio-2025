@@ -1,27 +1,25 @@
+// src/components/desktop/windowsMeta.js
+import TerminalWindow from "./cmd/Cmd.jsx";
 import About from "./content/About.jsx";
-// import Contact from "../Content/Contact";
-// import Projects from "../Content/Projects";
-import Personalization from "./Personalization/Personalization";
+import Personalization from "./Personalization/Personalization.jsx";
 
 export const windowsMeta = {
   about: {
-    title: "Sobre mí",
+    titleKey: "windows.about.title",   
     icon: "/icons/about.png",
-    component: About
+    component: About,
+    showInStartMenu: true,
   },
-//   contact: {
-//     title: "Contacto",
-//     icon: "/icons/contact.png",
-//     component: Contact
-//   },
-//   projects: {
-//     title: "Proyectos",
-//     icon: "/icons/projects.png",
-//     component: Projects
-//   },
+  cmd: {
+    titleKey: "windows.cmd.title",
+    icon: "/icons/about.png",
+    component: TerminalWindow,
+    showInStartMenu: false,
+  },
   personalization: {
-    title: "Personalización",
-    icon: "/icons/start_btn.png",
-    component: Personalization
-  }
+    titleKey: "windows.personalization.title",
+    icon: "/icons/about.png",
+    component: Personalization,
+    showInStartMenu: true,
+  },
 };

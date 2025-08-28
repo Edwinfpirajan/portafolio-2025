@@ -1,0 +1,53 @@
+{
+    "about": {
+      "alt": {
+        "wikiLogo": "Wikipedia Logo",
+        "photoOf": "Photo of {{name}}",
+        "signatureOf": "{{name}}'s signature"
+      },
+      "sidebar": {
+        "personal": {
+          "title": "Personal information",
+          "birthName": "Birth name",
+          "birth": "Born",
+          "height": "Height",
+          "nationality": "Nationality",
+          "religion": "Religion",
+          "education": "Education",
+          "parents": "Parents"
+        },
+        "professional": {
+          "title": "Professional information",
+          "occupation": "Occupation",
+          "areas": "Areas",
+          "languages": "Languages",
+          "frameworks": "Frameworks",
+          "databases": "Databases",
+          "infrastructure": "Infrastructure"
+        },
+        "signature": { "title": "Signature" }
+      },
+      "summary": "{{city}}, {{birth}}) is a Colombian software developer specialized in full-stack development. His experience includes modern backend and frontend technologies, and he has participated in important training programs such as MincTic2022.",
+      "bio": {
+        "title": "Biography",
+        "starts": {
+          "title": "Beginnings",
+          "body": "Edwin began his multimedia design studies in 2017 and completed them in May 2018. He worked as a graphic designer until 2021. During that time he got into web development with JavaScript, which sparked his interest in software development."
+        },
+        "devCareer": {
+          "title": "Developer Career",
+          "body": "In August 2022 he joined Cascoloco as a developer. In May 2023 he joined Smart Training as a full-stack developer (until February 2024). He is currently a software engineer at Almacontact."
+        }
+      }
+    },
+    "windows": {
+      "about": { "title": "About Me" },
+      "cmd": { "title": "Terminal" },
+      "personalization": { "title": "Personalization" },
+      "common": { "noContent": "Content not available" }
+    },
+    "taskbar": {
+      "language": "Language"
+    }
+  }
+  

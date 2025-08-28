@@ -1,0 +1,55 @@
+{
+    "about": {
+      "alt": {
+        "wikiLogo": "Logo de Wikipedia",
+        "photoOf": "Foto de {{name}}",
+        "signatureOf": "Firma de {{name}}"
+      },
+      "sidebar": {
+        "personal": {
+          "title": "Información personal",
+          "birthName": "Nombre de nacimiento",
+          "birth": "Nacimiento",
+          "height": "Altura",
+          "nationality": "Nacionalidad",
+          "religion": "Religión",
+          "education": "Educación",
+          "parents": "Padres"
+        },
+        "professional": {
+          "title": "Información profesional",
+          "occupation": "Ocupación",
+          "areas": "Áreas",
+          "languages": "Lenguajes",
+          "frameworks": "Frameworks",
+          "databases": "Bases de datos",
+          "infrastructure": "Infraestructura"
+        },
+        "signature": {
+          "title": "Firma"
+        }
+      },
+      "summary": "{{city}}, {{birth}}) es un desarrollador de software colombiano especializado en desarrollo fullstack. Su experiencia incluye tecnologías modernas de backend y frontend, y ha participado en importantes procesos formativos como MincTic2022.",
+      "bio": {
+        "title": "Biografía",
+        "starts": {
+          "title": "Inicios",
+          "body": "Edwin inició sus estudios como diseñador multimedial en 2017, terminando su formación en mayo de 2018. Trabajó como diseñador gráfico hasta 2021. Durante ese tiempo se acercó al desarrollo web mediante JavaScript, lo que despertó su interés por el desarrollo de software."
+        },
+        "devCareer": {
+          "title": "Carrera como Desarrollador",
+          "body": "En agosto de 2022 ingresó como desarrollador a la empresa Cascoloco. En mayo de 2023 se vinculó a Smart Training como desarrollador fullstack (hasta febrero de 2024). Actualmente es ingeniero desarrollador en Almacontact."
+        }
+      }
+    },
+    "windows": {
+      "about": { "title": "Sobre mí" },
+      "cmd": { "title": "Terminal" },
+      "personalization": { "title": "Personalización" },
+      "common": { "noContent": "Contenido no disponible" }
+    },
+    "taskbar": {
+      "language": "Idioma"
+    }
+  }
+  

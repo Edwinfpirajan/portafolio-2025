@@ -10,13 +10,26 @@ import {
 } from "../../../store/windowsSlice";
 import { Rnd } from "react-rnd";
 
-export default function Window({ title, name, children }) {
+/**
+ * Props:
+ * - title     : string
+ * - name      : string (clave en windowsSlice)
+ * - children  : ReactNode (contenido de la ventana)
+ * - scrollMode: "auto" | "child"
+ *    - "auto"  -> el contenedor de contenido hace scroll (útil para About, etc.)
+ *    - "child" -> el hijo controla su propio scroll (útil para Terminal)
+ */
+export default function Window({ title, name, children, scrollMode = "auto" }) {
   const dispatch = useDispatch();
   const win = useSelector((state) => state.windows.windows[name]);
 
   const theme = useSelector((state) => state.ui.theme);
-  const borderColor = useSelector((state) => state.ui.colors.windowBorder || "#888");
-  const headerBg = useSelector((state) => state.ui.colors.mainColor || "#00aaff");
+  const borderColor = useSelector(
+    (state) => state.ui.colors.windowBorder || "#888"
+  );
+  const headerBg = useSelector(
+    (state) => state.ui.colors.mainColor || "#00aaff"
+  );
   const fontFamily = useSelector((state) => state.ui.fonts.windowContent);
   const textColor = theme === "dark" ? "#ffffff" : "#000000";
   const contentBg = theme === "dark" ? "#1f1f1f" : "#ffffff";
@@ -27,6 +40,11 @@ export default function Window({ title, name, children }) {
   const handleClose = () => dispatch(closeWindow(name));
   const handleMinimize = () => dispatch(minimizeWindow(name));
   const handleMaximize = () => dispatch(maximizeWindow(name));
+
+  const contentClass =
+    scrollMode === "auto"
+      ? "flex-1 min-h-0 overflow-auto"     // el contenedor scrollea
+      : "flex-1 min-h-0 overflow-hidden";  // el hijo scrollea (Terminal)
 
   return (
     <Rnd
@@ -43,18 +61,21 @@ export default function Window({ title, name, children }) {
       disableDragging={win.maximized}
       style={{
         zIndex: win.zIndex,
-        display: win.minimized ? "none" : "block" // ✅ Ocultar si está minimizada
+        display: win.minimized ? "none" : "block",
       }}
       onDragStop={(e, d) => dispatch(moveWindow({ name, x: d.x, y: d.y }))}
       onResizeStop={(e, dir, ref, delta, pos) => {
-        dispatch(resizeWindow({ name, width: ref.offsetWidth, height: ref.offsetHeight }));
+        dispatch(
+          resizeWindow({ name, width: ref.offsetWidth, height: ref.offsetHeight })
+        );
         dispatch(moveWindow({ name, x: pos.x, y: pos.y }));
       }}
       onMouseDown={handleFocus}
       className="absolute"
+      dragHandleClassName="window-titlebar" // arrastra solo desde el header
     >
       <div
-        className="flex flex-col w-full h-full shadow-lg"
+        className="flex flex-col w-full h-full shadow-lg min-h-0"
         style={{
           border: `2px solid ${borderColor}`,
           fontFamily,
@@ -62,8 +83,9 @@ export default function Window({ title, name, children }) {
           color: textColor,
         }}
       >
+        {/* Título / botones */}
         <div
-          className="flex justify-between items-center px-2 py-1 cursor-pointer"
+          className="window-titlebar flex justify-between items-center px-2 py-1 cursor-move select-none"
           style={{ backgroundColor: headerBg, color: "#fff" }}
         >
           <span>{title}</span>
@@ -89,7 +111,8 @@ export default function Window({ title, name, children }) {
           </div>
         </div>
 
-        <div className="flex-grow p-4 text-sm overflow-auto">
+        {/* Contenido */}
+        <div className={contentClass}>
           {children}
         </div>
       </div>

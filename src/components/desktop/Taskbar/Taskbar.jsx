@@ -4,8 +4,8 @@ import StartMenu from "../Taskbar/StartMenu";
 import Clock from "../Clock";
 import { useSelector, useDispatch } from "react-redux";
 import { bringToFront, restoreWindow } from "../../../store/windowsSlice";
+import LanguageSwitcher from "./LanguageSwitcher";
 
-// Función para oscurecer un color HEX
 function darkenColor(hex, percent) {
   const num = parseInt(hex.replace("#", ""), 16);
   const amt = Math.round(2.55 * percent);
@@ -86,7 +86,10 @@ export default function Taskbar() {
           );
         })}
       </div>
+      +      <div className="flex items-center gap-3">
+      <LanguageSwitcher />
       <Clock />
+      </div>
     </div>
   );
 }

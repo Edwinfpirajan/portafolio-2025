@@ -1,11 +1,33 @@
+// src/components/desktop/content/About.jsx
+import { useTranslation } from "react-i18next";
+
 export default function About() {
+  const { t } = useTranslation(); 
+
+  const data = {
+    fullName: "Edwin Fernando Pirajan Arevalo",
+    birthDate: "16 de julio de 1998",
+    birthPlace: "Bogotá, Colombia (Hospital Kennedy)",
+    height: "1.76 cm",
+    nationality: "Colombiana",
+    religion: "Cristianismo",
+    university: "Universidad Distrital Francisco José de Caldas",
+    parents: ["Yeimi Alejandra Arévalo", "Edwin Hernán Pirajan Moreno"],
+    role: "Desarrollador de Software",
+    areas: "FullStack Developer",
+    langs: "Go, PHP (Laravel), JS/TS",
+    frameworks: "NodeJS, AstroJS, React, Next, Vue3, Angular",
+    dbs: "PostgreSQL, MongoDB, Oracle",
+    infra: "Docker, Linux",
+  };
+
   return (
     <div className="bg-white text-black font-serif p-4">
       {/* Logo Wikipedia */}
       <div className="flex justify-start mb-4">
         <img
           src="/icons/wiki.png"
-          alt="Wikipedia Logo"
+          alt={t("about.alt.wikiLogo")}
           className="h-12 w-auto"
         />
       </div>
@@ -14,58 +36,132 @@ export default function About() {
         {/* Sidebar a la derecha */}
         <aside className="lg:w-1/3 w-full mb-6 lg:mb-0 lg:ml-6">
           <div className="border border-gray-300">
-            <div className="bg-yellow-200 text-center py-2 font-bold">Edwin Fernando Pirajan</div>
-            <img src="/tu-foto.png" alt="Edwin Fernando Pirajan" className="w-full object-cover" />
+            <div className="bg-yellow-200 text-center py-2 font-bold">
+              {data.fullName}
+            </div>
+
+            <img
+              src="/images/yo.jpg"
+              alt={t("about.alt.photoOf", { name: data.fullName })}
+              className="w-full object-cover"
+            />
 
             {/* Información personal */}
             <div className="border-t border-gray-300 p-3">
-              <h3 className="font-bold text-sm bg-gray-100 px-2 py-1 mb-2">Información personal</h3>
-              <p><strong>Nombre de nacimiento:</strong> Edwin Fernando Pirajan Arevalo</p>
-              <p><strong>Nacimiento:</strong> 16 de julio de 1998<br />Bogotá, Colombia (Hospital Kennedy)</p>
-              <p><strong>Altura:</strong> 1.76 cm</p>
-              <p><strong>Nacionalidad:</strong> Colombiana</p>
-              <p><strong>Religión:</strong> Cristianismo</p>
-              <p><strong>Educación:</strong><br />Universidad Distrital Francisco José de Caldas</p>
-              <p><strong>Padres:</strong><br />Yeimi Alejandra Arévalo<br />Edwin Hernán Pirajan Moreno</p>
+              <h3 className="font-bold text-sm bg-gray-100 px-2 py-1 mb-2">
+                {t("about.sidebar.personal.title")}
+              </h3>
+
+              <p>
+                <strong>{t("about.sidebar.personal.birthName")}:</strong>{" "}
+                {data.fullName}
+              </p>
+              <p>
+                <strong>{t("about.sidebar.personal.birth")}:</strong>{" "}
+                {data.birthDate}
+                <br />
+                {data.birthPlace}
+              </p>
+              <p>
+                <strong>{t("about.sidebar.personal.height")}:</strong>{" "}
+                {data.height}
+              </p>
+              <p>
+                <strong>{t("about.sidebar.personal.nationality")}:</strong>{" "}
+                {data.nationality}
+              </p>
+              <p>
+                <strong>{t("about.sidebar.personal.religion")}:</strong>{" "}
+                {data.religion}
+              </p>
+              <p>
+                <strong>{t("about.sidebar.personal.education")}:</strong>
+                <br />
+                {data.university}
+              </p>
+              <p>
+                <strong>{t("about.sidebar.personal.parents")}:</strong>
+                <br />
+                {data.parents[0]}
+                <br />
+                {data.parents[1]}
+              </p>
             </div>
 
             {/* Información profesional */}
             <div className="border-t border-gray-300 p-3">
-              <h3 className="font-bold text-sm bg-gray-100 px-2 py-1 mb-2">Información profesional</h3>
-              <p><strong>Ocupación:</strong><br />Desarrollador de Software</p>
-              <p><strong>Áreas:</strong><br />FullStack Developer</p>
-              <p><strong>Lenguajes:</strong><br />Go, PHP (Laravel), JS/TS</p>
-              <p><strong>Frameworks:</strong><br />NodeJS, AstroJS, React, Next, Vue3, Angular</p>
-              <p><strong>Bases de datos:</strong><br />PostgreSQL, MongoDB, Oracle</p>
-              <p><strong>Infraestructura:</strong><br />Docker, Linux</p>
+              <h3 className="font-bold text-sm bg-gray-100 px-2 py-1 mb-2">
+                {t("about.sidebar.professional.title")}
+              </h3>
+              <p>
+                <strong>{t("about.sidebar.professional.occupation")}:</strong>
+                <br />
+                {data.role}
+              </p>
+              <p>
+                <strong>{t("about.sidebar.professional.areas")}:</strong>
+                <br />
+                {data.areas}
+              </p>
+              <p>
+                <strong>{t("about.sidebar.professional.languages")}:</strong>
+                <br />
+                {data.langs}
+              </p>
+              <p>
+                <strong>{t("about.sidebar.professional.frameworks")}:</strong>
+                <br />
+                {data.frameworks}
+              </p>
+              <p>
+                <strong>{t("about.sidebar.professional.databases")}:</strong>
+                <br />
+                {data.dbs}
+              </p>
+              <p>
+                <strong>{t("about.sidebar.professional.infrastructure")}:</strong>
+                <br />
+                {data.infra}
+              </p>
             </div>
 
             {/* Firma */}
             <div className="border-t border-gray-300 p-3 text-center">
-              <h3 className="font-bold text-sm bg-gray-100 px-2 py-1 mb-2">Firma</h3>
-              <img src="/firma.png" alt="Firma de Edwin" className="mx-auto h-16 object-contain" />
+              <h3 className="font-bold text-sm bg-gray-100 px-2 py-1 mb-2">
+                {t("about.sidebar.signature.title")}
+              </h3>
+              <img
+                src="/images/firma.jpg"
+                alt={t("about.alt.signatureOf", { name: "Edwin" })}
+                className="mx-auto h-16 object-contain"
+              />
             </div>
           </div>
         </aside>
 
         {/* Contenido principal */}
         <main className="lg:w-2/3 w-full">
-          <h1 className="text-3xl font-serif font-bold mb-4">Edwin Fernando Pirajan Arevalo</h1>
+          <h1 className="text-3xl font-serif font-bold mb-4">
+            {data.fullName}
+          </h1>
+
           <p className="mb-4">
-            <strong>Edwin Fernando Pirajan Arevalo</strong> (Bogotá, 16 de julio de 1998) es un desarrollador de software colombiano especializado en desarrollo fullstack. Su experiencia incluye tecnologías modernas de backend y frontend, y ha participado en importantes procesos formativos como MincTic2022.
+            <strong>{data.fullName}</strong>{" "}
+            {t("about.summary", {
+              city: "Bogotá",
+              birth: "16 de julio de 1998",
+            })}
           </p>
 
-          <h2 className="text-xl font-bold mb-2">Biografía</h2>
+          <h2 className="text-xl font-bold mb-2">{t("about.bio.title")}</h2>
 
-          <h3 className="font-semibold mt-3">Inicios</h3>
-          <p className="mb-3">
-            Edwin inició sus estudios como diseñador multimedial en 2017, terminando su formación en mayo de 2018. Trabajó como diseñador gráfico hasta 2021. Durante ese tiempo, se acercó al desarrollo web mediante herramientas como JavaScript, lo que despertó su interés por el desarrollo de software.
-          </p>
+          <h3 className="font-semibold mt-3">{t("about.bio.starts.title")}</h3>
+          <p className="mb-3">{t("about.bio.starts.body")}</p>
 
-          <h3 className="font-semibold mt-3">Carrera como Desarrollador</h3>
-          <p className="mb-3">
-            En agosto de 2022 ingresó como desarrollador a la empresa Cascoloco. Luego, en mayo de 2023, se vinculó a Smart Training como desarrollador fullstack, permaneciendo hasta febrero de 2024. Actualmente se desempeña como ingeniero desarrollador en la compañía Almacontact.
-          </p>
+          <h3 className="font-semibold mt-3">
+            {t("about.bio.devCareer.title")}
+          </h3>
+          <p className="mb-3">{t("about.bio.devCareer.body")}</p>
         </main>
       </div>
     </div>
