@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "astro dev --host",
     "build": "astro build --verbose",
-    "start": "node ./dist/server/entry.mjs",
+    "start": "node ./dist/server/entry.mjs --port $PORT --host 0.0.0.0",
     "preview": "astro preview"
   },
   "dependencies": {
