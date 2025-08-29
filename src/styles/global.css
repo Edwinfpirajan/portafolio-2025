@@ -28,3 +28,8 @@
   }
 }
 
+/* Safe-area helpers para iOS */
+:root { --sab: env(safe-area-inset-bottom); --sat: env(safe-area-inset-top); }
+.pb-safe { padding-bottom: calc(var(--sab) + 12px); }
+.mb-safe { margin-bottom: var(--sab); }
+.h-navbar { height: calc(64px + var(--sab)); } /* barra más alta con notch */

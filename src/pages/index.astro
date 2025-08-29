@@ -1,35 +1,16 @@
 ---
-import DesktopLayout from '../layouts/DesktopLayout.astro';
-import MobileLayout from '../layouts/MobileLayout.astro';
-import AppWrapper from '../components/AppWrapper.jsx';
+import "../styles/global.css";
+import DesktopLayout from "../layouts/DesktopLayout.astro"; // si quieres conservar tu layout
+import AppWrapper from "../components/AppWrapper.jsx";
 ---
 
-<!-- ✅ SEO visible para todos -->
 <head>
-	<meta charset="UTF-8" />
-	<title>El Ferchando</title>
-	<meta name="description" content="Portafolio de Edwin Piraján, desarrollador de software especializado en interfaces retro, IA y experiencias interactivas.">
-  </head>
-  
-<!-- ✅ Encabezado y texto indexable -->
-<section class="sr-only">
-  <!-- Esto es solo para screen readers y motores de búsqueda -->
-  <h1>Edwin Piraján - Portafolio Fullstack Retro</h1>
-  <p>Desarrollador web con enfoque en diseño retro, React, IA y sistemas visuales únicos.</p>
-</section>
+  <meta charset="UTF-8" />
+  <title>El Ferchando</title>
+  <meta name="description" content="Portafolio de Edwin Piraján, desarrollador de software especializado en interfaces retro, IA y experiencias interactivas.">
+</head>
 
-<!-- Escritorio (md y superior) -->
-<div class="hidden md:block">
-  <DesktopLayout>
-    <AppWrapper client:only="react" />
-  </DesktopLayout>
-</div>
-
-<!-- Móvil (sm y md-) -->
-<div class="block md:hidden">
-  <MobileLayout>
-    <p class="text-sm text-center font-retro p-4">
-      📱 Esta es la versión móvil de mi portafolio retro. Pronto podrás navegar entre apps.
-    </p>
-  </MobileLayout>
-</div>
+<!-- Monta React una sola vez; AppWrapper elige Desktop/Mobile en cliente -->
+<DesktopLayout>
+  <AppWrapper client:only="react" />
+</DesktopLayout>
