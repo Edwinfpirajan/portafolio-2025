@@ -1,1 +1,31 @@
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+---
+// sin cambios en el div contenedor
+---
+<div
+  class="fixed inset-0 bg-black text-white"
+  style="
+    height: 100dvh; min-height: 100dvh;
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+    overflow: hidden;
+  "
+>
+  {children}
+</div>
+
+<script is:inline>
+  // Detecta iOS + si está en standalone (PWA)
+  const isIOS = /iP(hone|od|ad)/.test(navigator.platform)
+    || (navigator.userAgent.includes('Mac') && 'ontouchend' in document);
+  const isStandalone = window.navigator.standalone
+    || window.matchMedia('(display-mode: standalone)').matches;
+
+  // Altura aproximada de la barra superior/inferior de Safari
+  const TOP_CHROME = isIOS && !isStandalone ? '64px' : '0px';
+  const BOTTOM_CHROME = isIOS && !isStandalone ? '0px' : '0px'; // ajusta si te tapa algo abajo
+
+  document.documentElement.style.setProperty('--ios-chrome-top', TOP_CHROME);
+  document.documentElement.style.setProperty('--ios-chrome-bottom', BOTTOM_CHROME);
+</script>
