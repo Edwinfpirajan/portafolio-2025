@@ -5,10 +5,10 @@ import node from "@astrojs/node";
 
 export default defineConfig({
   integrations: [react(), tailwind()],
-  output: "server",
-  adapter: node({ mode: "standalone" }),
+  output: "",
+  adapter: node({ mode: "" }),
   server: {
-    host: "0.0.0.0",
+    host: "",
     port: Number(process.env.PORT) || 4321
   }
 });
