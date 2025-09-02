@@ -5,9 +5,9 @@ import tailwind from "@astrojs/tailwind";
 
 export default defineConfig({
   integrations: [react(), tailwind()],
-  output: "",
+  output: "server",
   server: {
-    host: "",
+    host: "0.0.0.0",
     port: Number(process.env.PORT) || 4321,
   },
 });
