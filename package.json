@@ -5,9 +5,9 @@
   "packageManager": "pnpm@9.15.9",
   "scripts": {
     "dev": "astro dev --host",
-    "build": "astro build --verbose",
-    "start": "node ./dist/server/entry.mjs --port $PORT --host 0.0.0.0",
-    "preview": "astro preview"
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
   },
   "dependencies": {
     "@astrojs/react": "^4.3.0",
