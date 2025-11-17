@@ -47,21 +47,13 @@
       "cmd": { "title": "Terminal" },
       "personalization": { "title": "Personalización" },
       "projects": { "title": "Proyectos" },
-      "sections": { "title": "Secciones" },
       "common": { "noContent": "Contenido no disponible" }
     },
     "projects": {
       "title": "Proyectos",
-      "subtitle": "Aquí verás una lista de proyectos. (placeholder)"
-    },
-    "sections": {
-      "title": "Secciones",
-      "list": {
-        "about": "Sobre mí",
-        "projects": "Proyectos",
-        "contact": "Contacto"
-      },
-      "back": "Atrás"
+      "subtitle": "Aquí verás una lista de proyectos. (placeholder)",
+      "back": "Atrás",
+      "empty": "Sin proyectos aún"
     },
     "taskbar": {
       "language": "Idioma"
