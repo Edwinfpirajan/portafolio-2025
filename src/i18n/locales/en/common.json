@@ -44,7 +44,12 @@
       "about": { "title": "About Me" },
       "cmd": { "title": "Terminal" },
       "personalization": { "title": "Personalization" },
+      "projects": { "title": "Projects" },
       "common": { "noContent": "Content not available" }
+    },
+    "projects": {
+      "title": "Projects",
+      "subtitle": "You'll see a list of projects here. (placeholder)"
     },
     "taskbar": {
       "language": "Language"

@@ -46,7 +46,12 @@
       "about": { "title": "Sobre mí" },
       "cmd": { "title": "Terminal" },
       "personalization": { "title": "Personalización" },
+      "projects": { "title": "Proyectos" },
       "common": { "noContent": "Contenido no disponible" }
+    },
+    "projects": {
+      "title": "Proyectos",
+      "subtitle": "Aquí verás una lista de proyectos. (placeholder)"
     },
     "taskbar": {
       "language": "Idioma"

@@ -2,6 +2,7 @@
 import TerminalWindow from "./cmd/Cmd.jsx";
 import About from "./content/About.jsx";
 import Personalization from "./Personalization/Personalization.jsx";
+import ProjectsApp from "../../apps/projects/ProjectsApp.jsx";
 
 export const windowsMeta = {
   about: {
@@ -22,6 +23,13 @@ export const windowsMeta = {
     titleKey: "windows.personalization.title",
     icon: "/icons/settings.png",
     component: Personalization,
+    showInStartMenu: true,
+    initial: { maximized: true }
+  },
+  projects: {
+    titleKey: "windows.projects.title",
+    icon: "/icons/generic.svg",
+    component: ProjectsApp,
     showInStartMenu: true,
     initial: { maximized: true }
   },

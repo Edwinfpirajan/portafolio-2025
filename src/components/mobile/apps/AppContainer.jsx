@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { windowsMeta } from "../../desktop/windowsMeta";
+import { mobileMeta } from "../mobileMeta";
 import { useTranslation } from "react-i18next";
 
 export default function AppContainer() {
@@ -9,7 +9,7 @@ export default function AppContainer() {
   const top = stack[stack.length - 1];
   if (!top) return null;
 
-  const meta = windowsMeta[top.name];
+  const meta = mobileMeta[top.name];
   if (!meta) return null;
 
   const Title = meta.titleKey ? t(meta.titleKey) : (meta.title || top.name);

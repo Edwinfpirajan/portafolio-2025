@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { openApp } from "../../../store/mobileSlice";
-import { windowsMeta } from "../../desktop/windowsMeta";
+import { mobileMeta } from "../mobileMeta";
 import { useTranslation } from "react-i18next";
 
 export default function Home() {
@@ -23,7 +23,7 @@ export default function Home() {
       {/* grid visible desde arriba */}
       <div className="pt-6 px-5 grid grid-cols-3 [@media(min-width:380px)]:grid-cols-4 sm:grid-cols-5 gap-y-8 gap-x-6 content-start place-items-start">
         {available.map((key) => {
-          const meta = windowsMeta[key];
+          const meta = mobileMeta[key];
           if (!meta) return null;
           const label = meta.titleKey ? t(meta.titleKey) : (meta.title || key);
 
