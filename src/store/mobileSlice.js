@@ -5,7 +5,7 @@ const initialState = {
   screen: "home",         // 'home' | 'app' | 'recents'
   stack: [],              // [{ name, title, icon }]
   // si quieres controlar qué apps aparecen en la Home:
-  available: ["about", "projects"],
+  available: ["about", "projects", "sections"],
 };
 
 const mobileSlice = createSlice({

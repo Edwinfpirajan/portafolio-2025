@@ -45,7 +45,17 @@
       "cmd": { "title": "Terminal" },
       "personalization": { "title": "Personalization" },
       "projects": { "title": "Projects" },
+      "sections": { "title": "Sections" },
       "common": { "noContent": "Content not available" }
+    },
+    "sections": {
+      "title": "Sections",
+      "list": {
+        "about": "About",
+        "projects": "Projects",
+        "contact": "Contact"
+      },
+      "back": "Back"
     },
     "projects": {
       "title": "Projects",
