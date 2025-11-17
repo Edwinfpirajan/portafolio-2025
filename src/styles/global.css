@@ -37,10 +37,13 @@ html { -webkit-text-size-adjust: 100%; } /* evita re-escala automática en iOS *
 
 @layer utilities {
   .animate-win-in {
-    animation: fadeInUpWin 220ms ease-out forwards;
+    animation: fadeInUpWin 180ms ease-out forwards;
   }
   .animate-win-out {
-    animation: fadeOutDownWin 200ms ease-in forwards;
+    animation: fadeOutDownWin 160ms ease-in forwards;
+  }
+  .animate-win-open {
+    animation: fadeInUpWin 140ms ease-out forwards;
   }
 }
     overscroll-behavior: none;   /* sin “rebote” */

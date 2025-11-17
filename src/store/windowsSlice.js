@@ -1,6 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-let zCounter = 100;
+// Windows z-index must stay below the taskbar (z-50)
+// Start around 20 so they stay above desktop icons (z-10) but below the taskbar
+let zCounter = 20;
 
 const initialState = {
   windows: {}
@@ -10,17 +12,24 @@ const windowsSlice = createSlice({
   name: 'windows',
   initialState,
   reducers: {
+    rebaseZ(state) {
+      // Set zCounter to one above the max existing zIndex to preserve layering after rehydrate
+      const maxZ = Object.values(state.windows || {}).reduce((m, w) => Math.max(m, w.zIndex || 0), 0);
+      if (maxZ >= 20) {
+        zCounter = maxZ + 1;
+      }
+    },
     openWindow(state, action) {
-      const { name, title, icon } = action.payload;
+      const { name, title, icon, initial = {} } = action.payload;
       if (!state.windows[name]) {
         state.windows[name] = {
           open: true,
           minimized: false,
-          maximized: true,
-          x: 100,
-          y: 100,
-          width: 800,
-          height: 600,
+          maximized: initial.maximized !== undefined ? initial.maximized : true,
+          x: initial.x !== undefined ? initial.x : 100,
+          y: initial.y !== undefined ? initial.y : 100,
+          width: initial.width !== undefined ? initial.width : 800,
+          height: initial.height !== undefined ? initial.height : 600,
           zIndex: zCounter++,
           title,
           icon
@@ -76,6 +85,7 @@ const windowsSlice = createSlice({
 });
 
 export const {
+  rebaseZ,
   openWindow,
   closeWindow,
   minimizeWindow,

@@ -9,17 +9,20 @@ export const windowsMeta = {
     icon: "/icons/about.png",
     component: About,
     showInStartMenu: true,
+    initial: { maximized: true }
   },
   cmd: {
     titleKey: "windows.cmd.title",
     icon: "/icons/terminal.png",
     component: TerminalWindow,
     showInStartMenu: true,
+    initial: { maximized: false, width: 900, height: 520 }
   },
   personalization: {
     titleKey: "windows.personalization.title",
     icon: "/icons/settings.png",
     component: Personalization,
     showInStartMenu: true,
+    initial: { maximized: true }
   },
 };

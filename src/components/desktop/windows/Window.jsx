@@ -30,6 +30,17 @@ export default function Window({ title, name, children, scrollMode = "auto" }) {
   const winElRef = useRef(null);
   const [animateBounds, setAnimateBounds] = useState(false);
   const prevMaxRef = useRef(null);
+  const [isOpening, setIsOpening] = useState(true);
+  const [viewport, setViewport] = useState({ w: typeof window !== 'undefined' ? window.innerWidth : 0, h: typeof window !== 'undefined' ? window.innerHeight : 0 });
+  useEffect(() => {
+    const t = setTimeout(() => setIsOpening(false), 160);
+    return () => clearTimeout(t);
+  }, []);
+  useEffect(() => {
+    const onResize = () => setViewport({ w: window.innerWidth, h: window.innerHeight });
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
 
   const theme = useSelector((state) => state.ui.theme);
   const borderColor = useSelector(
@@ -67,7 +78,7 @@ export default function Window({ title, name, children, scrollMode = "auto" }) {
           backgroundPosition: "center",
           borderRadius: "8px",
           zIndex: 9999,
-          transition: "all 240ms cubic-bezier(.2,.8,.2,1)",
+          transition: "all 180ms cubic-bezier(.2,.8,.2,1)",
           boxShadow: "0 8px 30px rgba(0,0,0,0.45)",
         });
         document.body.appendChild(ghost);
@@ -87,7 +98,7 @@ export default function Window({ title, name, children, scrollMode = "auto" }) {
           ghost.remove();
           toEl.style.visibility = "visible";
           clearPreview(name);
-        }, 260);
+        }, 190);
       } else {
         // Fallback to simple fade-in if no taskbar rect
         justRestoredRef.current = true;
@@ -95,7 +106,7 @@ export default function Window({ title, name, children, scrollMode = "auto" }) {
         const t = setTimeout(() => {
           setAnimState("idle");
           justRestoredRef.current = false;
-        }, 240);
+        }, 180);
         return () => clearTimeout(t);
       }
     }
@@ -120,71 +131,80 @@ export default function Window({ title, name, children, scrollMode = "auto" }) {
   const handleMinimize = () => {
     const el = winElRef.current;
     const toRect = getTaskButtonRect(name);
+    const DURATION = 180;
+    const EASE = "cubic-bezier(.2,.8,.2,1)";
     const runFallback = () => {
       setAnimState("minimizing");
       setTimeout(() => {
         dispatch(minimizeWindow(name));
         setAnimState("idle");
-      }, 210);
+      }, DURATION);
     };
 
     if (!el || !toRect) return runFallback();
 
     const fromRect = el.getBoundingClientRect();
 
-    // Try to capture a thumbnail using html2canvas
-    const captureAndAnimate = async () => {
-      try {
-        const { default: html2canvas } = await import("html2canvas");
-        const canvas = await html2canvas(el, {
+    // Create ghost immediately for instant feedback
+    const ghost = document.createElement("div");
+    Object.assign(ghost.style, {
+      position: "fixed",
+      left: `${fromRect.left}px`,
+      top: `${fromRect.top}px`,
+      width: `${fromRect.width}px`,
+      height: `${fromRect.height}px`,
+      background: "rgba(255,255,255,0.08)",
+      backdropFilter: "blur(2px)",
+      borderRadius: "10px",
+      zIndex: 9999,
+      transition: `all ${DURATION}ms ${EASE}`,
+      boxShadow: "0 8px 30px rgba(0,0,0,0.45)",
+    });
+    document.body.appendChild(ghost);
+
+    // Hide real window now
+    el.style.visibility = "hidden";
+
+    // Animate to taskbar button in next frame
+    requestAnimationFrame(() => {
+      Object.assign(ghost.style, {
+        left: `${toRect.left}px`,
+        top: `${toRect.top}px`,
+        width: `${toRect.width}px`,
+        height: `${toRect.height}px`,
+        borderRadius: "6px",
+      });
+    });
+
+    // Fire non-blocking capture in background to use on restore
+    import("html2canvas")
+      .then(({ default: html2canvas }) =>
+        html2canvas(el, {
           backgroundColor: null,
           useCORS: true,
-          scale: window.devicePixelRatio > 1 ? 1.5 : 1,
+          scale: window.devicePixelRatio > 1 ? 1.25 : 1,
           logging: false,
           windowWidth: document.documentElement.clientWidth,
           windowHeight: document.documentElement.clientHeight,
-        });
+        })
+      )
+      .then((canvas) => {
         const dataUrl = canvas.toDataURL("image/png");
         setPreview(name, dataUrl);
+        // If ghost still exists, upgrade background mid-flight
+        if (document.body.contains(ghost)) {
+          ghost.style.backgroundImage = `url('${dataUrl}')`;
+          ghost.style.backgroundSize = "cover";
+          ghost.style.backgroundPosition = "center";
+          ghost.style.backgroundColor = "transparent";
+        }
+      })
+      .catch(() => {});
 
-        const ghost = document.createElement("div");
-        Object.assign(ghost.style, {
-          position: "fixed",
-          left: `${fromRect.left}px`,
-          top: `${fromRect.top}px`,
-          width: `${fromRect.width}px`,
-          height: `${fromRect.height}px`,
-          backgroundImage: `url('${dataUrl}')`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          borderRadius: "10px",
-          zIndex: 9999,
-          transition: "all 200ms cubic-bezier(.2,.8,.2,1)",
-          boxShadow: "0 8px 30px rgba(0,0,0,0.45)",
-          imageRendering: "-webkit-optimize-contrast",
-        });
-        document.body.appendChild(ghost);
-        el.style.visibility = "hidden";
-        requestAnimationFrame(() => {
-          Object.assign(ghost.style, {
-            left: `${toRect.left}px`,
-            top: `${toRect.top}px`,
-            width: `${toRect.width}px`,
-            height: `${toRect.height}px`,
-            borderRadius: "6px",
-          });
-        });
-        setTimeout(() => {
-          ghost.remove();
-          dispatch(minimizeWindow(name));
-          el.style.visibility = "hidden";
-        }, 210);
-      } catch (e) {
-        runFallback();
-      }
-    };
-
-    captureAndAnimate();
+    setTimeout(() => {
+      ghost.remove();
+      dispatch(minimizeWindow(name));
+    }, DURATION + 10);
   };
   const handleMaximize = () => dispatch(maximizeWindow(name));
 
@@ -194,13 +214,14 @@ export default function Window({ title, name, children, scrollMode = "auto" }) {
       : "flex-1 min-h-0 overflow-hidden";  // el hijo scrollea (Terminal)
 
   const shouldHide = win.minimized && animState !== "minimizing";
+  const TASKBAR_H = 40; // h-10
 
   return (
     <Rnd
       ref={rndRef}
       size={
         win.maximized
-          ? { width: "100vw", height: "100vh" }
+          ? { width: viewport.w, height: Math.max(0, viewport.h - TASKBAR_H) }
           : { width: win.width, height: win.height }
       }
       position={win.maximized ? { x: 0, y: 0 } : { x: win.x, y: win.y }}
@@ -213,12 +234,30 @@ export default function Window({ title, name, children, scrollMode = "auto" }) {
         zIndex: win.zIndex,
         display: shouldHide ? "none" : "block",
       }}
-      onDragStop={(e, d) => dispatch(moveWindow({ name, x: d.x, y: d.y }))}
+      onDragStop={(e, d) => {
+        const vw = window.innerWidth;
+        const vh = window.innerHeight;
+        const curW = win.maximized ? vw : win.width;
+        const curH = win.maximized ? (vh - TASKBAR_H) : win.height;
+        const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
+        const maxX = Math.max(0, vw - curW);
+        const maxY = Math.max(0, vh - TASKBAR_H - curH);
+        const x = clamp(d.x, 0, maxX);
+        const y = clamp(d.y, 0, maxY);
+        dispatch(moveWindow({ name, x, y }));
+      }}
       onResizeStop={(e, dir, ref, delta, pos) => {
-        dispatch(
-          resizeWindow({ name, width: ref.offsetWidth, height: ref.offsetHeight })
-        );
-        dispatch(moveWindow({ name, x: pos.x, y: pos.y }));
+        const vw = window.innerWidth;
+        const vh = window.innerHeight;
+        const newW = ref.offsetWidth;
+        const newH = ref.offsetHeight;
+        const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
+        const maxX = Math.max(0, vw - newW);
+        const maxY = Math.max(0, vh - TASKBAR_H - newH);
+        const x = clamp(pos.x, 0, maxX);
+        const y = clamp(pos.y, 0, maxY);
+        dispatch(resizeWindow({ name, width: newW, height: newH }));
+        dispatch(moveWindow({ name, x, y }));
       }}
       onMouseDown={handleFocus}
       className={`${
@@ -226,7 +265,7 @@ export default function Window({ title, name, children, scrollMode = "auto" }) {
           ? "animate-win-out pointer-events-none"
           : animState === "restoring"
           ? "animate-win-in"
-          : ""
+          : isOpening ? "animate-win-open" : ""
       } absolute`}
       dragHandleClassName="window-titlebar"
     >

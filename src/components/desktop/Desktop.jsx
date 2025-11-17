@@ -16,7 +16,21 @@ export default function Desktop() {
 
     const label = meta.titleKey ? t(meta.titleKey) : (meta.title || appName);
 
-    dispatch(openWindow({ name: appName, title: label, icon: meta.icon }));
+    const initial = meta.initial || {};
+    // If the window is non-maximized, compute a centered position
+    let payloadInitial = { ...initial };
+    if (initial.maximized === false) {
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      const TASKBAR_H = 40;
+      const w = initial.width ?? 900;
+      const h = initial.height ?? 520;
+      const x = Math.max(0, Math.round((vw - w) / 2));
+      const y = Math.max(0, Math.round((vh - TASKBAR_H - h) / 2));
+      payloadInitial = { ...payloadInitial, width: w, height: h, x, y };
+    }
+
+    dispatch(openWindow({ name: appName, title: label, icon: meta.icon, initial: payloadInitial }));
   };
 
   return (
