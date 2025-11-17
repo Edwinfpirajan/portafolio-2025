@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import StartButton from "./StartButton";
 import StartMenu from "../Taskbar/StartMenu";
 import Clock from "../Clock";
 import { useSelector, useDispatch } from "react-redux";
 import { bringToFront, restoreWindow } from "../../../store/windowsSlice";
 import LanguageSwitcher from "./LanguageSwitcher";
+import { registerTaskButton, unregisterTaskButton } from "./taskbarRegistry";
 
 function darkenColor(hex, percent) {
   const num = parseInt(hex.replace("#", ""), 16);
@@ -52,6 +53,7 @@ export default function Taskbar() {
         <StartMenu />
 
         {openWindows.map(([key, win]) => {
+          const btnRef = React.createRef();
           const isActive = activeWindow?.[0] === key;
           const bg = isActive
             ? darkenColor(taskbarColor, 25)
@@ -60,6 +62,11 @@ export default function Taskbar() {
           return (
             <button
               key={key}
+              ref={(el) => {
+                if (el) registerTaskButton(key, el);
+                else unregisterTaskButton(key, btnRef.current);
+                btnRef.current = el;
+              }}
               onClick={() => {
                 if (win.minimized) {
                   dispatch(restoreWindow(key));
@@ -86,7 +93,7 @@ export default function Taskbar() {
           );
         })}
       </div>
-      +      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-3">
       <LanguageSwitcher />
       <Clock />
       </div>

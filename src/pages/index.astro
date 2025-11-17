@@ -1,7 +1,7 @@
 ---
 import "../styles/global.css";
-import DesktopLayout from "../layouts/DesktopLayout.astro"; // si quieres conservar tu layout
 import AppWrapper from "../components/AppWrapper.jsx";
+---
 ---
 
 <head>
@@ -17,6 +17,4 @@ import AppWrapper from "../components/AppWrapper.jsx";
 </head>
 
 <!-- Monta React una sola vez; AppWrapper elige Desktop/Mobile en cliente -->
-<DesktopLayout>
-  <AppWrapper client:only="react" />
-</DesktopLayout>
+<AppWrapper client:only="react" />

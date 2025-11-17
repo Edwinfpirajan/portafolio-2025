@@ -20,7 +20,7 @@ export default function Desktop() {
   };
 
   return (
-    <div className="relative w-full h-full overflow-hidden">
+    <div className="fixed inset-0 overflow-hidden">
       <video
         className="fixed top-0 left-0 w-full h-full object-cover z-0"
         src="/images/background.mp4"
@@ -31,7 +31,7 @@ export default function Desktop() {
       />
 
       {/* Íconos de escritorio */}
-      <div className="absolute top-4 left-4 flex flex-col gap-4 z-0 pointer-events-auto">
+      <div className="absolute top-4 left-4 flex flex-col gap-4 z-10 pointer-events-auto">
         {Object.entries(windowsMeta).map(([key, meta]) => {
           const label = meta.titleKey ? t(meta.titleKey) : (meta.title || key);
           return (

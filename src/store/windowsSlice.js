@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-let zCounter = 1;
+let zCounter = 100;
 
 const initialState = {
   windows: {}
