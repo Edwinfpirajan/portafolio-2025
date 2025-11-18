@@ -8,43 +8,59 @@ function ProjectDetail({ project }) {
   const theme = useSelector((s) => s.ui.theme);
   if (!project) return null;
   return (
-    <div className="w-full h-full p-4">
-      <div className="flex items-start gap-3 mb-3">
+    <div className="w-full h-full p-6 overflow-auto">
+      {/* Header */}
+      <div className="flex items-start gap-4 mb-6 pb-4 border-b border-gray-200 dark:border-gray-700">
         {project.icon ? (
-          <img src={project.icon} alt="" className="w-8 h-8 object-contain" />
+          <img src={project.icon} alt="" className="w-12 h-12 object-contain flex-shrink-0" />
         ) : null}
-        <div>
-          <h2 className="text-xl font-semibold leading-tight">{project.title}</h2>
+        <div className="flex-1 min-w-0">
+          <h2 className="text-2xl font-bold leading-tight mb-1">{project.title}</h2>
           {project.subtitle ? (
-            <div className="text-sm text-gray-600">{project.subtitle}</div>
+            <div className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>{project.subtitle}</div>
           ) : null}
         </div>
       </div>
-      {project.description ? (
-        <p className="mb-4 text-sm leading-relaxed whitespace-pre-wrap">{project.description}</p>
-      ) : null}
+
+      {/* Tags */}
       {Array.isArray(project.tags) && project.tags.length > 0 ? (
-        <div className="mb-4 flex flex-wrap gap-2">
+        <div className="mb-6 flex flex-wrap gap-2">
           {project.tags.map((t) => (
-            <span key={t} className={`px-2 py-1 text-xs rounded ${theme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'}`}>
+            <span key={t} className={`px-3 py-1 text-xs font-medium rounded-full ${theme === 'dark' ? 'bg-blue-900/40 text-blue-300 border border-blue-700/50' : 'bg-blue-50 text-blue-700 border border-blue-200'}`}>
               {t}
             </span>
           ))}
         </div>
       ) : null}
+
+      {/* Description */}
+      {project.description ? (
+        <div className={`mb-6 text-sm leading-relaxed whitespace-pre-wrap ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
+          {project.description}
+        </div>
+      ) : null}
+
+      {/* Links */}
       {Array.isArray(project.links) && project.links.length > 0 ? (
-        <div className="space-x-3">
-          {project.links.map((l) => (
-            <a
-              key={l.href}
-              href={l.href}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-block text-sm text-blue-600 underline"
-            >
-              {l.label || l.href}
-            </a>
-          ))}
+        <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
+          <h3 className={`text-xs font-semibold uppercase tracking-wide mb-3 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>Enlaces</h3>
+          <div className="flex flex-wrap gap-3">
+            {project.links.map((l) => (
+              <a
+                key={l.href}
+                href={l.href}
+                target="_blank"
+                rel="noreferrer"
+                className={`inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition ${theme === 'dark' ? 'bg-gray-800 hover:bg-gray-700 text-blue-400 border border-gray-700' : 'bg-white hover:bg-gray-50 text-blue-600 border border-gray-300 shadow-sm'}`}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
+                  <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
+                  <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
+                </svg>
+                {l.label || 'Ver'}
+              </a>
+            ))}
+          </div>
         </div>
       ) : null}
     </div>
