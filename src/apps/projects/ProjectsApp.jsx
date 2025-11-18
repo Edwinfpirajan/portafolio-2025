@@ -21,7 +21,7 @@ function ProjectDetail({ project }) {
         </div>
       </div>
       {project.description ? (
-        <p className="mb-4 text-sm leading-relaxed">{project.description}</p>
+        <p className="mb-4 text-sm leading-relaxed whitespace-pre-wrap">{project.description}</p>
       ) : null}
       {Array.isArray(project.tags) && project.tags.length > 0 ? (
         <div className="mb-4 flex flex-wrap gap-2">
