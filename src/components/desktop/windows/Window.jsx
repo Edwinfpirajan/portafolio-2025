@@ -279,7 +279,7 @@ export default function Window({ title, name, children, scrollMode = "auto" }) {
       }</style>
       <div
         data-win={name}
-        className="flex flex-col w-full h-full shadow-lg min-h-0"
+        className="flex flex-col w-full h-full shadow-lg min-h-0 rounded-lg overflow-hidden"
         ref={winElRef}
         style={{
           border: `2px solid ${borderColor}`,
@@ -289,26 +289,26 @@ export default function Window({ title, name, children, scrollMode = "auto" }) {
         }}
       >
         <div
-          className="window-titlebar flex justify-between items-center px-2 py-1 cursor-move select-none"
+          className="window-titlebar flex justify-between items-center px-2 py-1 cursor-move select-none rounded-t-md"
           style={{ backgroundColor: headerBg, color: "#fff" }}
         >
           <span>{title}</span>
           <div className="space-x-1">
             <button
               onClick={handleMinimize}
-              className="bg-yellow-400 text-black px-2 py-0.5 text-xs font-bold border border-white"
+              className="bg-yellow-400 text-black px-2 py-0.5 text-xs font-bold border border-white rounded"
             >
               ▁
             </button>
             <button
               onClick={handleMaximize}
-              className="bg-green-500 text-black px-2 py-0.5 text-xs font-bold border border-white"
+              className="bg-green-500 text-black px-2 py-0.5 text-xs font-bold border border-white rounded"
             >
               ▢
             </button>
             <button
               onClick={handleClose}
-              className="bg-red-600 text-white px-2 py-0.5 text-xs font-bold border border-white"
+              className="bg-red-600 text-white px-2 py-0.5 text-xs font-bold border border-white rounded"
             >
               ✖
             </button>
