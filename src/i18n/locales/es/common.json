@@ -136,6 +136,7 @@
       "disclaimer": "Puede cometer errores. No compartas información sensible.",
       "userLabel": "Tú",
       "assistantLabel": "IA",
+      "confirmDelete": "¿Quieres eliminar este chat?",
       "errors": {
         "generic": "¡Ups! Algo salió mal."
       }

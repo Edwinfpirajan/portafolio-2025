@@ -161,6 +161,10 @@ export default function ChatApp() {
   };
 
   const handleDeleteSession = (id) => {
+    if (typeof window !== 'undefined') {
+      const ok = window.confirm(t('chat.confirmDelete', '¿Quieres eliminar este chat?'));
+      if (!ok) return;
+    }
     dispatch(deleteSessionAction(id));
   };
 
