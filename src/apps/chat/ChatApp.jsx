@@ -43,7 +43,8 @@ export default function ChatApp() {
   };
 
   const createSession = () => {
-    dispatch(createSessionAction({ title: t('chat.session.untitled', 'Conversación sin título') }));
+    // Create with empty title so sidebar shows localized fallback until first prompt
+    dispatch(createSessionAction());
   };
 
   const renameSession = (id, title) => {
@@ -55,11 +56,20 @@ export default function ChatApp() {
     if (!text || loading || !activeSession) return;
 
     const userMessage = { role: 'user', content: text };
-    // If it's the first user message, title the conversation like ChatGPT
+    // If it's the first user message, animate the title in the sidebar
     if (messages.length === 0) {
-      const firstLine = text.replace(/\s+/g, ' ').slice(0, 60);
-      const titled = firstLine.length < text.length ? firstLine + '…' : firstLine;
-      dispatch(updateSessionAction({ id: activeId, patch: { title: titled } }));
+      const clean = text.replace(/\s+/g, ' ').trim();
+      const maxLen = 60;
+      const total = Math.min(clean.length, maxLen);
+      dispatch(updateSessionAction({ id: activeId, patch: { title: '' } }));
+      const step = Math.max(1, Math.floor(total / 40));
+      let i = 0;
+      (function tick() {
+        i = Math.min(total, i + step);
+        const partial = clean.slice(0, i) + (clean.length > maxLen && i >= maxLen ? '…' : '');
+        dispatch(updateSessionAction({ id: activeId, patch: { title: partial } }));
+        if (i < total) setTimeout(tick, 16);
+      })();
     }
     dispatch(updateSessionAction({ id: activeId, patch: { messages: [...messages, userMessage] } }));
     dispatch(setInput(""));
@@ -196,7 +206,7 @@ export default function ChatApp() {
         <div className="flex-1 overflow-y-auto px-2 space-y-1 pb-4">
           {sessions.map(s => {
             const firstUser = (s.messages || []).find(m => m.role === 'user');
-            const base = firstUser?.content || s.title || '';
+            const base = (s.title && s.title.length ? s.title : firstUser?.content) || '';
             const preview = (base || '').replace(/\s+/g, ' ').slice(0, 60) + (base && base.length > 60 ? '…' : '');
             return (
               <div key={s.id} className={`group relative rounded-md px-3 py-2 text-sm cursor-pointer flex items-center gap-2 ${s.id===activeId ? (theme==='dark' ? 'bg-white/10' : 'bg-blue-50') : ''}`} onClick={() => dispatch(setActiveSession(s.id))}>

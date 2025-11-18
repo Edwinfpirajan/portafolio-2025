@@ -15,7 +15,7 @@ const initialState = {
   sessions: [
     { 
       id: makeId(), 
-      title: 'Nueva conversación', 
+      title: '', 
       model: MODELS[0].id, 
       messages: [] 
     }
@@ -53,7 +53,7 @@ const chatSlice = createSlice({
     createSession: (state, action) => {
       const newSession = {
         id: makeId(),
-        title: action.payload?.title || 'Conversación sin título',
+        title: action.payload?.title ?? '',
         model: MODELS[0].id,
         messages: []
       };
@@ -75,6 +75,8 @@ const chatSlice = createSlice({
         const session = state.sessions.find(s => s.id === id);
         if (session) {
           session.messages = [];
+          session.title = '';
+          session.model = MODELS[0].id;
         }
       } else {
         state.sessions = state.sessions.filter(s => s.id !== id);
