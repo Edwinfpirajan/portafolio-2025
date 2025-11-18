@@ -34,9 +34,10 @@ export default function Desktop() {
   };
 
   const theme = useSelector((s) => s.ui.theme);
+  const systemFont = useSelector((s) => s.ui.fonts.system);
 
   return (
-    <div className="fixed inset-0 overflow-hidden">
+    <div className="fixed inset-0 overflow-hidden" style={{ fontFamily: systemFont }}>
       <video
         className="fixed top-0 left-0 w-full h-full object-cover z-0"
         src="/images/background.mp4"

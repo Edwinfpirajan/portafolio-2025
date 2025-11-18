@@ -130,35 +130,57 @@ function ColorsSection({ ui, dispatch }) {
 }
 
 function FontsSection({ ui, dispatch }) {
+  const fontOptions = [
+    { label: "Sistema (Sans)", value: "system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif" },
+    { label: "Inter", value: "Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif" },
+    { label: "Roboto", value: "Roboto, system-ui, -apple-system, Segoe UI, Arial, sans-serif" },
+    { label: "Segoe UI", value: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif' },
+    { label: "Arial", value: "Arial, Helvetica, sans-serif" },
+    { label: "Merriweather (Serif)", value: "Merriweather, Georgia, serif" },
+    { label: "Georgia (Serif)", value: 'Georgia, Cambria, "Times New Roman", serif' },
+    { label: "JetBrains Mono (Mono)", value: '"JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace' },
+  ];
+
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <div>
         <label className="block text-sm font-medium mb-2">Fuente del sistema</label>
-        <input
-          type="text"
+        <select
           value={ui.fonts.system}
-          onChange={(e) =>
-            dispatch(setFontFamily({ type: "system", value: e.target.value }))
-          }
+          onChange={(e) => dispatch(setFontFamily({ type: "system", value: e.target.value }))}
           className={`w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
             ui.theme === 'dark' ? 'border-gray-600 bg-gray-700' : 'border-gray-300 bg-white'
           }`}
-          placeholder="sans-serif"
-        />
+        >
+          {fontOptions.map((opt) => (
+            <option key={opt.label} value={opt.value} style={{ fontFamily: opt.value }}>
+              {opt.label}
+            </option>
+          ))}
+        </select>
+        <div className="mt-2 text-xs opacity-80" style={{ fontFamily: ui.fonts.system }}>
+          Vista previa: Aa Bb Cc 0123 — ¿Cómo se ve?
+        </div>
       </div>
+
       <div>
-        <label className="block text-sm font-medium mb-2">Fuente del contenido</label>
-        <input
-          type="text"
+        <label className="block text-sm font-medium mb-2">Fuente del contenido de ventanas</label>
+        <select
           value={ui.fonts.windowContent}
-          onChange={(e) =>
-            dispatch(setFontFamily({ type: "windowContent", value: e.target.value }))
-          }
+          onChange={(e) => dispatch(setFontFamily({ type: "windowContent", value: e.target.value }))}
           className={`w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
             ui.theme === 'dark' ? 'border-gray-600 bg-gray-700' : 'border-gray-300 bg-white'
           }`}
-          placeholder="sans-serif"
-        />
+        >
+          {fontOptions.map((opt) => (
+            <option key={opt.label} value={opt.value} style={{ fontFamily: opt.value }}>
+              {opt.label}
+            </option>
+          ))}
+        </select>
+        <div className="mt-2 text-xs opacity-80" style={{ fontFamily: ui.fonts.windowContent }}>
+          Vista previa: Aa Bb Cc 0123 — ¿Cómo se ve?
+        </div>
       </div>
     </div>
   );
