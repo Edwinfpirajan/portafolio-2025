@@ -18,7 +18,9 @@ function ThemeSection({ ui, dispatch }) {
         <select
           value={ui.theme}
           onChange={(e) => dispatch(setGlobalTheme(e.target.value))}
-          className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className={`w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+            ui.theme === 'dark' ? 'border-gray-600 bg-gray-700' : 'border-gray-300 bg-white'
+          }`}
         >
           <option value="light">Claro</option>
           <option value="dark">Oscuro</option>
@@ -49,20 +51,22 @@ function ColorsSection({ ui, dispatch }) {
         </label>
         
         {/* Current color display */}
-        <div className="flex items-center gap-3 mb-4 p-3 bg-gray-50 rounded border border-gray-200">
+        <div className={`flex items-center gap-3 mb-4 p-3 rounded border ${
+          ui.theme === 'dark' ? 'bg-gray-800 border-gray-600' : 'bg-gray-50 border-gray-200'
+        }`}>
           <div
             className="w-12 h-12 rounded border-2 border-gray-300 shadow-sm"
             style={{ backgroundColor: ui.colors.mainColor }}
           />
           <div>
-            <div className="text-xs text-gray-500">Color actual</div>
+            <div className={`text-xs ${ui.theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>Color actual</div>
             <span className="text-sm font-mono font-semibold">{ui.colors.mainColor}</span>
           </div>
         </div>
 
         {/* Windows colors palette */}
         <div className="mb-4">
-          <div className="text-xs font-medium text-gray-600 mb-2">Colores de Windows</div>
+          <div className={`text-xs font-medium mb-2 ${ui.theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>Colores de Windows</div>
           <div className="grid grid-cols-9 gap-2.5 max-w-lg">
             {windowsColors.map((color) => (
               <button
@@ -89,7 +93,9 @@ function ColorsSection({ ui, dispatch }) {
             {showCustom ? "Ocultar" : "Ver"} color personalizado
           </button>
           {showCustom && (
-            <div className="flex items-center gap-3 p-3 bg-gray-50 rounded border border-gray-200">
+            <div className={`flex items-center gap-3 p-3 rounded border ${
+              ui.theme === 'dark' ? 'bg-gray-800 border-gray-600' : 'bg-gray-50 border-gray-200'
+            }`}>
               <input
                 type="color"
                 value={ui.colors.mainColor}
@@ -99,7 +105,7 @@ function ColorsSection({ ui, dispatch }) {
                 className="w-16 h-16 rounded border border-gray-300 cursor-pointer"
               />
               <div className="flex-1">
-                <label className="block text-xs text-gray-600 mb-1">Código hexadecimal</label>
+                <label className={`block text-xs mb-1 ${ui.theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>Código hexadecimal</label>
                 <input
                   type="text"
                   value={ui.colors.mainColor}
@@ -109,7 +115,9 @@ function ColorsSection({ ui, dispatch }) {
                       dispatch(setColor({ element: "mainColor", value: val }))
                     }
                   }}
-                  className="w-full border border-gray-300 rounded px-3 py-2 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className={`w-full border rounded px-3 py-2 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                    ui.theme === 'dark' ? 'border-gray-600 bg-gray-700' : 'border-gray-300 bg-white'
+                  }`}
                   placeholder="#000000"
                 />
               </div>
@@ -132,7 +140,9 @@ function FontsSection({ ui, dispatch }) {
           onChange={(e) =>
             dispatch(setFontFamily({ type: "system", value: e.target.value }))
           }
-          className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className={`w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+            ui.theme === 'dark' ? 'border-gray-600 bg-gray-700' : 'border-gray-300 bg-white'
+          }`}
           placeholder="sans-serif"
         />
       </div>
@@ -144,7 +154,9 @@ function FontsSection({ ui, dispatch }) {
           onChange={(e) =>
             dispatch(setFontFamily({ type: "windowContent", value: e.target.value }))
           }
-          className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className={`w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+            ui.theme === 'dark' ? 'border-gray-600 bg-gray-700' : 'border-gray-300 bg-white'
+          }`}
           placeholder="sans-serif"
         />
       </div>
@@ -168,7 +180,9 @@ function BackgroundSection({ ui, dispatch }) {
               })
             )
           }
-          className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className={`w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+            ui.theme === 'dark' ? 'border-gray-600 bg-gray-700' : 'border-gray-300 bg-white'
+          }`}
           placeholder="https://..."
         />
       </div>
@@ -205,7 +219,9 @@ function AccessibilitySection({ ui, dispatch }) {
         <select
           value={ui.contrast}
           onChange={(e) => dispatch(setContrast(e.target.value))}
-          className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className={`w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+            ui.theme === 'dark' ? 'border-gray-600 bg-gray-700' : 'border-gray-300 bg-white'
+          }`}
         >
           <option value="normal">Normal</option>
           <option value="high">Alto</option>
@@ -235,18 +251,24 @@ export default function Personalization() {
   const activeSection = sections.find((s) => s.key === tab) || sections[0];
 
   return (
-    <div className="w-full h-full bg-white text-black">
+    <div className="w-full h-full">
       {/* Desktop: left menu + content */}
       <div className="hidden md:grid grid-cols-[200px_minmax(0,1fr)] h-full">
-        <aside className="border-r border-gray-200 bg-gray-50 p-3 overflow-y-auto">
-          <div className="text-xs font-semibold text-gray-500 mb-2">Personalización</div>
+        <aside className={`border-r p-3 overflow-y-auto ${
+          ui.theme === 'dark' ? 'border-gray-600 bg-gray-800' : 'border-gray-200 bg-gray-50'
+        }`}>
+          <div className={`text-xs font-semibold mb-2 ${
+            ui.theme === 'dark' ? 'text-gray-400' : 'text-gray-500'
+          }`}>Personalización</div>
           <nav className="flex flex-col gap-1">
             {sections.map((s) => (
               <button
                 key={s.key}
                 onClick={() => dispatch(setPersonalizationTab(s.key))}
-                className={`text-left px-3 py-2 rounded text-sm hover:bg-gray-200 transition ${
-                  tab === s.key ? "bg-gray-200 font-medium" : ""
+                className={`text-left px-3 py-2 rounded text-sm transition ${
+                  tab === s.key 
+                    ? ui.theme === 'dark' ? 'bg-gray-700 font-medium' : 'bg-gray-200 font-medium'
+                    : ui.theme === 'dark' ? 'hover:bg-gray-700' : 'hover:bg-gray-200'
                 }`}
               >
                 {s.label}
@@ -261,7 +283,7 @@ export default function Personalization() {
 
       {/* Mobile: chips selector + content */}
       <div className="md:hidden h-full flex flex-col">
-        <div className="sticky top-0 bg-white border-b border-gray-200 p-3 flex-shrink-0">
+        <div className="sticky top-0 border-b p-3 flex-shrink-0" style={{ backgroundColor: 'inherit', borderColor: ui.theme === 'dark' ? '#4b5563' : '#e5e7eb' }}>
           <div className="flex gap-2 overflow-x-auto no-scrollbar">
             {sections.map((s) => (
               <button
@@ -269,8 +291,8 @@ export default function Personalization() {
                 onClick={() => dispatch(setPersonalizationTab(s.key))}
                 className={`px-3 py-1.5 rounded-full border text-sm whitespace-nowrap ${
                   tab === s.key
-                    ? "bg-black text-white border-black"
-                    : "bg-white text-black border-gray-300"
+                    ? ui.theme === 'dark' ? 'bg-gray-700 text-white border-gray-600' : 'bg-black text-white border-black'
+                    : ui.theme === 'dark' ? 'bg-gray-800 text-white border-gray-600' : 'bg-white text-black border-gray-300'
                 }`}
               >
                 {s.label}
