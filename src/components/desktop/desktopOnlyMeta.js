@@ -1,6 +1,6 @@
 // Aplicaciones exclusivas de desktop (cmd, personalization, etc.)
-import TerminalWindow from "./desktop/cmd/Cmd.jsx";
-import Personalization from "./desktop/Personalization/Personalization.jsx";
+import TerminalWindow from "./cmd/Cmd.jsx";
+import Personalization from "./Personalization/Personalization.jsx";
 
 export const desktopOnlyMeta = {
   cmd: {

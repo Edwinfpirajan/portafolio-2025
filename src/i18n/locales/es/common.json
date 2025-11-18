@@ -47,7 +47,7 @@
       "cmd": { "title": "Terminal" },
       "personalization": { "title": "Personalización" },
       "projects": { "title": "Proyectos" },
-      "chat": { "title": "Chat IA" },
+      "chat": { "title": "kikeGPT" },
       "common": { "noContent": "Contenido no disponible" }
     },
     "projects": {
