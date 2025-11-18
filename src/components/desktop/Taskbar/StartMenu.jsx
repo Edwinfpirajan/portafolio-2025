@@ -1,7 +1,8 @@
 // src/components/desktop/Taskbar/StartMenu.jsx
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { openWindow } from "../../../redux/slices/windowsSlice";
+import { closeStartMenu } from "../../../redux/slices/startMenuSlice";
 import { windowsMeta } from "../windowsMeta";
 import { useTranslation } from "react-i18next";
 
@@ -20,7 +21,17 @@ export default function StartMenu() {
       : meta.title || appName;
 
     dispatch(openWindow({ name: appName, title: translatedTitle, icon: meta.icon }));
+    // Close start menu after launching an app
+    dispatch(closeStartMenu());
   };
+
+  // Close start menu on any click in the page
+  useEffect(() => {
+    if (!isOpen) return;
+    const onAnyClick = () => dispatch(closeStartMenu());
+    document.addEventListener("click", onAnyClick);
+    return () => document.removeEventListener("click", onAnyClick);
+  }, [isOpen, dispatch]);
 
   if (!isOpen) return null;
 
