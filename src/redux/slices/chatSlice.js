@@ -110,6 +110,7 @@ export const {
   setInput,
   setLoading,
   setCopiedIndex,
+  setPendingDelete,
   createSession,
   updateSession,
   deleteSession,
