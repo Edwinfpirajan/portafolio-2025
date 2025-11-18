@@ -17,16 +17,19 @@ export async function POST({ request }) {
       return new Response(JSON.stringify({ error: "Invalid messages" }), { status: 400 });
     }
 
-    // Resolve API key from environment (Astro prefers import.meta.env)
-    const API_KEY = (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.OPENAI_KEY)
-      || process.env.OPENAI_KEY;
+    // Resolve API key from environment (Railway provides process.env at runtime).
+    // Support multiple common names to reduce deployment friction.
+    const API_KEY =
+      process.env.OPENAI_API_KEY ||
+      process.env.OPENAI_KEY ||
+      (typeof import.meta !== 'undefined' && import.meta.env && (import.meta.env.OPENAI_API_KEY || import.meta.env.OPENAI_KEY));
 
     // Demo fallback when no API key is configured
     if (!API_KEY) {
       const lastUser = Array.isArray(messages) ? [...messages].reverse().find(m => m.role === 'user')?.content : '';
-      const demo = `Modo demo activo: configura OPENAI_KEY para respuestas reales.\n\nEco breve: ${lastUser ? '“' + String(lastUser).slice(0, 240) + (String(lastUser).length > 240 ? '…' : '') + '”' : '(sin mensaje)'}.`;
+      const demo = `Modo demo activo: configura OPENAI_API_KEY (o OPENAI_KEY) en Railway para respuestas reales.\n\nEco breve: ${lastUser ? '“' + String(lastUser).slice(0, 240) + (String(lastUser).length > 240 ? '…' : '') + '”' : '(sin mensaje)'}.`;
       return new Response(
-        JSON.stringify({ reply: demo, model: 'demo' }),
+        JSON.stringify({ reply: demo, model: 'demo', missingKey: true }),
         { status: 200, headers: { "Content-Type": "application/json" } }
       );
     }
