@@ -1,6 +1,6 @@
 // src/components/desktop/Desktop.jsx
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Icon from "../Icons/Icon";
 import { openWindow } from "../../redux/slices/windowsSlice";
 import { windowsMeta } from "./windowsMeta";
@@ -33,6 +33,8 @@ export default function Desktop() {
     dispatch(openWindow({ name: appName, title: label, icon: meta.icon, initial: payloadInitial }));
   };
 
+  const theme = useSelector((s) => s.ui.theme);
+
   return (
     <div className="fixed inset-0 overflow-hidden">
       <video
@@ -43,6 +45,9 @@ export default function Desktop() {
         loop
         playsInline
       />
+      {theme === "dark" && (
+        <div className="fixed inset-0 bg-black/40 z-0 pointer-events-none" />
+      )}
 
       {/* Íconos de escritorio */}
       <div className="absolute top-4 left-4 flex flex-col gap-4 z-10 pointer-events-auto">

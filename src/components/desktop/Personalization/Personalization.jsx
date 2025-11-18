@@ -63,7 +63,7 @@ function ColorsSection({ ui, dispatch }) {
         {/* Windows colors palette */}
         <div className="mb-4">
           <div className="text-xs font-medium text-gray-600 mb-2">Colores de Windows</div>
-          <div className="grid grid-cols-9 gap-2 max-w-md">
+          <div className="grid grid-cols-9 gap-2.5 max-w-lg">
             {windowsColors.map((color) => (
               <button
                 key={color}
@@ -73,7 +73,7 @@ function ColorsSection({ ui, dispatch }) {
                     ? "border-black ring-2 ring-offset-2 ring-black scale-105"
                     : "border-gray-300 hover:border-gray-400"
                 }`}
-                style={{ backgroundColor: color, maxWidth: "40px", maxHeight: "40px" }}
+                style={{ backgroundColor: color, maxWidth: "48px", maxHeight: "48px" }}
                 title={color}
               />
             ))}

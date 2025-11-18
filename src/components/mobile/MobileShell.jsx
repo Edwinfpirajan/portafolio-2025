@@ -8,11 +8,15 @@ import Recents from "./apps/Recents";
 
 export default function MobileShell() {
   const screen = useSelector((s) => s.mobile.screen);
+  const theme = useSelector((s) => s.ui.theme);
 
   // altura real de tu barra inferior (NavBar)
   const NAVBAR_H = 72;
 
   const topOffset = "calc(env(safe-area-inset-top) + var(--ios-top-offset, 14px))";
+  const bgGradient = theme === "dark" 
+    ? "from-black/40 to-black/70" 
+    : "from-white/20 to-white/40";
 
   return (
     <div
@@ -22,7 +26,7 @@ export default function MobileShell() {
       {/* Fondo */}
       <div className="absolute inset-0 -z-10 pointer-events-none">
   <img src="/wallpapers/bg-mobile.jpg" alt="Fondo" className="w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/40 to-black/70" />
+        <div className={`absolute inset-0 bg-gradient-to-b ${bgGradient}`} />
       </div>
 
       {/* Contenido scrollable: dejamos hueco arriba y damos padding abajo seguro */}

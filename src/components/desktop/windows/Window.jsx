@@ -279,7 +279,7 @@ export default function Window({ title, name, children, scrollMode = "auto" }) {
       }</style>
       <div
         data-win={name}
-        className="flex flex-col w-full h-full shadow-lg min-h-0 rounded-lg overflow-hidden"
+        className={`flex flex-col w-full h-full shadow-lg min-h-0 ${win.maximized ? '' : 'rounded-lg'} overflow-hidden`}
         ref={winElRef}
         style={{
           border: `2px solid ${borderColor}`,
@@ -289,7 +289,7 @@ export default function Window({ title, name, children, scrollMode = "auto" }) {
         }}
       >
         <div
-          className="window-titlebar flex justify-between items-center px-2 py-1 cursor-move select-none rounded-t-md"
+          className={`window-titlebar flex justify-between items-center px-2 py-1 cursor-move select-none ${win.maximized ? '' : 'rounded-t-md'}`}
           style={{ backgroundColor: headerBg, color: "#fff" }}
         >
           <span>{title}</span>
