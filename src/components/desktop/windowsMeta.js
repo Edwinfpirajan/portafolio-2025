@@ -3,6 +3,7 @@ import TerminalWindow from "./cmd/Cmd.jsx";
 import About from "./content/About.jsx";
 import Personalization from "./Personalization/Personalization.jsx";
 import ProjectsApp from "../../apps/projects/ProjectsApp.jsx";
+import ChatApp from "../../apps/chat/ChatApp.jsx";
 
 export const windowsMeta = {
   about: {
@@ -30,6 +31,13 @@ export const windowsMeta = {
     titleKey: "windows.projects.title",
     icon: "/icons/generic.svg",
     component: ProjectsApp,
+    showInStartMenu: true,
+    initial: { maximized: true }
+  },
+  chat: {
+    titleKey: "windows.chat.title",
+    icon: "/icons/generic.svg",
+    component: ChatApp,
     showInStartMenu: true,
     initial: { maximized: true }
   },

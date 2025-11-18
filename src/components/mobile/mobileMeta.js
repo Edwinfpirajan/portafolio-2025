@@ -1,5 +1,6 @@
 import AboutApp from "../../apps/about/AboutApp.jsx";
 import ProjectsApp from "../../apps/projects/ProjectsApp.jsx";
+import ChatApp from "../../apps/chat/ChatApp.jsx";
 
 export const mobileMeta = {
 	about: {
@@ -12,4 +13,9 @@ export const mobileMeta = {
 		icon: "/icons/generic.svg",
 		component: ProjectsApp,
 	},
+  chat: {
+    titleKey: "windows.chat.title",
+    icon: "/icons/generic.svg",
+    component: ChatApp,
+  },
 };
