@@ -1,9 +1,11 @@
 // src/apps/about/AboutApp.jsx
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 
 export default function AboutApp() {
   const { t } = useTranslation(); 
+  const theme = useSelector((s) => s.ui.theme); 
 
   const data = {
     fullName: "Edwin Fernando Pirajan Arevalo",
@@ -23,7 +25,7 @@ export default function AboutApp() {
   };
 
   return (
-    <div className="bg-white text-black font-serif p-4">
+    <div className="font-serif p-4">
       {/* Logo Wikipedia */}
       <div className="flex justify-start mb-4">
         <img
@@ -36,8 +38,8 @@ export default function AboutApp() {
       <div className="flex flex-col lg:flex-row-reverse max-w-6xl mx-auto">
         {/* Sidebar a la derecha */}
         <aside className="lg:w-1/3 w-full mb-6 lg:mb-0 lg:ml-6">
-          <div className="border border-gray-300">
-            <div className="bg-yellow-200 text-center py-2 font-bold">
+          <div className={`border ${theme === 'dark' ? 'border-gray-600' : 'border-gray-300'}`}>
+            <div className={`text-center py-2 font-bold ${theme === 'dark' ? 'bg-yellow-700 text-white' : 'bg-yellow-200'}`}>
               {data.fullName}
             </div>
 
@@ -48,8 +50,8 @@ export default function AboutApp() {
             />
 
             {/* Información personal */}
-            <div className="border-t border-gray-300 p-3">
-              <h3 className="font-bold text-sm bg-gray-100 px-2 py-1 mb-2">
+            <div className={`border-t p-3 ${theme === 'dark' ? 'border-gray-600' : 'border-gray-300'}`}>
+              <h3 className={`font-bold text-sm px-2 py-1 mb-2 ${theme === 'dark' ? 'bg-gray-700' : 'bg-gray-100'}`}>
                 {t("about.sidebar.personal.title")}
               </h3>
 
@@ -90,8 +92,8 @@ export default function AboutApp() {
             </div>
 
             {/* Información profesional */}
-            <div className="border-t border-gray-300 p-3">
-              <h3 className="font-bold text-sm bg-gray-100 px-2 py-1 mb-2">
+            <div className={`border-t p-3 ${theme === 'dark' ? 'border-gray-600' : 'border-gray-300'}`}>
+              <h3 className={`font-bold text-sm px-2 py-1 mb-2 ${theme === 'dark' ? 'bg-gray-700' : 'bg-gray-100'}`}>
                 {t("about.sidebar.professional.title")}
               </h3>
               <p>
@@ -127,8 +129,8 @@ export default function AboutApp() {
             </div>
 
             {/* Firma */}
-            <div className="border-t border-gray-300 p-3 text-center">
-              <h3 className="font-bold text-sm bg-gray-100 px-2 py-1 mb-2">
+            <div className={`border-t p-3 text-center ${theme === 'dark' ? 'border-gray-600' : 'border-gray-300'}`}>
+              <h3 className={`font-bold text-sm px-2 py-1 mb-2 ${theme === 'dark' ? 'bg-gray-700' : 'bg-gray-100'}`}>
                 {t("about.sidebar.signature.title")}
               </h3>
               <img

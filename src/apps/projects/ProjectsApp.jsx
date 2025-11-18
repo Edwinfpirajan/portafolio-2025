@@ -5,9 +5,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { setActiveProject, setMobileDetail } from "../../redux/slices/projectsSlice";
 
 function ProjectDetail({ project }) {
+  const theme = useSelector((s) => s.ui.theme);
   if (!project) return null;
   return (
-    <div className="w-full h-full bg-white text-black p-4">
+    <div className="w-full h-full p-4">
       <div className="flex items-start gap-3 mb-3">
         {project.icon ? (
           <img src={project.icon} alt="" className="w-8 h-8 object-contain" />
@@ -25,7 +26,7 @@ function ProjectDetail({ project }) {
       {Array.isArray(project.tags) && project.tags.length > 0 ? (
         <div className="mb-4 flex flex-wrap gap-2">
           {project.tags.map((t) => (
-            <span key={t} className="px-2 py-1 text-xs rounded bg-gray-200">
+            <span key={t} className={`px-2 py-1 text-xs rounded ${theme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'}`}>
               {t}
             </span>
           ))}
@@ -56,11 +57,12 @@ export default function ProjectsApp() {
   const items = useMemo(() => projects, []);
   const active = useSelector((s) => s.projectsState.activeId);
   const mobileDetail = useSelector((s) => s.projectsState.mobileDetail);
+  const theme = useSelector((s) => s.ui.theme);
   const activeItem = items.find((i) => i.id === active);
 
   if (!items || items.length === 0) {
     return (
-      <div className="w-full h-full bg-white text-black p-4">
+      <div className="w-full h-full p-4">
         <h1 className="text-2xl font-bold mb-2">{t("projects.title", "Proyectos")}</h1>
         <p className="text-sm opacity-80">{t("projects.empty", "Sin proyectos aún")}</p>
       </div>
@@ -68,17 +70,19 @@ export default function ProjectsApp() {
   }
 
   return (
-    <div className="w-full h-full bg-white text-black">
+    <div className="w-full h-full">
       <div className="hidden md:grid grid-cols-[260px_minmax(0,1fr)] h-full">
-        <aside className="border-r border-gray-200 bg-gray-50 p-3 overflow-y-auto">
-          <div className="text-xs font-semibold text-gray-500 mb-2">{t("projects.title", "Proyectos")}</div>
+        <aside className={`border-r p-3 overflow-y-auto ${theme === 'dark' ? 'border-gray-600 bg-gray-800' : 'border-gray-200 bg-gray-50'}`}>
+          <div className={`text-xs font-semibold mb-2 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>{t("projects.title", "Proyectos")}</div>
           <nav className="flex flex-col gap-1">
             {items.map((i) => (
               <button
                 key={i.id}
                 onClick={() => dispatch(setActiveProject(i.id))}
-                className={`w-full flex items-center gap-3 px-2 py-2 rounded text-left hover:bg-gray-200 transition ${
-                  active === i.id ? "bg-gray-200 font-medium" : ""
+                className={`w-full flex items-center gap-3 px-2 py-2 rounded text-left transition ${
+                  active === i.id 
+                    ? theme === 'dark' ? 'bg-gray-700 font-medium' : 'bg-gray-200 font-medium'
+                    : theme === 'dark' ? 'hover:bg-gray-700' : 'hover:bg-gray-200'
                 }`}
               >
                 {i.icon ? (
@@ -87,7 +91,7 @@ export default function ProjectsApp() {
                 <div className="truncate">
                   <div className="text-sm truncate">{i.title}</div>
                   {i.subtitle ? (
-                    <div className="text-xs text-gray-600 truncate">{i.subtitle}</div>
+                    <div className={`text-xs truncate ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>{i.subtitle}</div>
                   ) : null}
                 </div>
               </button>
@@ -124,7 +128,7 @@ export default function ProjectsApp() {
                   <div className="flex-1 text-left min-w-0">
                     <div className="text-sm font-medium truncate">{i.title}</div>
                     {i.subtitle ? (
-                      <div className="text-xs text-gray-600 truncate">{i.subtitle}</div>
+                      <div className={`text-xs truncate ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>{i.subtitle}</div>
                     ) : null}
                   </div>
                   <svg
@@ -142,14 +146,14 @@ export default function ProjectsApp() {
           </div>
         ) : (
           <div className="h-full overflow-auto">
-            <div className="sticky top-0 bg-white border-b border-gray-200 flex items-center gap-2 p-3">
+            <div className="sticky top-0 border-b border-gray-200 flex items-center gap-2 p-3" style={{ backgroundColor: 'inherit' }}>
               <button
                 onClick={() => dispatch(setMobileDetail(false))}
-                className="px-2 py-1 rounded border border-gray-300 text-sm"
+                className={`px-2 py-1 rounded border text-sm ${theme === 'dark' ? 'border-gray-600' : 'border-gray-300'}`}
               >
                 {t("projects.back", "Atrás")}
               </button>
-              <div className="text-sm text-gray-500">{activeItem?.title}</div>
+              <div className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>{activeItem?.title}</div>
             </div>
             <ProjectDetail project={activeItem} />
           </div>
