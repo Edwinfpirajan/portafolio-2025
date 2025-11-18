@@ -1,6 +1,16 @@
 // src/apps/projects/projectsData.js
 const projects = [
   {
+    id: "scrapeblocker",
+    title: "ScrapeBlocker – Sistema Inteligente de Protección y Monitoreo Web",
+    subtitle: "Solución antifraude y de ciberseguridad empresarial",
+    icon: "/icons/scrape.png",
+    description:
+      "ScrapeBlocker es una solución antifraude y de ciberseguridad diseñada para empresas que necesitan proteger información sensible, monitorear procesos en tiempo real y bloquear accesos no autorizados provenientes de navegadores o aplicaciones.\n\nDesarrollado con una arquitectura moderna que integra Go (Golang), WebSockets, Chrome DevTools Protocol, y una extensión de navegador con reglas de protección inteligentes, ScrapeBlocker analiza el comportamiento del usuario, detecta patrones sospechosos y aplica políticas de bloqueo o desbloqueo de forma instantánea.\n\nEntre sus principales capacidades:\n• Monitoreo en tiempo real de procesos, páginas abiertas y actividad del usuario.\n• Bloqueo dinámico de URLs mediante reglas declarativas (declarativeNetRequest) y comunicación WebSocket.\n• Detección de selectores y contenido web para validar acceso o cerrar rutas críticas.\n• Control centralizado desde un backend en Go, con políticas administrables por cliente.\n• Extensión de Chrome personalizada que ejecuta bloqueo local y sincroniza estados.\n• Módulo de actualización automática del agente en Windows.\n• Integración con APIs corporativas para obtener procesos, URLs y configuraciones en tiempo real.\n\nScrapeBlocker se diseñó como una plataforma escalable, robusta y multiplataforma, capaz de integrarse fácilmente en entornos empresariales y call centers, permitiendo a las organizaciones blindar su operación y evitar fugas, capturas o manipulación de datos.\n\nEl resultado es un sistema que combina seguridad, automatización y velocidad, protegiendo activamente la infraestructura digital de cada cliente.",
+    tags: ["Go", "WebSockets", "Chrome Extension", "DevTools Protocol", "Cybersecurity"],
+    links: [],
+  },
+  {
     id: "crm-mail-banco-agrario",
     title: "CRM Mail – Banco Agrario de Colombia",
     subtitle: "Sistema de gestión de correo corporativo",
@@ -19,7 +29,7 @@ const projects = [
       "Desarrollé un CRM institucional de alto rendimiento para el Banco Agrario de Colombia, orientado a optimizar la gestión de clientes, la trazabilidad de operaciones y la eficiencia operativa de sus agentes.\n\nEl sistema fue implementado con PHP (Laravel) y potenciado con Livewire, logrando una experiencia totalmente dinámica e interactiva sin sacrificar seguridad ni rendimiento. La plataforma utiliza MySQL como motor de base de datos, estructurada para manejar grandes volúmenes de información con consultas optimizadas y arquitectura escalable.\n\nUno de los componentes clave fue la integración con Genesys Cloud, permitiendo a los agentes gestionar interacciones en tiempo real (correos, casos, solicitudes), manejar tipificaciones, sincronizar estados, y responder comunicaciones directamente desde el CRM, todo bajo autenticación OAuth2 y consumo seguro de APIs.\n\nEl resultado:\n• Un CRM robusto, modular y rápido\n• Interfaz intuitiva para el equipo de atención\n• Procesos bancarios unificados en una sola plataforma\n• Integración completa con el ecosistema Genesys para mejorar tiempos de respuesta y calidad del servicio",
     tags: ["Php", "Laravel", "Livewire", "MySQL"],
     links: [
-      { label: "Repo", href: "https://www.credibanco.com/wp-content/uploads/2022/01/Banco-Agrario.png" },
+      // { label: "Repo", href: "https://www.credibanco.com/wp-content/uploads/2022/01/Banco-Agrario.png" },
     ],
   },
 ];
