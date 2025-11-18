@@ -29,22 +29,92 @@ function ThemeSection({ ui, dispatch }) {
 }
 
 function ColorsSection({ ui, dispatch }) {
+  const windowsColors = [
+    "#FFB900", "#FF8C00", "#FF5722", "#E74856", "#EA005E", "#C30052",
+    "#E3008C", "#BF0077", "#C239B3", "#9A0089", "#0078D7", "#0063B1",
+    "#8E8CD8", "#6B69D6", "#8764B8", "#744DA9", "#B146C2", "#881798",
+    "#0099BC", "#2D7D9A", "#00B7C3", "#038387", "#00B294", "#018574",
+    "#00CC6A", "#10893E", "#7A7574", "#5D5A58", "#68768A", "#515C6B",
+    "#567C73", "#486860", "#498205", "#107C10", "#767676", "#4C4A48",
+    "#69797E", "#4A5459", "#647C64", "#525E54", "#847545", "#7E735F"
+  ];
+
+  const [showCustom, setShowCustom] = React.useState(false);
+
   return (
     <div className="space-y-4">
       <div>
-        <label className="block text-sm font-medium mb-2">
+        <label className="block text-sm font-medium mb-3">
           Color principal (barra de tareas y ventanas)
         </label>
-        <div className="flex items-center gap-3">
-          <input
-            type="color"
-            value={ui.colors.mainColor}
-            onChange={(e) =>
-              dispatch(setColor({ element: "mainColor", value: e.target.value }))
-            }
-            className="w-16 h-10 rounded border border-gray-300 cursor-pointer"
+        
+        {/* Current color display */}
+        <div className="flex items-center gap-3 mb-4 p-3 bg-gray-50 rounded border border-gray-200">
+          <div
+            className="w-12 h-12 rounded border-2 border-gray-300 shadow-sm"
+            style={{ backgroundColor: ui.colors.mainColor }}
           />
-          <span className="text-sm text-gray-600 font-mono">{ui.colors.mainColor}</span>
+          <div>
+            <div className="text-xs text-gray-500">Color actual</div>
+            <span className="text-sm font-mono font-semibold">{ui.colors.mainColor}</span>
+          </div>
+        </div>
+
+        {/* Windows colors palette */}
+        <div className="mb-4">
+          <div className="text-xs font-medium text-gray-600 mb-2">Colores de Windows</div>
+          <div className="grid grid-cols-9 gap-2">
+            {windowsColors.map((color) => (
+              <button
+                key={color}
+                onClick={() => dispatch(setColor({ element: "mainColor", value: color }))}
+                className={`w-full aspect-square rounded border-2 transition-all hover:scale-110 ${
+                  ui.colors.mainColor.toUpperCase() === color.toUpperCase()
+                    ? "border-black ring-2 ring-offset-2 ring-black scale-105"
+                    : "border-gray-300 hover:border-gray-400"
+                }`}
+                style={{ backgroundColor: color }}
+                title={color}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* Custom color */}
+        <div>
+          <button
+            onClick={() => setShowCustom(!showCustom)}
+            className="text-sm text-blue-600 hover:text-blue-700 font-medium mb-2"
+          >
+            {showCustom ? "Ocultar" : "Ver"} color personalizado
+          </button>
+          {showCustom && (
+            <div className="flex items-center gap-3 p-3 bg-gray-50 rounded border border-gray-200">
+              <input
+                type="color"
+                value={ui.colors.mainColor}
+                onChange={(e) =>
+                  dispatch(setColor({ element: "mainColor", value: e.target.value }))
+                }
+                className="w-16 h-16 rounded border border-gray-300 cursor-pointer"
+              />
+              <div className="flex-1">
+                <label className="block text-xs text-gray-600 mb-1">Código hexadecimal</label>
+                <input
+                  type="text"
+                  value={ui.colors.mainColor}
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    if (/^#[0-9A-Fa-f]{0,6}$/.test(val)) {
+                      dispatch(setColor({ element: "mainColor", value: val }))
+                    }
+                  }}
+                  className="w-full border border-gray-300 rounded px-3 py-2 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="#000000"
+                />
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
