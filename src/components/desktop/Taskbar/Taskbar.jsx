@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { bringToFront, restoreWindow } from "../../../redux/slices/windowsSlice";
 import LanguageSwitcher from "./LanguageSwitcher";
 import { registerTaskButton, unregisterTaskButton } from "./taskbarRegistry";
+import { windowsMeta } from "../windowsMeta";
 
 function darkenColor(hex, percent) {
   const num = parseInt(hex.replace("#", ""), 16);
@@ -58,6 +59,9 @@ export default function Taskbar() {
           const bg = isActive
             ? darkenColor(taskbarColor, 25)
             : darkenColor(taskbarColor, 10);
+          
+          // Get icon from windowsMeta instead of window state
+          const icon = windowsMeta[key]?.icon || win.icon;
 
           return (
             <button
@@ -81,9 +85,9 @@ export default function Taskbar() {
                 borderColor: isActive ? "#000000" : "#333333",
               }}
             >
-              {win.icon && (
+              {icon && (
                 <img
-                  src={win.icon}
+                  src={icon}
                   alt={`${key} icon`}
                   className="w-4 h-4 object-contain"
                 />
