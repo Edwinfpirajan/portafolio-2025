@@ -45,6 +45,7 @@
       "cmd": { "title": "Terminal" },
       "personalization": { "title": "Personalization" },
       "projects": { "title": "Projects" },
+      "chat": { "title": "AI Chat" },
       "common": { "noContent": "Content not available" }
     },
     "projects": {
@@ -109,6 +110,22 @@
         "contrastLabel": "Contrast",
         "normal": "Normal",
         "high": "High"
+      }
+    }
+  ,
+    "chat": {
+      "model": "Model",
+      "send": "Send",
+      "sending": "Sending...",
+      "placeholder": "Write a message...",
+      "empty": "Start the conversation by typing below...",
+      "clear": "Clear",
+      "copy": "Copy",
+      "copied": "Copied!",
+      "userLabel": "You",
+      "assistantLabel": "AI",
+      "errors": {
+        "generic": "Oops! Something went wrong."
       }
     }
   }

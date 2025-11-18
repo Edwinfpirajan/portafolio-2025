@@ -47,6 +47,7 @@
       "cmd": { "title": "Terminal" },
       "personalization": { "title": "Personalización" },
       "projects": { "title": "Proyectos" },
+      "chat": { "title": "Chat IA" },
       "common": { "noContent": "Contenido no disponible" }
     },
     "projects": {
@@ -111,6 +112,22 @@
         "contrastLabel": "Contraste",
         "normal": "Normal",
         "high": "Alto"
+      }
+    }
+  ,
+    "chat": {
+      "model": "Modelo",
+      "send": "Enviar",
+      "sending": "Enviando...",
+      "placeholder": "Escribe un mensaje...",
+      "empty": "Empieza la conversación escribiendo abajo...",
+      "clear": "Limpiar",
+      "copy": "Copiar",
+      "copied": "¡Copiado!",
+      "userLabel": "Tú",
+      "assistantLabel": "IA",
+      "errors": {
+        "generic": "¡Ups! Algo salió mal."
       }
     }
   }

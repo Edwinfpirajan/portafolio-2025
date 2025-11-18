@@ -3,7 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   screen: "home",
   stack: [],
-  available: ["about", "projects"],
+  // Add chat app shortcut to mobile home screen
+  available: ["about", "projects", "chat"],
 };
 
 const mobileSlice = createSlice({
