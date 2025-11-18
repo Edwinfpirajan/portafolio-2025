@@ -215,13 +215,29 @@ export default function ChatApp() {
               <div key={s.id} className={`group relative rounded-md px-3 py-2 text-sm cursor-pointer flex items-center gap-2 ${s.id===activeId ? (theme==='dark' ? 'bg-white/10' : 'bg-blue-50') : ''}`} onClick={() => dispatch(setActiveSession(s.id))}>
                 <div className={`flex-1 text-xs truncate ${theme==='dark' ? 'text-white' : 'text-gray-700'}`}>{preview || t('chat.session.initial','Nueva conversación')}</div>
                 {pendingDeleteId === s.id ? (
-                  <div className={`flex items-center gap-1 text-[10px] ${theme==='dark' ? 'text-white' : 'text-gray-700'}`} onClick={(e) => e.stopPropagation()}>
-                    <span className="truncate max-w-[70px] opacity-70">{t('chat.deleteConfirmTitle','Eliminar?')}</span>
-                    <button onClick={() => confirmDelete(s.id)} className={`${theme==='dark' ? 'bg-red-500/50 hover:bg-red-500/70 text-white' : 'bg-red-600 hover:bg-red-700 text-white'} px-2 py-1 rounded`}>{t('chat.deleteYes','Sí')}</button>
-                    <button onClick={cancelDelete} className={`${theme==='dark' ? 'bg-white/10 hover:bg-white/20 text-white' : 'bg-black/10 hover:bg-black/20 text-gray-700'} px-2 py-1 rounded`}>{t('chat.deleteNo','No')}</button>
+                  <div
+                    onClick={(e) => e.stopPropagation()}
+                    className={`absolute inset-0 flex items-center justify-between gap-2 px-3 py-2 rounded-md border text-[11px] shadow-lg animate-fade-in
+                      ${theme==='dark' ? 'bg-[#1a2833]/95 border-white/15 backdrop-blur-sm' : 'bg-white border-black/15'}
+                    `}
+                  >
+                    <span className={`flex-1 truncate font-medium ${theme==='dark' ? 'text-red-200' : 'text-red-700'}`}>{t('chat.deleteConfirmTitle','Eliminar?')}</span>
+                    <button
+                      onClick={() => confirmDelete(s.id)}
+                      className={`px-2 py-1 rounded-md text-[10px] font-semibold tracking-wide transition
+                        ${theme==='dark' ? 'bg-red-500/70 hover:bg-red-500 text-white' : 'bg-red-600 hover:bg-red-700 text-white'}`}
+                    >{t('chat.deleteYes','Sí')}</button>
+                    <button
+                      onClick={cancelDelete}
+                      className={`px-2 py-1 rounded-md text-[10px] font-medium transition
+                        ${theme==='dark' ? 'bg-white/10 hover:bg-white/20 text-white' : 'bg-black/10 hover:bg-black/20 text-gray-700'}`}
+                    >{t('chat.deleteNo','No')}</button>
                   </div>
                 ) : (
-                  <button onClick={(e) => { e.stopPropagation(); handleDeleteSession(s.id); }} className={`opacity-0 group-hover:opacity-100 transition text-[10px] px-2 py-1 rounded ${theme==='dark' ? 'bg-white/10 hover:bg-white/20 text-white' : 'bg-black/5 hover:bg-black/10 text-gray-700'}`}>×</button>
+                  <button
+                    onClick={(e) => { e.stopPropagation(); handleDeleteSession(s.id); }}
+                    className={`opacity-0 group-hover:opacity-100 transition text-[10px] px-2 py-1 rounded ${theme==='dark' ? 'bg-white/10 hover:bg-white/20 text-white' : 'bg-black/5 hover:bg-black/10 text-gray-700'}`}
+                  >×</button>
                 )}
               </div>
             );
