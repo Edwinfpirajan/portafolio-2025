@@ -1,5 +1,56 @@
-export async function POST({ request }) {
+// In-memory rate limiting: tracks IP -> {count, resetAt}
+const rateLimitStore = new Map();
+const RATE_LIMIT = 10;  // max requests per window
+const WINDOW_MS = 15 * 60 * 1000; // 15 minutes
+
+function checkRateLimit(ip) {
+  const now = Date.now();
+  const record = rateLimitStore.get(ip);
+  
+  if (!record || now > record.resetAt) {
+    // New window
+    rateLimitStore.set(ip, { count: 1, resetAt: now + WINDOW_MS });
+    return { allowed: true, remaining: RATE_LIMIT - 1, resetAt: now + WINDOW_MS };
+  }
+  
+  if (record.count >= RATE_LIMIT) {
+    return { allowed: false, remaining: 0, resetAt: record.resetAt };
+  }
+  
+  record.count++;
+  return { allowed: true, remaining: RATE_LIMIT - record.count, resetAt: record.resetAt };
+}
+
+export async function POST({ request, clientAddress }) {
   try {
+    // Extract client IP (Railway provides x-forwarded-for)
+    const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() 
+      || request.headers.get('x-real-ip')
+      || clientAddress 
+      || 'unknown';
+    
+    // Check rate limit
+    const rateCheck = checkRateLimit(ip);
+    if (!rateCheck.allowed) {
+      const resetIn = Math.ceil((rateCheck.resetAt - Date.now()) / 1000 / 60);
+      return new Response(
+        JSON.stringify({ 
+          error: "Límite de solicitudes excedido", 
+          details: `Máximo ${RATE_LIMIT} mensajes cada 15 minutos. Intenta de nuevo en ${resetIn} min.`,
+          retryAfter: resetIn 
+        }), 
+        { 
+          status: 429,
+          headers: { 
+            "Content-Type": "application/json",
+            "X-RateLimit-Limit": String(RATE_LIMIT),
+            "X-RateLimit-Remaining": "0",
+            "X-RateLimit-Reset": String(Math.floor(rateCheck.resetAt / 1000))
+          } 
+        }
+      );
+    }
+
     const { messages, model } = await request.json();
 
     const allowedModels = [
@@ -65,7 +116,15 @@ export async function POST({ request }) {
 
     return new Response(
       JSON.stringify({ reply, model: chosenModel, usage: data.usage ?? null }),
-      { status: 200, headers: { "Content-Type": "application/json" } }
+      { 
+        status: 200, 
+        headers: { 
+          "Content-Type": "application/json",
+          "X-RateLimit-Limit": String(RATE_LIMIT),
+          "X-RateLimit-Remaining": String(rateCheck.remaining),
+          "X-RateLimit-Reset": String(Math.floor(rateCheck.resetAt / 1000))
+        } 
+      }
     );
   } catch (e) {
     return new Response(JSON.stringify({ error: e?.message ?? "Unknown error" }), { status: 500 });
