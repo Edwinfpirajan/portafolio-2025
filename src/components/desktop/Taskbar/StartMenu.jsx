@@ -42,6 +42,18 @@ export default function StartMenu() {
     return () => document.removeEventListener("click", onAnyClick);
   }, [isOpen, dispatch]);
 
+  // Close menu with Escape key
+  useEffect(() => {
+    if (!isOpen) return;
+    const onKeyDown = (ev) => {
+      if (ev.key === 'Escape') {
+        dispatch(closeStartMenu());
+      }
+    };
+    document.addEventListener('keydown', onKeyDown);
+    return () => document.removeEventListener('keydown', onKeyDown);
+  }, [isOpen, dispatch]);
+
   if (!isOpen) return null;
 
   return (
