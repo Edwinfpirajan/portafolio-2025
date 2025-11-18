@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setLanguage, toggleLangMenu, closeLangMenu } from "../../../redux/slices/i18nSlice";
 
@@ -27,6 +27,7 @@ export default function LanguageSwitcher() {
   const lang = useSelector((s) => s.i18n.lang);
   const open = useSelector((s) => s.i18n.menuOpen);
   const taskbarColor = useSelector((s) => s.ui.colors.mainColor);
+  const theme = useSelector((s) => s.ui.theme);
   const wrapperRef = useRef(null);
 
   const current = (lang || "es").slice(0, 2).toUpperCase();
@@ -34,26 +35,42 @@ export default function LanguageSwitcher() {
 
   // Cierre por pérdida de foco (como menú contextual)
   const handleBlur = (e) => {
-    // si el foco se va fuera del contenedor, cerramos
     if (wrapperRef.current && !wrapperRef.current.contains(e.relatedTarget)) {
       dispatch(closeLangMenu());
     }
   };
 
+  // Cerrar al hacer click fuera
+  useEffect(() => {
+    if (!open) return;
+    const onDocClick = (ev) => {
+      if (wrapperRef.current && !wrapperRef.current.contains(ev.target)) {
+        dispatch(closeLangMenu());
+      }
+    };
+    document.addEventListener('mousedown', onDocClick);
+    document.addEventListener('touchstart', onDocClick);
+    return () => {
+      document.removeEventListener('mousedown', onDocClick);
+      document.removeEventListener('touchstart', onDocClick);
+    };
+  }, [open, dispatch]);
+
   const Item = ({ code, label }) => {
     const active = current === code.toUpperCase();
+    const baseItem = theme === 'dark'
+      ? 'hover:bg-white/10 text-white'
+      : 'hover:bg-black/5 text-gray-800';
     return (
       <button
         role="menuitem"
         tabIndex={0}
-        onClick={() => dispatch(setLanguage(code))}
-        className={`flex w-full items-center justify-between px-3 py-2 text-sm hover:bg-black/10 ${
-          active ? "font-semibold" : ""
-        }`}
-        aria-current={active ? "true" : "false"}
+        onClick={() => { dispatch(setLanguage(code)); dispatch(closeLangMenu()); }}
+        className={`flex w-full items-center justify-between px-3 py-2 text-sm transition ${baseItem} ${active ? 'font-semibold' : ''}`}
+        aria-current={active ? 'true' : 'false'}
       >
         <span>{label}</span>
-        {active && <span className="text-xs">✓</span>}
+        {active && <span className="text-xs opacity-70">✓</span>}
       </button>
     );
   };
@@ -67,10 +84,15 @@ export default function LanguageSwitcher() {
     >
       <button
         onClick={() => dispatch(toggleLangMenu())}
-        className="flex items-center gap-2 px-3 py-1 text-sm border rounded select-none"
-        style={{ backgroundColor: btnBg, color: "#fff", borderColor: "#333" }}
+        className="flex items-center gap-2 px-3 py-1 text-sm rounded select-none border shadow-sm hover:shadow-md transition focus:outline-none focus:ring-2 focus:ring-black/20"
+        style={{
+          backgroundColor: btnBg,
+          color: '#fff',
+          borderColor: darkenColor(taskbarColor, 25),
+          boxShadow: theme==='dark' ? 'inset 0 0 0 1px rgba(255,255,255,0.08), 0 1px 3px rgba(0,0,0,0.6)' : 'inset 0 0 0 1px rgba(0,0,0,0.15), 0 1px 3px rgba(0,0,0,0.3)'
+        }}
         aria-haspopup="menu"
-        aria-expanded={open ? "true" : "false"}
+        aria-expanded={open ? 'true' : 'false'}
         title="Idioma / Language"
       >
         {current}
@@ -79,8 +101,9 @@ export default function LanguageSwitcher() {
       {open && (
         <div
           role="menu"
-          className="absolute bottom-11 right-0 w-44 rounded border bg-white/95 text-black shadow-lg backdrop-blur"
+          className={`absolute bottom-11 right-0 w-48 rounded-md border shadow-lg backdrop-blur-sm overflow-hidden animate-fade-in ${theme==='dark' ? 'bg-[#0f1821]/95 border-white/15 text-white' : 'bg-white border-black/15 text-gray-800'}`}
         >
+          <div className={`px-3 py-2 text-xs uppercase tracking-wide font-semibold opacity-60 ${theme==='dark' ? 'text-teal-200' : 'text-gray-500'}`}>Idioma</div>
           <Item code="es" label="Español (ES)" />
           <Item code="en" label="English (EN)" />
         </div>
