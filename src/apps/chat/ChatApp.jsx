@@ -14,6 +14,7 @@ import {
   createSession as createSessionAction,
   updateSession as updateSessionAction,
   deleteSession as deleteSessionAction,
+  setPendingDelete,
 } from "../../redux/slices/chatSlice";
 
 // Model list (mantiene los existentes)
@@ -30,7 +31,7 @@ export default function ChatApp() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const theme = useSelector((state) => state.ui.theme);
-  const { sessions, activeId, input, loading, copiedIndex } = useSelector((state) => state.chat);
+  const { sessions, activeId, input, loading, copiedIndex, pendingDeleteId } = useSelector((state) => state.chat);
   
   const listRef = useRef(null);
 
@@ -161,12 +162,10 @@ export default function ChatApp() {
   };
 
   const handleDeleteSession = (id) => {
-    if (typeof window !== 'undefined') {
-      const ok = window.confirm(t('chat.confirmDelete', '¿Quieres eliminar este chat?'));
-      if (!ok) return;
-    }
-    dispatch(deleteSessionAction(id));
+    dispatch(setPendingDelete(id));
   };
+  const confirmDelete = (id) => dispatch(deleteSessionAction(id));
+  const cancelDelete = () => dispatch(setPendingDelete(null));
 
   const containerBg = theme === 'dark'
     ? 'bg-[#0B151E]'
@@ -215,7 +214,15 @@ export default function ChatApp() {
             return (
               <div key={s.id} className={`group relative rounded-md px-3 py-2 text-sm cursor-pointer flex items-center gap-2 ${s.id===activeId ? (theme==='dark' ? 'bg-white/10' : 'bg-blue-50') : ''}`} onClick={() => dispatch(setActiveSession(s.id))}>
                 <div className={`flex-1 text-xs truncate ${theme==='dark' ? 'text-white' : 'text-gray-700'}`}>{preview || t('chat.session.initial','Nueva conversación')}</div>
-                <button onClick={(e) => { e.stopPropagation(); handleDeleteSession(s.id); }} className={`opacity-0 group-hover:opacity-100 transition text-[10px] px-2 py-1 rounded ${theme==='dark' ? 'bg-white/10 hover:bg-white/20 text-white' : 'bg-black/5 hover:bg-black/10 text-gray-700'}`}>×</button>
+                {pendingDeleteId === s.id ? (
+                  <div className={`flex items-center gap-1 text-[10px] ${theme==='dark' ? 'text-white' : 'text-gray-700'}`} onClick={(e) => e.stopPropagation()}>
+                    <span className="truncate max-w-[70px] opacity-70">{t('chat.deleteConfirmTitle','Eliminar?')}</span>
+                    <button onClick={() => confirmDelete(s.id)} className={`${theme==='dark' ? 'bg-red-500/50 hover:bg-red-500/70 text-white' : 'bg-red-600 hover:bg-red-700 text-white'} px-2 py-1 rounded`}>{t('chat.deleteYes','Sí')}</button>
+                    <button onClick={cancelDelete} className={`${theme==='dark' ? 'bg-white/10 hover:bg-white/20 text-white' : 'bg-black/10 hover:bg-black/20 text-gray-700'} px-2 py-1 rounded`}>{t('chat.deleteNo','No')}</button>
+                  </div>
+                ) : (
+                  <button onClick={(e) => { e.stopPropagation(); handleDeleteSession(s.id); }} className={`opacity-0 group-hover:opacity-100 transition text-[10px] px-2 py-1 rounded ${theme==='dark' ? 'bg-white/10 hover:bg-white/20 text-white' : 'bg-black/5 hover:bg-black/10 text-gray-700'}`}>×</button>
+                )}
               </div>
             );
           })}

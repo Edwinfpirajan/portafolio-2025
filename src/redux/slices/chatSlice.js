@@ -24,6 +24,7 @@ const initialState = {
   input: '',
   loading: false,
   copiedIndex: null,
+  pendingDeleteId: null,
 };
 
 const chatSlice = createSlice({
@@ -49,6 +50,9 @@ const chatSlice = createSlice({
     },
     setCopiedIndex: (state, action) => {
       state.copiedIndex = action.payload;
+    },
+    setPendingDelete: (state, action) => {
+      state.pendingDeleteId = action.payload; // id or null
     },
     createSession: (state, action) => {
       const newSession = {
@@ -78,11 +82,13 @@ const chatSlice = createSlice({
           session.title = '';
           session.model = MODELS[0].id;
         }
+        state.pendingDeleteId = null;
       } else {
         state.sessions = state.sessions.filter(s => s.id !== id);
         if (state.activeId === id) {
           state.activeId = state.sessions[0]?.id || null;
         }
+        state.pendingDeleteId = null;
       }
     },
     addMessage: (state, action) => {

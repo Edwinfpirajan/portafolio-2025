@@ -137,6 +137,9 @@
       "userLabel": "Tú",
       "assistantLabel": "IA",
       "confirmDelete": "¿Quieres eliminar este chat?",
+      "deleteConfirmTitle": "Eliminar?",
+      "deleteYes": "Sí",
+      "deleteNo": "No",
       "errors": {
         "generic": "¡Ups! Algo salió mal."
       }
