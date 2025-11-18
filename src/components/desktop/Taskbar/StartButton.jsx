@@ -17,7 +17,9 @@ export default function StartButton() {
 
   return (
     <button
-      onClick={() => dispatch(toggleStartMenu())}
+      id="start-button"
+      onMouseDown={(e) => e.stopPropagation()}
+      onClick={(e) => { e.stopPropagation(); dispatch(toggleStartMenu()); }}
       aria-label="Abrir menú inicio"
       className={`w-10 h-10 flex items-center justify-center rounded-full border transition duration-150 ease-in-out
         ${isActive

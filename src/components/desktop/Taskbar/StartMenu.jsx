@@ -1,5 +1,5 @@
 // src/components/desktop/Taskbar/StartMenu.jsx
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { openWindow } from "../../../redux/slices/windowsSlice";
 import { closeStartMenu } from "../../../redux/slices/startMenuSlice";
@@ -11,6 +11,7 @@ export default function StartMenu() {
   const theme = useSelector((state) => state.ui.theme);
   const dispatch = useDispatch();
   const { t } = useTranslation();
+  const menuRef = useRef(null);
 
   const handleStartMenuClick = (appName) => {
     const meta = windowsMeta[appName];
@@ -28,7 +29,15 @@ export default function StartMenu() {
   // Close start menu on any click in the page
   useEffect(() => {
     if (!isOpen) return;
-    const onAnyClick = () => dispatch(closeStartMenu());
+    const onAnyClick = (ev) => {
+      const target = ev.target;
+      // Ignore clicks inside the menu
+      if (menuRef.current && menuRef.current.contains(target)) return;
+      // Ignore clicks on the start button
+      const onStartBtn = target.closest && target.closest('#start-button');
+      if (onStartBtn) return;
+      dispatch(closeStartMenu());
+    };
     document.addEventListener("click", onAnyClick);
     return () => document.removeEventListener("click", onAnyClick);
   }, [isOpen, dispatch]);
@@ -37,6 +46,8 @@ export default function StartMenu() {
 
   return (
     <div 
+      ref={menuRef}
+      onClick={(e) => e.stopPropagation()}
       className={`absolute bottom-12 left-2 w-48 border shadow-lg p-2 font-retro text-xs ${
         theme === 'dark' 
           ? 'bg-gray-800 border-gray-600 text-white' 
