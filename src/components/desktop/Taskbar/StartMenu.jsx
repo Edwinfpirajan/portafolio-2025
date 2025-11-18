@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 
 export default function StartMenu() {
   const isOpen = useSelector((state) => state.startMenu.isOpen);
+  const theme = useSelector((state) => state.ui.theme);
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
@@ -24,7 +25,14 @@ export default function StartMenu() {
   if (!isOpen) return null;
 
   return (
-    <div className="absolute bottom-12 left-2 w-48 bg-white border border-black shadow-lg p-2 font-retro text-xs" style={{ zIndex: 10000 }}>
+    <div 
+      className={`absolute bottom-12 left-2 w-48 border shadow-lg p-2 font-retro text-xs ${
+        theme === 'dark' 
+          ? 'bg-gray-800 border-gray-600 text-white' 
+          : 'bg-white border-black text-black'
+      }`} 
+      style={{ zIndex: 10000 }}
+    >
       <ul className="space-y-2">
         {Object.entries(windowsMeta)
           .filter(([_, meta]) => meta.showInStartMenu)
@@ -35,7 +43,9 @@ export default function StartMenu() {
             return (
               <li
                 key={key}
-                className="cursor-pointer hover:bg-gray-100 p-1 flex items-center gap-2"
+                className={`cursor-pointer p-1 flex items-center gap-2 ${
+                  theme === 'dark' ? 'hover:bg-gray-700' : 'hover:bg-gray-100'
+                }`}
                 onClick={() => handleStartMenuClick(key)}
               >
                 <img src={meta.icon} alt={label} className="w-4 h-4" />
