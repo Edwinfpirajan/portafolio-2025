@@ -57,13 +57,9 @@ export default function ChatApp() {
     const userMessage = { role: 'user', content: text };
     // If it's the first user message, title the conversation like ChatGPT
     if (messages.length === 0) {
-      const defaultUntitled = t('chat.session.untitled', 'Conversación sin título');
-      const currentTitle = (activeSession.title || '').trim();
-      if (!currentTitle || currentTitle === defaultUntitled) {
-        const firstLine = text.replace(/\s+/g, ' ').slice(0, 60);
-        const titled = firstLine.length < text.length ? firstLine + '…' : firstLine;
-        dispatch(updateSessionAction({ id: activeId, patch: { title: titled } }));
-      }
+      const firstLine = text.replace(/\s+/g, ' ').slice(0, 60);
+      const titled = firstLine.length < text.length ? firstLine + '…' : firstLine;
+      dispatch(updateSessionAction({ id: activeId, patch: { title: titled } }));
     }
     dispatch(updateSessionAction({ id: activeId, patch: { messages: [...messages, userMessage] } }));
     dispatch(setInput(""));
@@ -83,7 +79,23 @@ export default function ChatApp() {
       }
       const data = await res.json();
       const reply = data.reply || "";
-      dispatch(updateSessionAction({ id: activeId, patch: { messages: [...messages, userMessage, { role: 'assistant', content: reply }] } }));
+      const baseMsgs = [...messages, userMessage];
+      // Insert placeholder assistant message
+      dispatch(updateSessionAction({ id: activeId, patch: { messages: [...baseMsgs, { role: 'assistant', content: '' }] } }));
+
+      // Type-out animation
+      const step = Math.max(1, Math.floor(reply.length / 60));
+      let i = 0;
+      await new Promise((resolve) => {
+        const tick = () => {
+          i = Math.min(reply.length, i + step);
+          const chunk = reply.slice(0, i);
+          dispatch(updateSessionAction({ id: activeId, patch: { messages: [...baseMsgs, { role: 'assistant', content: chunk }] } }));
+          if (i >= reply.length) resolve();
+          else setTimeout(tick, 16);
+        };
+        setTimeout(tick, 0);
+      });
     } catch (e) {
       const suffix = e?.message ? ` (${String(e.message).slice(0, 180)})` : '';
       dispatch(updateSessionAction({ id: activeId, patch: { messages: [...messages, userMessage, { role: 'assistant', content: `${t('chat.errors.generic', 'Error inesperado.')}${suffix}` }] } }));
@@ -182,16 +194,17 @@ export default function ChatApp() {
           <button onClick={createSession} className={`flex-1 px-3 py-2 rounded text-xs font-medium transition ${theme==='dark' ? 'bg-teal-500/30 hover:bg-teal-500/50 text-teal-100' : 'bg-blue-600 hover:bg-blue-700 text-white'}`}>{t('chat.new','Nuevo chat')}</button>
         </div>
         <div className="flex-1 overflow-y-auto px-2 space-y-1 pb-4">
-          {sessions.map(s => (
-            <div key={s.id} className={`group relative rounded-md px-3 py-2 text-sm cursor-pointer flex items-center gap-2 ${s.id===activeId ? (theme==='dark' ? 'bg-white/10' : 'bg-blue-50') : ''}`} onClick={() => dispatch(setActiveSession(s.id))}>
-              <input
-                className={`flex-1 bg-transparent focus:outline-none text-xs ${theme==='dark' ? 'text-white' : 'text-gray-700'}`}
-                value={s.title}
-                onChange={(e) => renameSession(s.id, e.target.value)}
-              />
-              <button onClick={(e) => { e.stopPropagation(); handleDeleteSession(s.id); }} className={`opacity-0 group-hover:opacity-100 transition text-[10px] px-2 py-1 rounded ${theme==='dark' ? 'bg-white/10 hover:bg-white/20 text-white' : 'bg-black/5 hover:bg-black/10 text-gray-700'}`}>×</button>
-            </div>
-          ))}
+          {sessions.map(s => {
+            const firstUser = (s.messages || []).find(m => m.role === 'user');
+            const base = firstUser?.content || s.title || '';
+            const preview = (base || '').replace(/\s+/g, ' ').slice(0, 60) + (base && base.length > 60 ? '…' : '');
+            return (
+              <div key={s.id} className={`group relative rounded-md px-3 py-2 text-sm cursor-pointer flex items-center gap-2 ${s.id===activeId ? (theme==='dark' ? 'bg-white/10' : 'bg-blue-50') : ''}`} onClick={() => dispatch(setActiveSession(s.id))}>
+                <div className={`flex-1 text-xs truncate ${theme==='dark' ? 'text-white' : 'text-gray-700'}`}>{preview || t('chat.session.initial','Nueva conversación')}</div>
+                <button onClick={(e) => { e.stopPropagation(); handleDeleteSession(s.id); }} className={`opacity-0 group-hover:opacity-100 transition text-[10px] px-2 py-1 rounded ${theme==='dark' ? 'bg-white/10 hover:bg-white/20 text-white' : 'bg-black/5 hover:bg-black/10 text-gray-700'}`}>×</button>
+              </div>
+            );
+          })}
         </div>
         <div className="p-3 border-t border-white/10 flex flex-col gap-2 text-[11px] opacity-70">
           <div className="flex items-center gap-2">
