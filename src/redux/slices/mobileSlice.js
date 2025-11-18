@@ -1,10 +1,8 @@
-// src/store/mobileSlice.js
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  screen: "home",         // 'home' | 'app' | 'recents'
-  stack: [],              // [{ name, title, icon }]
-  // si quieres controlar qué apps aparecen en la Home:
+  screen: "home",
+  stack: [],
   available: ["about", "projects"],
 };
 
@@ -13,7 +11,6 @@ const mobileSlice = createSlice({
   initialState,
   reducers: {
     openApp: (state, { payload: name }) => {
-      // si ya está en top, sólo muestra
       if (!state.stack.length || state.stack[state.stack.length - 1].name !== name) {
         state.stack.push({ name });
       }

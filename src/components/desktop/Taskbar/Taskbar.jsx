@@ -3,7 +3,7 @@ import StartButton from "./StartButton";
 import StartMenu from "../Taskbar/StartMenu";
 import Clock from "../Clock";
 import { useSelector, useDispatch } from "react-redux";
-import { bringToFront, restoreWindow } from "../../../store/windowsSlice";
+import { bringToFront, restoreWindow } from "../../../redux/slices/windowsSlice";
 import LanguageSwitcher from "./LanguageSwitcher";
 import { registerTaskButton, unregisterTaskButton } from "./taskbarRegistry";
 

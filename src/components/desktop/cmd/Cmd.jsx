@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { setHistory, appendHistory, setInput, clearInput } from "../../../store/cmdSlice";
+import { setHistory, appendHistory, setInput, clearInput } from "../../../redux/slices/cmdSlice";
 
 export default function TerminalWindow() {
   const { t, i18n } = useTranslation("terminal"); 

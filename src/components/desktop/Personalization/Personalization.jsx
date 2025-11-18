@@ -7,7 +7,7 @@ import {
   setBackgroundImage,
   setContrast,
   setPersonalizationTab,
-} from "../../../store/uiSlice";
+} from "../../../redux/slices/uiSlice";
 
 export default function Personalization() {
   const dispatch = useDispatch();

@@ -1,13 +1,13 @@
 // src/components/AppWrapper.jsx
 import React, { useEffect, useMemo } from "react";
 import { Provider, useDispatch, useSelector } from "react-redux";
-import { store } from "../store/store";
+import { store } from "../redux/store";
 import DesktopContent from "./desktop/DesktopContent";
 import MobileShell from "./mobile/MobileShell";
 
 import { I18nextProvider } from "react-i18next";
 import i18n from "../i18n";
-import { setIsMobile } from "../store/deviceSlice";
+import { setIsMobile } from "../redux/slices/deviceSlice";
 
 function HtmlLangSync() {
   const lang = useSelector((s) => s.i18n.lang);

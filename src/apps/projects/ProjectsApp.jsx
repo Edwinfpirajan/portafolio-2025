@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import projects from "./projectsData.js";
 import { useDispatch, useSelector } from "react-redux";
-import { setActiveProject, setMobileDetail } from "../../store/projectsSlice";
+import { setActiveProject, setMobileDetail } from "../../redux/slices/projectsSlice";
 
 function ProjectDetail({ project }) {
   if (!project) return null;

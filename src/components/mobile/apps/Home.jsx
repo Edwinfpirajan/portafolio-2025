@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { openApp } from "../../../store/mobileSlice";
+import { openApp } from "../../../redux/slices/mobileSlice";
 import { mobileMeta } from "../mobileMeta";
 import { useTranslation } from "react-i18next";
 

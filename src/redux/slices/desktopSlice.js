@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  selectedIcon: null, // by label or id
+  selectedIcon: null,
 };
 
 const desktopSlice = createSlice({

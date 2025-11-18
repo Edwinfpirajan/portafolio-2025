@@ -1,7 +1,7 @@
 // src/components/mobile/apps/Recents.jsx
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { closeApp, switchTo } from "../../../store/mobileSlice";
+import { closeApp, switchTo } from "../../../redux/slices/mobileSlice";
 import { windowsMeta } from "../../desktop/windowsMeta";
 import { useTranslation } from "react-i18next";
 

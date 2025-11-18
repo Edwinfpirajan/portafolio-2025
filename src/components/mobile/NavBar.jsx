@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { goBack, goHome, showRecents } from "../../store/mobileSlice";
+import { goBack, goHome, showRecents } from "../../redux/slices/mobileSlice";
 
 export default function NavBar() {
   const dispatch = useDispatch();

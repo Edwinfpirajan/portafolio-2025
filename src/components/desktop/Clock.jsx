@@ -1,7 +1,7 @@
 // src/components/desktop/Clock.jsx
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setTime } from "../../store/systemSlice";
+import { setTime } from "../../redux/slices/systemSlice";
 
 export default function Clock() {
   const dispatch = useDispatch();

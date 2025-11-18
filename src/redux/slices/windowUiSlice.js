@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   viewport: { w: 0, h: 0 },
-  runtime: {}, // by window name: { animState, animateBounds, isOpening }
+  runtime: {},
 };
 
 const windowUiSlice = createSlice({

@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setLanguage, toggleLangMenu, closeLangMenu } from "../../../store/i18nSlice";
+import { setLanguage, toggleLangMenu, closeLangMenu } from "../../../redux/slices/i18nSlice";
 
 // misma utilidad que en Taskbar
 function darkenColor(hex, percent) {

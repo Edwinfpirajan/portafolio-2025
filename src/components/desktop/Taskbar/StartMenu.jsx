@@ -1,7 +1,7 @@
 // src/components/desktop/Taskbar/StartMenu.jsx
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { openWindow } from "../../../store/windowsSlice";
+import { openWindow } from "../../../redux/slices/windowsSlice";
 import { windowsMeta } from "../windowsMeta";
 import { useTranslation } from "react-i18next";
 

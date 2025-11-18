@@ -1,10 +1,9 @@
-// store/startMenuSlice.js
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   isOpen: false,
-  recentApps: [],  
-  favorites: []    
+  recentApps: [],
+  favorites: []
 };
 
 const startMenuSlice = createSlice({

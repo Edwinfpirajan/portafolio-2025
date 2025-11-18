@@ -7,8 +7,8 @@ import {
   moveWindow,
   resizeWindow,
   bringToFront,
-} from "../../../store/windowsSlice";
-import { initRuntime, setAnimState, setAnimateBounds, setIsOpening, setViewport } from "../../../store/windowUiSlice";
+} from "../../../redux/slices/windowsSlice";
+import { initRuntime, setAnimState, setAnimateBounds, setIsOpening, setViewport } from "../../../redux/slices/windowUiSlice";
 import { Rnd } from "react-rnd";
 import { getTaskButtonRect } from "../../desktop/Taskbar/taskbarRegistry";
 import { getPreview, setPreview, clearPreview } from "./previewRegistry";

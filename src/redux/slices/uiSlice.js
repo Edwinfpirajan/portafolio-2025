@@ -61,6 +61,6 @@ export const {
   setBackgroundImage,
   setContrast,
   setSyncColors,
-  setPersonalizationTab
+  setPersonalizationTab,
 } = uiSlice.actions;
 export default uiSlice.reducer;

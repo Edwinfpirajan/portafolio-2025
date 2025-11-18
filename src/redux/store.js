@@ -1,17 +1,17 @@
-// src/store/store.js
+// src/redux/store.js
 import { configureStore } from '@reduxjs/toolkit';
-import uiReducer from './uiSlice';
-import windowsReducer from './windowsSlice'; 
-import startMenuReducer from './startMenuSlice';
-import i18nReducer from './i18nSlice';
-import mobileReducer from './mobileSlice'; 
-import deviceReducer from './deviceSlice';
-import desktopReducer from './desktopSlice';
-import projectsReducer from './projectsSlice';
-import cmdReducer from './cmdSlice';
-import systemReducer from './systemSlice';
-import windowUiReducer from './windowUiSlice';
-import { rebaseZ } from './windowsSlice';
+import uiReducer from './slices/uiSlice';
+import windowsReducer from './slices/windowsSlice';
+import startMenuReducer from './slices/startMenuSlice';
+import i18nReducer from './slices/i18nSlice';
+import mobileReducer from './slices/mobileSlice';
+import deviceReducer from './slices/deviceSlice';
+import desktopReducer from './slices/desktopSlice';
+import projectsReducer from './slices/projectsSlice';
+import cmdReducer from './slices/cmdSlice';
+import systemReducer from './slices/systemSlice';
+import windowUiReducer from './slices/windowUiSlice';
+import { rebaseZ } from './slices/windowsSlice';
 
 const PERSIST_KEY = 'portfolio_state_v1';
 
@@ -21,13 +21,12 @@ function loadState() {
     const raw = localStorage.getItem(PERSIST_KEY);
     if (!raw) return undefined;
     const parsed = JSON.parse(raw);
-    // Only allow the slices we care about
     const preloaded = {};
     if (parsed.ui) preloaded.ui = parsed.ui;
     if (parsed.windows) preloaded.windows = parsed.windows;
-    if (parsed.i18n) preloaded.i18n = parsed.i18n; // lang already persisted, but keep
-    if (parsed.projectsState) preloaded.projectsState = parsed.projectsState; // remember last project selection
-    if (parsed.device) preloaded.device = parsed.device; // optional
+    if (parsed.i18n) preloaded.i18n = parsed.i18n;
+    if (parsed.projectsState) preloaded.projectsState = parsed.projectsState;
+    if (parsed.device) preloaded.device = parsed.device;
     return preloaded;
   } catch {}
   return undefined;
@@ -63,18 +62,15 @@ export const store = configureStore({
     system: systemReducer,
     windowUi: windowUiReducer,
   },
-  preloadedState
+  preloadedState,
 });
 
-// After store is ready, rebase zCounter so bringToFront keeps working after rehydrate
 try { store.dispatch(rebaseZ()); } catch {}
 
-// Persist on changes (simple subscribe; could be debounced if needed)
 let writing = false;
 store.subscribe(() => {
   if (writing) return;
   writing = true;
-  // microtask debounce
   Promise.resolve().then(() => {
     saveState(store.getState());
     writing = false;

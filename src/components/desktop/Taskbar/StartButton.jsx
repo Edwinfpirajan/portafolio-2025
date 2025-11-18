@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { toggleStartMenu } from "../../../store/startMenuSlice";
+import { toggleStartMenu } from "../../../redux/slices/startMenuSlice";
 
 export default function StartButton() {
   const dispatch = useDispatch();
