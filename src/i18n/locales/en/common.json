@@ -53,12 +53,55 @@
       "back": "Back",
       "empty": "No projects yet"
     },
-    "projects": {
-      "title": "Projects",
-      "subtitle": "You'll see a list of projects here. (placeholder)"
-    },
     "taskbar": {
       "language": "Language"
+    },
+    "personalization": {
+      "title": "Personalization",
+      "theme": {
+        "tab": "Theme",
+        "label": "Global theme",
+        "light": "Light",
+        "dark": "Dark"
+      },
+      "colors": {
+        "tab": "Colors",
+        "mainColorLabel": "Main color (taskbar and windows)",
+        "currentColor": "Current color",
+        "windowsColors": "Windows Colors",
+        "customColor": "Custom color",
+        "showCustom": "Show custom color",
+        "hideCustom": "Hide custom color",
+        "hexCode": "Hex code"
+      },
+      "fonts": {
+        "tab": "Fonts",
+        "systemFont": "System font",
+        "windowContentFont": "Window content font",
+        "preview": "Preview: Aa Bb Cc 0123 — How does it look?",
+        "options": {
+          "system": "System (Sans)",
+          "inter": "Inter",
+          "roboto": "Roboto",
+          "segoeui": "Segoe UI",
+          "arial": "Arial",
+          "merriweather": "Merriweather (Serif)",
+          "georgia": "Georgia (Serif)",
+          "jetbrains": "JetBrains Mono (Mono)"
+        }
+      },
+      "background": {
+        "tab": "Background",
+        "urlLabel": "Background URL",
+        "urlPlaceholder": "https://...",
+        "opacityLabel": "Opacity: {{value}}"
+      },
+      "accessibility": {
+        "tab": "Accessibility",
+        "contrastLabel": "Contrast",
+        "normal": "Normal",
+        "high": "High"
+      }
     }
   }
   

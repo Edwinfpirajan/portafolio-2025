@@ -57,6 +57,53 @@
     },
     "taskbar": {
       "language": "Idioma"
+    },
+    "personalization": {
+      "title": "Personalización",
+      "theme": {
+        "tab": "Tema",
+        "label": "Tema global",
+        "light": "Claro",
+        "dark": "Oscuro"
+      },
+      "colors": {
+        "tab": "Colores",
+        "mainColorLabel": "Color principal (barra de tareas y ventanas)",
+        "currentColor": "Color actual",
+        "windowsColors": "Colores de Windows",
+        "customColor": "Color personalizado",
+        "showCustom": "Ver color personalizado",
+        "hideCustom": "Ocultar color personalizado",
+        "hexCode": "Código hexadecimal"
+      },
+      "fonts": {
+        "tab": "Fuentes",
+        "systemFont": "Fuente del sistema",
+        "windowContentFont": "Fuente del contenido de ventanas",
+        "preview": "Vista previa: Aa Bb Cc 0123 — ¿Cómo se ve?",
+        "options": {
+          "system": "Sistema (Sans)",
+          "inter": "Inter",
+          "roboto": "Roboto",
+          "segoeui": "Segoe UI",
+          "arial": "Arial",
+          "merriweather": "Merriweather (Serif)",
+          "georgia": "Georgia (Serif)",
+          "jetbrains": "JetBrains Mono (Mono)"
+        }
+      },
+      "background": {
+        "tab": "Fondo",
+        "urlLabel": "URL de fondo",
+        "urlPlaceholder": "https://...",
+        "opacityLabel": "Opacidad: {{value}}"
+      },
+      "accessibility": {
+        "tab": "Accesibilidad",
+        "contrastLabel": "Contraste",
+        "normal": "Normal",
+        "high": "Alto"
+      }
     }
   }
   

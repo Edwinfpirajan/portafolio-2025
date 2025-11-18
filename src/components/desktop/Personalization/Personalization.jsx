@@ -11,10 +11,12 @@ import {
 } from "../../../redux/slices/uiSlice";
 
 function ThemeSection({ ui, dispatch }) {
+  const { t } = useTranslation();
+  
   return (
     <div className="space-y-4">
       <div>
-        <label className="block text-sm font-medium mb-2">Tema global</label>
+        <label className="block text-sm font-medium mb-2">{t('personalization.theme.label')}</label>
         <select
           value={ui.theme}
           onChange={(e) => dispatch(setGlobalTheme(e.target.value))}
@@ -22,8 +24,8 @@ function ThemeSection({ ui, dispatch }) {
             ui.theme === 'dark' ? 'border-gray-600 bg-gray-700' : 'border-gray-300 bg-white'
           }`}
         >
-          <option value="light">Claro</option>
-          <option value="dark">Oscuro</option>
+          <option value="light">{t('personalization.theme.light')}</option>
+          <option value="dark">{t('personalization.theme.dark')}</option>
         </select>
       </div>
     </div>
@@ -31,6 +33,7 @@ function ThemeSection({ ui, dispatch }) {
 }
 
 function ColorsSection({ ui, dispatch }) {
+  const { t } = useTranslation();
   const windowsColors = [
     "#FFB900", "#FF8C00", "#FF5722", "#E74856", "#EA005E", "#C30052",
     "#E3008C", "#BF0077", "#C239B3", "#9A0089", "#0078D7", "#0063B1",
@@ -47,7 +50,7 @@ function ColorsSection({ ui, dispatch }) {
     <div className="space-y-4">
       <div>
         <label className="block text-sm font-medium mb-3">
-          Color principal (barra de tareas y ventanas)
+          {t('personalization.colors.mainColorLabel')}
         </label>
         
         {/* Current color display */}
@@ -59,14 +62,14 @@ function ColorsSection({ ui, dispatch }) {
             style={{ backgroundColor: ui.colors.mainColor }}
           />
           <div>
-            <div className={`text-xs ${ui.theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>Color actual</div>
+            <div className={`text-xs ${ui.theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>{t('personalization.colors.currentColor')}</div>
             <span className="text-sm font-mono font-semibold">{ui.colors.mainColor}</span>
           </div>
         </div>
 
         {/* Windows colors palette */}
         <div className="mb-4">
-          <div className={`text-xs font-medium mb-2 ${ui.theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>Colores de Windows</div>
+          <div className={`text-xs font-medium mb-2 ${ui.theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>{t('personalization.colors.windowsColors')}</div>
           <div className="grid grid-cols-9 gap-2.5 max-w-lg">
             {windowsColors.map((color) => (
               <button
@@ -90,7 +93,7 @@ function ColorsSection({ ui, dispatch }) {
             onClick={() => setShowCustom(!showCustom)}
             className="text-sm text-blue-600 hover:text-blue-700 font-medium mb-2"
           >
-            {showCustom ? "Ocultar" : "Ver"} color personalizado
+            {showCustom ? t('personalization.colors.hideCustom') : t('personalization.colors.showCustom')}
           </button>
           {showCustom && (
             <div className={`flex items-center gap-3 p-3 rounded border ${
@@ -105,7 +108,7 @@ function ColorsSection({ ui, dispatch }) {
                 className="w-16 h-16 rounded border border-gray-300 cursor-pointer"
               />
               <div className="flex-1">
-                <label className={`block text-xs mb-1 ${ui.theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>Código hexadecimal</label>
+                <label className={`block text-xs mb-1 ${ui.theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>{t('personalization.colors.hexCode')}</label>
                 <input
                   type="text"
                   value={ui.colors.mainColor}
@@ -130,21 +133,22 @@ function ColorsSection({ ui, dispatch }) {
 }
 
 function FontsSection({ ui, dispatch }) {
+  const { t } = useTranslation();
   const fontOptions = [
-    { label: "Sistema (Sans)", value: "system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif" },
-    { label: "Inter", value: "Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif" },
-    { label: "Roboto", value: "Roboto, system-ui, -apple-system, Segoe UI, Arial, sans-serif" },
-    { label: "Segoe UI", value: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif' },
-    { label: "Arial", value: "Arial, Helvetica, sans-serif" },
-    { label: "Merriweather (Serif)", value: "Merriweather, Georgia, serif" },
-    { label: "Georgia (Serif)", value: 'Georgia, Cambria, "Times New Roman", serif' },
-    { label: "JetBrains Mono (Mono)", value: '"JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace' },
+    { label: t('personalization.fonts.options.system'), value: "system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif" },
+    { label: t('personalization.fonts.options.inter'), value: "Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif" },
+    { label: t('personalization.fonts.options.roboto'), value: "Roboto, system-ui, -apple-system, Segoe UI, Arial, sans-serif" },
+    { label: t('personalization.fonts.options.segoeui'), value: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif' },
+    { label: t('personalization.fonts.options.arial'), value: "Arial, Helvetica, sans-serif" },
+    { label: t('personalization.fonts.options.merriweather'), value: "Merriweather, Georgia, serif" },
+    { label: t('personalization.fonts.options.georgia'), value: 'Georgia, Cambria, "Times New Roman", serif' },
+    { label: t('personalization.fonts.options.jetbrains'), value: '"JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace' },
   ];
 
   return (
     <div className="space-y-6">
       <div>
-        <label className="block text-sm font-medium mb-2">Fuente del sistema</label>
+        <label className="block text-sm font-medium mb-2">{t('personalization.fonts.systemFont')}</label>
         <select
           value={ui.fonts.system}
           onChange={(e) => dispatch(setFontFamily({ type: "system", value: e.target.value }))}
@@ -159,12 +163,12 @@ function FontsSection({ ui, dispatch }) {
           ))}
         </select>
         <div className="mt-2 text-xs opacity-80" style={{ fontFamily: ui.fonts.system }}>
-          Vista previa: Aa Bb Cc 0123 — ¿Cómo se ve?
+          {t('personalization.fonts.preview')}
         </div>
       </div>
 
       <div>
-        <label className="block text-sm font-medium mb-2">Fuente del contenido de ventanas</label>
+        <label className="block text-sm font-medium mb-2">{t('personalization.fonts.windowContentFont')}</label>
         <select
           value={ui.fonts.windowContent}
           onChange={(e) => dispatch(setFontFamily({ type: "windowContent", value: e.target.value }))}
@@ -179,7 +183,7 @@ function FontsSection({ ui, dispatch }) {
           ))}
         </select>
         <div className="mt-2 text-xs opacity-80" style={{ fontFamily: ui.fonts.windowContent }}>
-          Vista previa: Aa Bb Cc 0123 — ¿Cómo se ve?
+          {t('personalization.fonts.preview')}
         </div>
       </div>
     </div>
@@ -187,10 +191,12 @@ function FontsSection({ ui, dispatch }) {
 }
 
 function BackgroundSection({ ui, dispatch }) {
+  const { t } = useTranslation();
+  
   return (
     <div className="space-y-4">
       <div>
-        <label className="block text-sm font-medium mb-2">URL de fondo</label>
+        <label className="block text-sm font-medium mb-2">{t('personalization.background.urlLabel')}</label>
         <input
           type="text"
           value={ui.background.image}
@@ -205,12 +211,12 @@ function BackgroundSection({ ui, dispatch }) {
           className={`w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
             ui.theme === 'dark' ? 'border-gray-600 bg-gray-700' : 'border-gray-300 bg-white'
           }`}
-          placeholder="https://..."
+          placeholder={t('personalization.background.urlPlaceholder')}
         />
       </div>
       <div>
         <label className="block text-sm font-medium mb-2">
-          Opacidad: {ui.background.opacity.toFixed(2)}
+          {t('personalization.background.opacityLabel', { value: ui.background.opacity.toFixed(2) })}
         </label>
         <input
           type="range"
@@ -234,10 +240,12 @@ function BackgroundSection({ ui, dispatch }) {
 }
 
 function AccessibilitySection({ ui, dispatch }) {
+  const { t } = useTranslation();
+  
   return (
     <div className="space-y-4">
       <div>
-        <label className="block text-sm font-medium mb-2">Contraste</label>
+        <label className="block text-sm font-medium mb-2">{t('personalization.accessibility.contrastLabel')}</label>
         <select
           value={ui.contrast}
           onChange={(e) => dispatch(setContrast(e.target.value))}
@@ -245,8 +253,8 @@ function AccessibilitySection({ ui, dispatch }) {
             ui.theme === 'dark' ? 'border-gray-600 bg-gray-700' : 'border-gray-300 bg-white'
           }`}
         >
-          <option value="normal">Normal</option>
-          <option value="high">Alto</option>
+          <option value="normal">{t('personalization.accessibility.normal')}</option>
+          <option value="high">{t('personalization.accessibility.high')}</option>
         </select>
       </div>
     </div>
@@ -261,13 +269,13 @@ export default function Personalization() {
 
   const sections = useMemo(
     () => [
-      { key: "theme", label: "Tema", component: <ThemeSection ui={ui} dispatch={dispatch} /> },
-      { key: "colors", label: "Colores", component: <ColorsSection ui={ui} dispatch={dispatch} /> },
-      { key: "fonts", label: "Fuentes", component: <FontsSection ui={ui} dispatch={dispatch} /> },
-      { key: "background", label: "Fondo", component: <BackgroundSection ui={ui} dispatch={dispatch} /> },
-      { key: "accessibility", label: "Accesibilidad", component: <AccessibilitySection ui={ui} dispatch={dispatch} /> },
+      { key: "theme", label: t('personalization.theme.tab'), component: <ThemeSection ui={ui} dispatch={dispatch} /> },
+      { key: "colors", label: t('personalization.colors.tab'), component: <ColorsSection ui={ui} dispatch={dispatch} /> },
+      { key: "fonts", label: t('personalization.fonts.tab'), component: <FontsSection ui={ui} dispatch={dispatch} /> },
+      { key: "background", label: t('personalization.background.tab'), component: <BackgroundSection ui={ui} dispatch={dispatch} /> },
+      { key: "accessibility", label: t('personalization.accessibility.tab'), component: <AccessibilitySection ui={ui} dispatch={dispatch} /> },
     ],
-    [ui, dispatch]
+    [ui, dispatch, t]
   );
 
   const activeSection = sections.find((s) => s.key === tab) || sections[0];
@@ -281,7 +289,7 @@ export default function Personalization() {
         }`}>
           <div className={`text-xs font-semibold mb-2 ${
             ui.theme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-          }`}>Personalización</div>
+          }`}>{t('personalization.title')}</div>
           <nav className="flex flex-col gap-1">
             {sections.map((s) => (
               <button
