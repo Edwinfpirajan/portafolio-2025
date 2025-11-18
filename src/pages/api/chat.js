@@ -17,11 +17,25 @@ export async function POST({ request }) {
       return new Response(JSON.stringify({ error: "Invalid messages" }), { status: 400 });
     }
 
+    // Resolve API key from environment (Astro prefers import.meta.env)
+    const API_KEY = (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.OPENAI_KEY)
+      || process.env.OPENAI_KEY;
+
+    // Demo fallback when no API key is configured
+    if (!API_KEY) {
+      const lastUser = Array.isArray(messages) ? [...messages].reverse().find(m => m.role === 'user')?.content : '';
+      const demo = `Modo demo activo: configura OPENAI_KEY para respuestas reales.\n\nEco breve: ${lastUser ? '“' + String(lastUser).slice(0, 240) + (String(lastUser).length > 240 ? '…' : '') + '”' : '(sin mensaje)'}.`;
+      return new Response(
+        JSON.stringify({ reply: demo, model: 'demo' }),
+        { status: 200, headers: { "Content-Type": "application/json" } }
+      );
+    }
+
     const res = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${process.env.OPENAI_KEY}`,
+        Authorization: `Bearer ${API_KEY}`,
       },
       body: JSON.stringify({
         model: chosenModel,
@@ -31,8 +45,16 @@ export async function POST({ request }) {
     });
 
     if (!res.ok) {
-      const err = await res.text();
-      return new Response(JSON.stringify({ error: "Upstream error", details: err }), { status: res.status });
+      const errText = await res.text();
+      let short = errText;
+      try {
+        const j = JSON.parse(errText);
+        short = j?.error?.message || j?.error || errText;
+      } catch {}
+      return new Response(
+        JSON.stringify({ error: "Upstream error", details: short }),
+        { status: res.status, headers: { "Content-Type": "application/json" } }
+      );
     }
 
     const data = await res.json();

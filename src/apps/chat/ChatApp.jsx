@@ -1,10 +1,20 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useRef, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { marked } from 'marked';
 import { markedHighlight } from 'marked-highlight';
 import hljs from 'highlight.js';
 import DOMPurify from 'dompurify';
+import {
+  initializeSessions,
+  setActiveSession,
+  setInput,
+  setLoading,
+  setCopiedIndex,
+  createSession as createSessionAction,
+  updateSession as updateSessionAction,
+  deleteSession as deleteSessionAction,
+} from "../../redux/slices/chatSlice";
 
 // Model list (mantiene los existentes)
 const MODELS = [
@@ -16,30 +26,12 @@ const MODELS = [
   { id: "o1-mini", label: "o1-mini (reasoning)" }
 ];
 
-// Util simple para ids
-const makeId = () => Math.random().toString(36).slice(2) + Date.now().toString(36);
-
 export default function ChatApp() {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const theme = useSelector((state) => state.ui.theme);
-
-  // Sessions estilo ChatGPT/Gemini (lista a la izquierda)
-  const [sessions, setSessions] = useState(() => {
-    if (typeof window !== 'undefined') {
-      try {
-        const raw = localStorage.getItem('chat_sessions_v1');
-        if (raw) {
-          const parsed = JSON.parse(raw);
-          if (Array.isArray(parsed) && parsed.length) return parsed;
-        }
-      } catch {}
-    }
-    return [{ id: makeId(), title: t('chat.session.initial', 'Nueva conversación'), model: MODELS[0].id, messages: [] }];
-  });
-  const [activeId, setActiveId] = useState(sessions[0].id);
-  const [input, setInput] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [copiedIndex, setCopiedIndex] = useState(null);
+  const { sessions, activeId, input, loading, copiedIndex } = useSelector((state) => state.chat);
+  
   const listRef = useRef(null);
 
   const activeSession = sessions.find(s => s.id === activeId);
@@ -47,26 +39,25 @@ export default function ChatApp() {
   const model = activeSession?.model ?? MODELS[0].id;
 
   const updateSession = (id, patch) => {
-    setSessions(prev => prev.map(s => s.id === id ? { ...s, ...patch } : s));
+    dispatch(updateSessionAction({ id, patch }));
   };
 
   const createSession = () => {
-    const newSession = { id: makeId(), title: t('chat.session.untitled', 'Conversación sin título'), model: MODELS[0].id, messages: [] };
-    setSessions(prev => [newSession, ...prev]);
-    setActiveId(newSession.id);
-    setInput("");
+    dispatch(createSessionAction({ title: t('chat.session.untitled', 'Conversación sin título') }));
   };
 
-  const renameSession = (id, title) => updateSession(id, { title });
+  const renameSession = (id, title) => {
+    dispatch(updateSessionAction({ id, patch: { title } }));
+  };
 
   const send = async () => {
     const text = input.trim();
     if (!text || loading || !activeSession) return;
 
     const userMessage = { role: 'user', content: text };
-    updateSession(activeId, { messages: [...messages, userMessage] });
-    setInput("");
-    setLoading(true);
+    dispatch(updateSessionAction({ id: activeId, patch: { messages: [...messages, userMessage] } }));
+    dispatch(setInput(""));
+    dispatch(setLoading(true));
 
     try {
       const res = await fetch("/api/chat", {
@@ -77,17 +68,34 @@ export default function ChatApp() {
 
       if (!res.ok) {
         const err = await res.json().catch(() => ({}));
-        throw new Error(err?.error || `HTTP ${res.status}`);
+        const detail = err?.details || err?.error || `HTTP ${res.status}`;
+        throw new Error(detail);
       }
       const data = await res.json();
       const reply = data.reply || "";
-      updateSession(activeId, { messages: [...messages, userMessage, { role: 'assistant', content: reply }] });
+      dispatch(updateSessionAction({ id: activeId, patch: { messages: [...messages, userMessage, { role: 'assistant', content: reply }] } }));
     } catch (e) {
-      updateSession(activeId, { messages: [...messages, userMessage, { role: 'assistant', content: t('chat.errors.generic', 'Error inesperado.') }] });
+      const suffix = e?.message ? ` (${String(e.message).slice(0, 180)})` : '';
+      dispatch(updateSessionAction({ id: activeId, patch: { messages: [...messages, userMessage, { role: 'assistant', content: `${t('chat.errors.generic', 'Error inesperado.')}${suffix}` }] } }));
     } finally {
-      setLoading(false);
+      dispatch(setLoading(false));
     }
   };
+
+  // Inicializar desde localStorage
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const raw = localStorage.getItem('chat_sessions_v1');
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          dispatch(initializeSessions(parsed));
+          return;
+        }
+      } catch {}
+      dispatch(initializeSessions(null));
+    }
+  }, [dispatch]);
 
   useEffect(() => {
     if (listRef.current) {
@@ -99,7 +107,9 @@ export default function ChatApp() {
   useEffect(() => {
     if (typeof window === 'undefined') return;
     try {
-      localStorage.setItem('chat_sessions_v1', JSON.stringify(sessions));
+      if (sessions.length > 0) {
+        localStorage.setItem('chat_sessions_v1', JSON.stringify(sessions));
+      }
     } catch {}
   }, [sessions]);
 
@@ -113,19 +123,13 @@ export default function ChatApp() {
   const copyMessage = async (i) => {
     try {
       await navigator.clipboard.writeText(messages[i].content);
-      setCopiedIndex(i);
-      setTimeout(() => setCopiedIndex(null), 1500);
+      dispatch(setCopiedIndex(i));
+      setTimeout(() => dispatch(setCopiedIndex(null)), 1500);
     } catch {}
   };
 
-  const deleteSession = (id) => {
-    if (sessions.length === 1) {
-      // Reinicia
-      updateSession(id, { messages: [] });
-      return;
-    }
-    setSessions(prev => prev.filter(s => s.id !== id));
-    if (activeId === id) setActiveId(sessions.filter(s => s.id !== id)[0]?.id || null);
+  const handleDeleteSession = (id) => {
+    dispatch(deleteSessionAction(id));
   };
 
   const containerBg = theme === 'dark'
@@ -169,13 +173,13 @@ export default function ChatApp() {
         </div>
         <div className="flex-1 overflow-y-auto px-2 space-y-1 pb-4">
           {sessions.map(s => (
-            <div key={s.id} className={`group relative rounded-md px-3 py-2 text-sm cursor-pointer flex items-center gap-2 ${s.id===activeId ? (theme==='dark' ? 'bg-white/10' : 'bg-blue-50') : ''}`} onClick={() => setActiveId(s.id)}>
+            <div key={s.id} className={`group relative rounded-md px-3 py-2 text-sm cursor-pointer flex items-center gap-2 ${s.id===activeId ? (theme==='dark' ? 'bg-white/10' : 'bg-blue-50') : ''}`} onClick={() => dispatch(setActiveSession(s.id))}>
               <input
                 className={`flex-1 bg-transparent focus:outline-none text-xs ${theme==='dark' ? 'text-white' : 'text-gray-700'}`}
                 value={s.title}
                 onChange={(e) => renameSession(s.id, e.target.value)}
               />
-              <button onClick={(e) => { e.stopPropagation(); deleteSession(s.id); }} className={`opacity-0 group-hover:opacity-100 transition text-[10px] px-2 py-1 rounded ${theme==='dark' ? 'bg-white/10 hover:bg-white/20 text-white' : 'bg-black/5 hover:bg-black/10 text-gray-700'}`}>×</button>
+              <button onClick={(e) => { e.stopPropagation(); handleDeleteSession(s.id); }} className={`opacity-0 group-hover:opacity-100 transition text-[10px] px-2 py-1 rounded ${theme==='dark' ? 'bg-white/10 hover:bg-white/20 text-white' : 'bg-black/5 hover:bg-black/10 text-gray-700'}`}>×</button>
             </div>
           ))}
         </div>
@@ -215,7 +219,7 @@ export default function ChatApp() {
               <p className="mb-4">{t('chat.welcome.subtitle','Escribe tu primera pregunta o elige una sugerencia:')}</p>
               <div className="grid gap-2 md:grid-cols-2">
                 {['Explica este código','Resume este texto','Genera ideas creativas','Ayuda con JavaScript'].map(x => (
-                  <button key={x} onClick={() => setInput(x)} className={`text-left text-xs px-3 py-2 rounded border transition ${theme==='dark' ? 'bg-white/5 border-white/10 hover:bg-white/10 text-white' : 'bg-white border-black/10 hover:bg-black/5 text-gray-700'}`}>{x}</button>
+                  <button key={x} onClick={() => dispatch(setInput(x))} className={`text-left text-xs px-3 py-2 rounded border transition ${theme==='dark' ? 'bg-white/5 border-white/10 hover:bg-white/10 text-white' : 'bg-white border-black/10 hover:bg-black/5 text-gray-700'}`}>{x}</button>
                 ))}
               </div>
             </div>
@@ -241,7 +245,7 @@ export default function ChatApp() {
           <div className={`rounded-2xl border p-3 flex flex-col gap-3 shadow-sm ${inputArea}`}>
             <textarea
               value={input}
-              onChange={(e) => setInput(e.target.value)}
+              onChange={(e) => dispatch(setInput(e.target.value))}
               onKeyDown={onKeyDown}
               placeholder={t('chat.placeholder','Escribe un mensaje...')}
               className={`w-full bg-transparent resize-none focus:outline-none text-sm leading-relaxed ${theme==='dark' ? 'placeholder-white/40 text-white' : 'placeholder-gray-500 text-gray-800'}`}

@@ -11,6 +11,7 @@ import projectsReducer from './slices/projectsSlice';
 import cmdReducer from './slices/cmdSlice';
 import systemReducer from './slices/systemSlice';
 import windowUiReducer from './slices/windowUiSlice';
+import chatReducer from './slices/chatSlice';
 import { rebaseZ } from './slices/windowsSlice';
 
 const PERSIST_KEY = 'portfolio_state_v1';
@@ -27,6 +28,7 @@ function loadState() {
     if (parsed.i18n) preloaded.i18n = parsed.i18n;
     if (parsed.projectsState) preloaded.projectsState = parsed.projectsState;
     if (parsed.device) preloaded.device = parsed.device;
+      if (parsed.chat) preloaded.chat = parsed.chat;
     return preloaded;
   } catch {}
   return undefined;
@@ -41,6 +43,7 @@ function saveState(state) {
       i18n: state.i18n,
       projectsState: state.projectsState,
       device: state.device,
+      chat: state.chat,
     };
     localStorage.setItem(PERSIST_KEY, JSON.stringify(toSave));
   } catch {}
@@ -61,6 +64,7 @@ export const store = configureStore({
     cmd: cmdReducer,
     system: systemReducer,
     windowUi: windowUiReducer,
+    chat: chatReducer,
   },
   preloadedState,
 });
