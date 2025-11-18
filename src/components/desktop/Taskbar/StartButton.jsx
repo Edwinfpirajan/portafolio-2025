@@ -21,7 +21,7 @@ export default function StartButton() {
       onMouseDown={(e) => e.stopPropagation()}
       onClick={(e) => { e.stopPropagation(); dispatch(toggleStartMenu()); }}
       aria-label="Abrir menú inicio"
-      className={`w-10 h-10 flex items-center justify-center rounded-full border transition duration-150 ease-in-out
+      className={`w-10 h-10 flex items-center justify-center rounded-full border transition duration-150 ease-in-out cursor-default
         ${isActive
           ? "shadow-inner translate-y-[1px] border-white"
           : `${hoverShadow} hover:brightness-110 border`}

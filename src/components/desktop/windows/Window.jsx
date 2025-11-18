@@ -296,19 +296,19 @@ export default function Window({ title, name, children, scrollMode = "auto" }) {
           <div className="space-x-1">
             <button
               onClick={handleMinimize}
-              className="bg-yellow-400 text-black px-2 py-0.5 text-xs font-bold border border-white rounded"
+              className="bg-yellow-400 text-black px-2 py-0.5 text-xs font-bold border border-white rounded cursor-default"
             >
               ▁
             </button>
             <button
               onClick={handleMaximize}
-              className="bg-green-500 text-black px-2 py-0.5 text-xs font-bold border border-white rounded"
+              className="bg-green-500 text-black px-2 py-0.5 text-xs font-bold border border-white rounded cursor-default"
             >
               ▢
             </button>
             <button
               onClick={handleClose}
-              className="bg-red-600 text-white px-2 py-0.5 text-xs font-bold border border-white rounded"
+              className="bg-red-600 text-white px-2 py-0.5 text-xs font-bold border border-white rounded cursor-default"
             >
               ✖
             </button>

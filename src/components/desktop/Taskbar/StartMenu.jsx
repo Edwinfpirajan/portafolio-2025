@@ -39,6 +39,10 @@ export default function StartMenu() {
       dispatch(closeStartMenu());
     };
     document.addEventListener("click", onAnyClick);
+    // Focus the menu for keyboard nav (Esc/Tab)
+    if (menuRef.current) {
+      try { menuRef.current.focus(); } catch {}
+    }
     return () => document.removeEventListener("click", onAnyClick);
   }, [isOpen, dispatch]);
 
@@ -59,6 +63,7 @@ export default function StartMenu() {
   return (
     <div 
       ref={menuRef}
+      tabIndex={-1}
       onClick={(e) => e.stopPropagation()}
       className={`absolute bottom-12 left-2 w-48 border shadow-lg p-2 font-retro text-xs ${
         theme === 'dark' 
