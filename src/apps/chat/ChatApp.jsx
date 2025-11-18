@@ -1,6 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
+import { marked } from 'marked';
+import { markedHighlight } from 'marked-highlight';
+import hljs from 'highlight.js';
+import DOMPurify from 'dompurify';
 
 // Model list (mantiene los existentes)
 const MODELS = [
@@ -20,9 +24,18 @@ export default function ChatApp() {
   const theme = useSelector((state) => state.ui.theme);
 
   // Sessions estilo ChatGPT/Gemini (lista a la izquierda)
-  const [sessions, setSessions] = useState([
-    { id: makeId(), title: t('chat.session.initial', 'Nueva conversación'), model: MODELS[0].id, messages: [] }
-  ]);
+  const [sessions, setSessions] = useState(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const raw = localStorage.getItem('chat_sessions_v1');
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed) && parsed.length) return parsed;
+        }
+      } catch {}
+    }
+    return [{ id: makeId(), title: t('chat.session.initial', 'Nueva conversación'), model: MODELS[0].id, messages: [] }];
+  });
   const [activeId, setActiveId] = useState(sessions[0].id);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -82,6 +95,14 @@ export default function ChatApp() {
     }
   }, [messages, loading]);
 
+  // Persistencia en localStorage
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    try {
+      localStorage.setItem('chat_sessions_v1', JSON.stringify(sessions));
+    } catch {}
+  }, [sessions]);
+
   const onKeyDown = (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
@@ -120,6 +141,24 @@ export default function ChatApp() {
 
   const sidebarBg = theme === 'dark' ? 'bg-black/20 border-white/10' : 'bg-white/70 border-black/10';
   const inputArea = theme === 'dark' ? 'bg-black/30 border-white/15 text-white' : 'bg-white border-black/20';
+
+  // Configuración de marcado y highlight (una sola vez)
+  marked.use(markedHighlight({
+    highlight: (code, lang) => {
+      const validLang = hljs.getLanguage(lang) ? lang : 'plaintext';
+      return hljs.highlight(code, { language: validLang }).value;
+    }
+  }));
+
+  const renderAssistant = (text) => {
+    try {
+      const rawHtml = marked.parse(text, { gfm: true, breaks: true });
+      const safeHtml = typeof window !== 'undefined' ? DOMPurify.sanitize(rawHtml) : rawHtml;
+      return <div className={`whitespace-pre-wrap text-sm leading-relaxed px-4 py-3 rounded-2xl ${bubbleAssistant}`} dangerouslySetInnerHTML={{ __html: safeHtml }} />;
+    } catch {
+      return <div className={`whitespace-pre-wrap text-sm leading-relaxed px-4 py-3 rounded-2xl ${bubbleAssistant}`}>{text}</div>;
+    }
+  };
 
   return (
     <div className={`w-full h-full flex ${containerBg} font-sans`}>
