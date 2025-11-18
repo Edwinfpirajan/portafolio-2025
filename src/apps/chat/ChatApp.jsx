@@ -55,6 +55,16 @@ export default function ChatApp() {
     if (!text || loading || !activeSession) return;
 
     const userMessage = { role: 'user', content: text };
+    // If it's the first user message, title the conversation like ChatGPT
+    if (messages.length === 0) {
+      const defaultUntitled = t('chat.session.untitled', 'Conversación sin título');
+      const currentTitle = (activeSession.title || '').trim();
+      if (!currentTitle || currentTitle === defaultUntitled) {
+        const firstLine = text.replace(/\s+/g, ' ').slice(0, 60);
+        const titled = firstLine.length < text.length ? firstLine + '…' : firstLine;
+        dispatch(updateSessionAction({ id: activeId, patch: { title: titled } }));
+      }
+    }
     dispatch(updateSessionAction({ id: activeId, patch: { messages: [...messages, userMessage] } }));
     dispatch(setInput(""));
     dispatch(setLoading(true));

@@ -116,6 +116,15 @@
     }
   ,
     "chat": {
+      "new": "Nuevo chat",
+      "session": {
+        "initial": "Nueva conversación",
+        "untitled": "Conversación sin título"
+      },
+      "welcome": {
+        "title": "Bienvenido",
+        "subtitle": "Escribe tu primera pregunta o elige una sugerencia:"
+      },
       "model": "Modelo",
       "send": "Enviar",
       "sending": "Enviando...",
@@ -124,6 +133,7 @@
       "clear": "Limpiar",
       "copy": "Copiar",
       "copied": "¡Copiado!",
+      "disclaimer": "Puede cometer errores. No compartas información sensible.",
       "userLabel": "Tú",
       "assistantLabel": "IA",
       "errors": {

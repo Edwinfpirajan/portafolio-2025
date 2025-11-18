@@ -114,6 +114,15 @@
     }
   ,
     "chat": {
+      "new": "New chat",
+      "session": {
+        "initial": "New conversation",
+        "untitled": "Untitled conversation"
+      },
+      "welcome": {
+        "title": "Welcome",
+        "subtitle": "Type your first question or pick a suggestion:"
+      },
       "model": "Model",
       "send": "Send",
       "sending": "Sending...",
@@ -122,6 +131,7 @@
       "clear": "Clear",
       "copy": "Copy",
       "copied": "Copied!",
+      "disclaimer": "May make mistakes. Don’t share sensitive info.",
       "userLabel": "You",
       "assistantLabel": "AI",
       "errors": {
