@@ -1,9 +1,11 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { toggleStartMenu } from "../../../redux/slices/startMenuSlice";
+import { useTranslation } from "react-i18next";
 
 export default function StartButton() {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const isActive = useSelector((state) => state.startMenu.isOpen);
   const theme = useSelector((state) => state.ui.theme);
@@ -20,7 +22,7 @@ export default function StartButton() {
       id="start-button"
       onMouseDown={(e) => e.stopPropagation()}
       onClick={(e) => { e.stopPropagation(); dispatch(toggleStartMenu()); }}
-      aria-label="Abrir menú inicio"
+      aria-label={t("taskbar.openStart")}
       className={`w-10 h-10 flex items-center justify-center rounded-full border transition duration-150 ease-in-out cursor-default
         ${isActive
           ? "shadow-inner translate-y-[1px] border-white"

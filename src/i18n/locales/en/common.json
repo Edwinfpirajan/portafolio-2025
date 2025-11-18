@@ -54,7 +54,15 @@
       "empty": "No projects yet"
     },
     "taskbar": {
-      "language": "Language"
+      "language": "Language",
+      "openStart": "Open Start menu"
+    },
+    "mobile": {
+      "nav": {
+        "back": "Back",
+        "home": "Home",
+        "recents": "Recents"
+      }
     },
     "personalization": {
       "title": "Personalization",

@@ -56,7 +56,15 @@
       "empty": "Sin proyectos aún"
     },
     "taskbar": {
-      "language": "Idioma"
+      "language": "Idioma",
+      "openStart": "Abrir menú inicio"
+    },
+    "mobile": {
+      "nav": {
+        "back": "Atrás",
+        "home": "Inicio",
+        "recents": "Recientes"
+      }
     },
     "personalization": {
       "title": "Personalización",
