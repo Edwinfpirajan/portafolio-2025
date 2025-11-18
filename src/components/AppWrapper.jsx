@@ -1,12 +1,13 @@
 // src/components/AppWrapper.jsx
-import React, { useEffect, useMemo, useState } from "react";
-import { Provider, useSelector } from "react-redux";
+import React, { useEffect, useMemo } from "react";
+import { Provider, useDispatch, useSelector } from "react-redux";
 import { store } from "../store/store";
 import DesktopContent from "./desktop/DesktopContent";
 import MobileShell from "./mobile/MobileShell";
 
 import { I18nextProvider } from "react-i18next";
 import i18n from "../i18n";
+import { setIsMobile } from "../store/deviceSlice";
 
 function HtmlLangSync() {
   const lang = useSelector((s) => s.i18n.lang);
@@ -18,8 +19,8 @@ function HtmlLangSync() {
   return null;
 }
 
-function useIsMobile(breakpoint = 768) {
-  const [isMobile, setIsMobile] = useState(false);
+function MobileDetector({ breakpoint = 768 }) {
+  const dispatch = useDispatch();
 
   const forced = useMemo(() => {
     if (typeof window === "undefined") return null;
@@ -30,17 +31,13 @@ function useIsMobile(breakpoint = 768) {
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-
     const mql = window.matchMedia(`(max-width: ${breakpoint}px)`);
-    const uaMobile =
-      /Mobi|Android|iPhone|iPad|iPod|Opera Mini|IEMobile/i.test(navigator.userAgent);
-
+    const uaMobile = /Mobi|Android|iPhone|iPad|iPod|Opera Mini|IEMobile/i.test(navigator.userAgent);
     const compute = () => {
-      if (forced === "mobile") return setIsMobile(true);
-      if (forced === "desktop") return setIsMobile(false);
-      setIsMobile(mql.matches || uaMobile);
+      if (forced === "mobile") return dispatch(setIsMobile(true));
+      if (forced === "desktop") return dispatch(setIsMobile(false));
+      dispatch(setIsMobile(mql.matches || uaMobile));
     };
-
     compute();
     const onChange = () => compute();
     mql.addEventListener?.("change", onChange);
@@ -49,15 +46,15 @@ function useIsMobile(breakpoint = 768) {
       mql.removeEventListener?.("change", onChange);
       window.removeEventListener("resize", onChange);
     };
-  }, [breakpoint, forced]);
-
-  return isMobile;
+  }, [breakpoint, forced, dispatch]);
+  return null;
 }
 
 function Root() {
-  const isMobile = useIsMobile(768);
+  const isMobile = useSelector((s) => s.device.isMobile);
   return (
     <>
+      <MobileDetector breakpoint={768} />
       <HtmlLangSync />
       {isMobile ? <MobileShell /> : <DesktopContent />}
     </>

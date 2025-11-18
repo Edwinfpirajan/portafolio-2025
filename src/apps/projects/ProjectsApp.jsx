@@ -1,6 +1,8 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import projects from "./projectsData.js";
+import { useDispatch, useSelector } from "react-redux";
+import { setActiveProject, setMobileDetail } from "../../store/projectsSlice";
 
 function ProjectDetail({ project }) {
   if (!project) return null;
@@ -50,9 +52,10 @@ function ProjectDetail({ project }) {
 
 export default function ProjectsApp() {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const items = useMemo(() => projects, []);
-  const [active, setActive] = useState(items[0]?.id);
-  const [mobileDetail, setMobileDetail] = useState(false);
+  const active = useSelector((s) => s.projectsState.activeId);
+  const mobileDetail = useSelector((s) => s.projectsState.mobileDetail);
   const activeItem = items.find((i) => i.id === active);
 
   if (!items || items.length === 0) {
@@ -73,7 +76,7 @@ export default function ProjectsApp() {
             {items.map((i) => (
               <button
                 key={i.id}
-                onClick={() => setActive(i.id)}
+                onClick={() => dispatch(setActiveProject(i.id))}
                 className={`w-full flex items-center gap-3 px-2 py-2 rounded text-left hover:bg-gray-200 transition ${
                   active === i.id ? "bg-gray-200 font-medium" : ""
                 }`}
@@ -110,8 +113,8 @@ export default function ProjectsApp() {
                 <button
                   key={i.id}
                   onClick={() => {
-                    setActive(i.id);
-                    setMobileDetail(true);
+                    dispatch(setActiveProject(i.id));
+                    dispatch(setMobileDetail(true));
                   }}
                   className="w-full flex items-center gap-3 px-4 py-3 active:bg-gray-100"
                 >
@@ -141,7 +144,7 @@ export default function ProjectsApp() {
           <div className="h-full overflow-auto">
             <div className="sticky top-0 bg-white border-b border-gray-200 flex items-center gap-2 p-3">
               <button
-                onClick={() => setMobileDetail(false)}
+                onClick={() => dispatch(setMobileDetail(false))}
                 className="px-2 py-1 rounded border border-gray-300 text-sm"
               >
                 {t("projects.back", "Atrás")}

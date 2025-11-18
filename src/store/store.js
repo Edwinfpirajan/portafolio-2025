@@ -5,6 +5,12 @@ import windowsReducer from './windowsSlice';
 import startMenuReducer from './startMenuSlice';
 import i18nReducer from './i18nSlice';
 import mobileReducer from './mobileSlice'; 
+import deviceReducer from './deviceSlice';
+import desktopReducer from './desktopSlice';
+import projectsReducer from './projectsSlice';
+import cmdReducer from './cmdSlice';
+import systemReducer from './systemSlice';
+import windowUiReducer from './windowUiSlice';
 import { rebaseZ } from './windowsSlice';
 
 const PERSIST_KEY = 'portfolio_state_v1';
@@ -20,6 +26,8 @@ function loadState() {
     if (parsed.ui) preloaded.ui = parsed.ui;
     if (parsed.windows) preloaded.windows = parsed.windows;
     if (parsed.i18n) preloaded.i18n = parsed.i18n; // lang already persisted, but keep
+    if (parsed.projectsState) preloaded.projectsState = parsed.projectsState; // remember last project selection
+    if (parsed.device) preloaded.device = parsed.device; // optional
     return preloaded;
   } catch {}
   return undefined;
@@ -32,6 +40,8 @@ function saveState(state) {
       ui: state.ui,
       windows: state.windows,
       i18n: state.i18n,
+      projectsState: state.projectsState,
+      device: state.device,
     };
     localStorage.setItem(PERSIST_KEY, JSON.stringify(toSave));
   } catch {}
@@ -45,7 +55,13 @@ export const store = configureStore({
     windows: windowsReducer,
     startMenu: startMenuReducer,
     i18n: i18nReducer,
-    mobile: mobileReducer, 
+    mobile: mobileReducer,
+    device: deviceReducer,
+    desktop: desktopReducer,
+    projectsState: projectsReducer,
+    cmd: cmdReducer,
+    system: systemReducer,
+    windowUi: windowUiReducer,
   },
   preloadedState
 });

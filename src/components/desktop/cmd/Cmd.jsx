@@ -1,9 +1,12 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useRef, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+import { setHistory, appendHistory, setInput, clearInput } from "../../../store/cmdSlice";
 
 export default function TerminalWindow() {
   const { t, i18n } = useTranslation("terminal"); 
   const terminalRef = useRef(null);
+  const dispatch = useDispatch();
 
   const PROMPT_PATH = "C:\\User\\Dev";         
   const VERSION = "10.0.19045.4046";           
@@ -15,14 +18,12 @@ export default function TerminalWindow() {
     ""
   ]);
 
-  const [history, setHistory] = useState(makeBanner());
-  const [input, setInput] = useState("");
+  const history = useSelector((s) => s.cmd.history);
+  const input = useSelector((s) => s.cmd.input);
 
   useEffect(() => {
-    setHistory(prev => {
-      return makeBanner();
-    });
-  }, [i18n.language]);
+    dispatch(setHistory(makeBanner()));
+  }, [i18n.language, dispatch]);
 
   useEffect(() => {
     if (terminalRef.current) {
@@ -34,12 +35,8 @@ export default function TerminalWindow() {
     if (e.key === "Enter") {
       e.preventDefault();
 
-      setHistory(prev => ([
-        ...prev,
-        `${PROMPT_PATH}> ${input}`,
-        t("unknownCommand"),
-      ]));
-      setInput("");
+      dispatch(appendHistory([`${PROMPT_PATH}> ${input}`, t("unknownCommand")]));
+      dispatch(clearInput());
     }      
 
   };
@@ -62,7 +59,7 @@ export default function TerminalWindow() {
         <input
           id="terminalInput"
           value={input}
-          onChange={(e) => setInput(e.target.value)}
+          onChange={(e) => dispatch(setInput(e.target.value))}
           onKeyDown={handleKeyDown}
           className="bg-transparent text-green-500 outline-none flex-grow font-mono"
           autoFocus

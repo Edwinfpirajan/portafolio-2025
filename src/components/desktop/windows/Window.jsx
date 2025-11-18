@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   closeWindow,
@@ -8,6 +8,7 @@ import {
   resizeWindow,
   bringToFront,
 } from "../../../store/windowsSlice";
+import { initRuntime, setAnimState, setAnimateBounds, setIsOpening, setViewport } from "../../../store/windowUiSlice";
 import { Rnd } from "react-rnd";
 import { getTaskButtonRect } from "../../desktop/Taskbar/taskbarRegistry";
 import { getPreview, setPreview, clearPreview } from "./previewRegistry";
@@ -24,23 +25,25 @@ import { getPreview, setPreview, clearPreview } from "./previewRegistry";
 export default function Window({ title, name, children, scrollMode = "auto" }) {
   const dispatch = useDispatch();
   const win = useSelector((state) => state.windows.windows[name]);
-  const [animState, setAnimState] = useState("idle"); // idle | minimizing | restoring
+  const animState = useSelector((s) => s.windowUi.runtime[name]?.animState || "idle");
   const justRestoredRef = useRef(false);
   const rndRef = useRef(null);
   const winElRef = useRef(null);
-  const [animateBounds, setAnimateBounds] = useState(false);
+  const animateBounds = useSelector((s) => s.windowUi.runtime[name]?.animateBounds || false);
   const prevMaxRef = useRef(null);
-  const [isOpening, setIsOpening] = useState(true);
-  const [viewport, setViewport] = useState({ w: typeof window !== 'undefined' ? window.innerWidth : 0, h: typeof window !== 'undefined' ? window.innerHeight : 0 });
+  const isOpening = useSelector((s) => s.windowUi.runtime[name]?.isOpening || false);
+  const viewport = useSelector((s) => s.windowUi.viewport);
   useEffect(() => {
-    const t = setTimeout(() => setIsOpening(false), 160);
+    dispatch(initRuntime(name));
+    const t = setTimeout(() => dispatch(setIsOpening({ name, value: false })), 160);
     return () => clearTimeout(t);
-  }, []);
+  }, [dispatch, name]);
   useEffect(() => {
-    const onResize = () => setViewport({ w: window.innerWidth, h: window.innerHeight });
+    const onResize = () => dispatch(setViewport({ w: window.innerWidth, h: window.innerHeight }));
+    dispatch(setViewport({ w: window.innerWidth, h: window.innerHeight }));
     window.addEventListener('resize', onResize);
     return () => window.removeEventListener('resize', onResize);
-  }, []);
+  }, [dispatch]);
 
   const theme = useSelector((state) => state.ui.theme);
   const borderColor = useSelector(
@@ -102,9 +105,9 @@ export default function Window({ title, name, children, scrollMode = "auto" }) {
       } else {
         // Fallback to simple fade-in if no taskbar rect
         justRestoredRef.current = true;
-        setAnimState("restoring");
+        dispatch(setAnimState({ name, value: "restoring" }));
         const t = setTimeout(() => {
-          setAnimState("idle");
+          dispatch(setAnimState({ name, value: "idle" }));
           justRestoredRef.current = false;
         }, 180);
         return () => clearTimeout(t);
@@ -119,8 +122,8 @@ export default function Window({ title, name, children, scrollMode = "auto" }) {
       return;
     }
     if (prevMaxRef.current !== win?.maximized) {
-      setAnimateBounds(true);
-      const t = setTimeout(() => setAnimateBounds(false), 250);
+      dispatch(setAnimateBounds({ name, value: true }));
+      const t = setTimeout(() => dispatch(setAnimateBounds({ name, value: false })), 250);
       prevMaxRef.current = win?.maximized;
       return () => clearTimeout(t);
     }
@@ -134,10 +137,10 @@ export default function Window({ title, name, children, scrollMode = "auto" }) {
     const DURATION = 180;
     const EASE = "cubic-bezier(.2,.8,.2,1)";
     const runFallback = () => {
-      setAnimState("minimizing");
+      dispatch(setAnimState({ name, value: "minimizing" }));
       setTimeout(() => {
         dispatch(minimizeWindow(name));
-        setAnimState("idle");
+        dispatch(setAnimState({ name, value: "idle" }));
       }, DURATION);
     };
 

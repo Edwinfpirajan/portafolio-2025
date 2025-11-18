@@ -1,16 +1,18 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { selectIcon, clearSelection } from "../../store/desktopSlice";
 
 export default function Icon({ label, iconPath, onDoubleClick }) {
+  const dispatch = useDispatch();
   const themeColor = useSelector((state) => state.ui.colors.mainColor);
-  const [selected, setSelected] = useState(false);
+  const selected = useSelector((state) => state.desktop.selectedIcon === label);
 
   const handleClick = () => {
-    setSelected(true);
+    dispatch(selectIcon(label));
   };
 
   const handleBlur = () => {
-    setSelected(false);
+    dispatch(clearSelection());
   };
 
   return (

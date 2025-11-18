@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   setGlobalTheme,
@@ -6,12 +6,13 @@ import {
   setFontFamily,
   setBackgroundImage,
   setContrast,
+  setPersonalizationTab,
 } from "../../../store/uiSlice";
 
 export default function Personalization() {
   const dispatch = useDispatch();
   const ui = useSelector((state) => state.ui);
-  const [tab, setTab] = useState("theme");
+  const tab = useSelector((state) => state.ui.personalizationTab || "theme");
 
   const renderTab = () => {
     switch (tab) {
@@ -129,19 +130,19 @@ export default function Personalization() {
   return (
     <div className="p-4 bg-white text-black w-96 h-[400px] overflow-auto">
       <div className="flex space-x-2 mb-4">
-        <button onClick={() => setTab("theme")} className="px-3 py-1 border">
+        <button onClick={() => dispatch(setPersonalizationTab("theme"))} className="px-3 py-1 border">
           Tema
         </button>
-        <button onClick={() => setTab("colors")} className="px-3 py-1 border">
+        <button onClick={() => dispatch(setPersonalizationTab("colors"))} className="px-3 py-1 border">
           Colores
         </button>
-        <button onClick={() => setTab("fonts")} className="px-3 py-1 border">
+        <button onClick={() => dispatch(setPersonalizationTab("fonts"))} className="px-3 py-1 border">
           Fuentes
         </button>
-        <button onClick={() => setTab("background")} className="px-3 py-1 border">
+        <button onClick={() => dispatch(setPersonalizationTab("background"))} className="px-3 py-1 border">
           Fondo
         </button>
-        <button onClick={() => setTab("accessibility")} className="px-3 py-1 border">
+        <button onClick={() => dispatch(setPersonalizationTab("accessibility"))} className="px-3 py-1 border">
           Accesibilidad
         </button>
       </div>

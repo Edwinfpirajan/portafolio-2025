@@ -17,6 +17,7 @@ const initialState = {
   },
   contrast: "normal",
   syncTaskbarAndTitlebarColors: false,
+  personalizationTab: "theme",
 };
 
 const uiSlice = createSlice({
@@ -46,7 +47,10 @@ const uiSlice = createSlice({
     },
     setSyncColors(state, action) {
       state.syncTaskbarAndTitlebarColors = action.payload;
-    }
+    },
+    setPersonalizationTab(state, action) {
+      state.personalizationTab = action.payload;
+    },
   },
 });
 
@@ -56,6 +60,7 @@ export const {
   setFontFamily,
   setBackgroundImage,
   setContrast,
-  setSyncColors
+  setSyncColors,
+  setPersonalizationTab
 } = uiSlice.actions;
 export default uiSlice.reducer;
