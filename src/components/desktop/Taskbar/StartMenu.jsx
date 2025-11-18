@@ -24,7 +24,7 @@ export default function StartMenu() {
   if (!isOpen) return null;
 
   return (
-    <div className="absolute bottom-12 left-2 w-48 bg-white border border-black shadow-lg p-2 z-50 font-retro text-xs">
+    <div className="absolute bottom-12 left-2 w-48 bg-white border border-black shadow-lg p-2 font-retro text-xs" style={{ zIndex: 10000 }}>
       <ul className="space-y-2">
         {Object.entries(windowsMeta)
           .filter(([_, meta]) => meta.showInStartMenu)

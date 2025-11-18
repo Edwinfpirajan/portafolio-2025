@@ -45,8 +45,8 @@ export default function Taskbar() {
 
   return (
     <div
-      className="fixed bottom-0 left-0 w-full h-10 flex items-center justify-between px-4 z-50 border-t border-[#888]"
-      style={{ backgroundColor: taskbarColor }}
+      className="fixed bottom-0 left-0 w-full h-10 flex items-center justify-between px-4 border-t border-[#888]"
+      style={{ backgroundColor: taskbarColor, zIndex: 9999 }}
     >
       <div className="flex items-center space-x-2">
         <StartButton />
