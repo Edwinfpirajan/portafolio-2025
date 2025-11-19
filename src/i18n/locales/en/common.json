@@ -46,6 +46,7 @@
       "personalization": { "title": "Personalization" },
       "projects": { "title": "Projects" },
       "chat": { "title": "kikeGPT" },
+      "games": { "title": "Games" },
       "common": { "noContent": "Content not available" }
     },
     "projects": {

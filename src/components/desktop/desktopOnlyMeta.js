@@ -1,6 +1,7 @@
 // Aplicaciones exclusivas de desktop (cmd, personalization, etc.)
 import TerminalWindow from "./cmd/Cmd.jsx";
 import Personalization from "./Personalization/Personalization.jsx";
+import GamesApp from "../../apps/games/GamesApp.jsx";
 
 export const desktopOnlyMeta = {
   cmd: {
@@ -14,6 +15,13 @@ export const desktopOnlyMeta = {
     titleKey: "windows.personalization.title",
     icon: "/icons/settings.png",
     component: Personalization,
+    showInStartMenu: true,
+    initial: { maximized: true }
+  },
+  games: {
+    titleKey: "windows.games.title",
+    icon: "/icons/games.png",
+    component: GamesApp,
     showInStartMenu: true,
     initial: { maximized: true }
   },
