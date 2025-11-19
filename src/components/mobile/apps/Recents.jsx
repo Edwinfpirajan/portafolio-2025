@@ -39,17 +39,21 @@ function AppCard({ name, theme }) {
   };
   
   const handleTouchEnd = () => {
+    // Swipe up (hacia arriba) para cerrar
     if (deltaY.current < -60) {
       if (cardRef.current) {
-        cardRef.current.style.transform = '';
-        cardRef.current.style.transition = '';
+        cardRef.current.style.transition = 'transform 0.3s, opacity 0.3s';
+        cardRef.current.style.transform = 'translateY(-120%)';
+        cardRef.current.style.opacity = '0';
       }
-      startY.current = null;
-      deltaY.current = 0;
-      return;
-    }
-    if (deltaY.current > 80) {
-      dispatch(closeApp(name));
+      setTimeout(() => {
+        dispatch(closeApp(name));
+        if (cardRef.current) {
+          cardRef.current.style.transition = '';
+          cardRef.current.style.transform = '';
+          cardRef.current.style.opacity = '';
+        }
+      }, 280);
     } else {
       if (cardRef.current) {
         cardRef.current.style.transition = 'transform 0.2s';
