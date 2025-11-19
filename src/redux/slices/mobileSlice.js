@@ -4,7 +4,7 @@ const initialState = {
   screen: "home",
   stack: [],
   // Add chat app shortcut to mobile home screen
-  available: ["about", "projects", "chat", "personalization"],
+  available: ["about", "projects", "chat", "personalization", "games"],
 };
 
 const mobileSlice = createSlice({
