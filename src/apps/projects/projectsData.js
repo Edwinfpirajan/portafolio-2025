@@ -11,6 +11,16 @@ const projects = [
     links: [],
   },
   {
+    id: "votaciones-mexico",
+    title: "Sistema de Votaciones Electrónicas – Gobierno de México",
+    subtitle: "Plataforma segura de votación ciudadana con validación de identidad",
+    icon: "/icons/vote.png",
+    description:
+      "Desarrollamos un sistema de votaciones electrónicas para el Gobierno de México, enfocado en garantizar procesos democráticos transparentes, seguros y accesibles para todos los ciudadanos.\n\nLa plataforma permite a los ciudadanos emitir su voto de manera digital, asegurando la integridad y autenticidad de cada sufragio mediante la integración con una API oficial de validación de identidad ciudadana.\n\nCaracterísticas principales:\n• Validación de identidad en tiempo real a través de API gubernamental, asegurando que solo ciudadanos habilitados puedan votar.\n• Interfaz web responsiva y accesible, optimizada para dispositivos móviles y de escritorio.\n• Cifrado de extremo a extremo para la transmisión y almacenamiento de votos.\n• Panel administrativo para monitoreo en tiempo real de la participación y resultados.\n• Auditoría completa de cada proceso, con registros inmutables y trazabilidad para garantizar la transparencia.\n• Escalabilidad para soportar jornadas electorales nacionales y locales.\n\nEste sistema contribuyó a modernizar los procesos electorales, facilitando la participación ciudadana y fortaleciendo la confianza en la democracia digital.",
+    tags: ["React", "Node.js", "API", "Identity Verification", "Voting System", "Cybersecurity"],
+    links: [],
+  },
+  {
     id: "scrapeblocker",
     title: "ScrapeBlocker – Sistema Inteligente de Protección y Monitoreo Web",
     subtitle: "Solución antifraude y de ciberseguridad empresarial",
