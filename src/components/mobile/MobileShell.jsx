@@ -11,7 +11,7 @@ export default function MobileShell() {
   const theme = useSelector((s) => s.ui.theme);
 
   // altura real de tu barra inferior (NavBar)
-  const NAVBAR_H = 72;
+  const NAVBAR_H = 44;
 
   const bgGradient = theme === "dark" 
     ? "from-black/40 to-black/70" 
@@ -32,7 +32,7 @@ export default function MobileShell() {
       <div
         className="relative w-full"
         style={{
-          height: `calc(100dvh - ${NAVBAR_H}px - env(safe-area-inset-bottom))`,
+          height: `calc(100dvh - ${NAVBAR_H}px)`,
           minHeight: 0,
         }}
       >
@@ -44,7 +44,7 @@ export default function MobileShell() {
       {/* Barra inferior fija */}
       <div
         className="absolute inset-x-0"
-        style={{ bottom: "env(safe-area-inset-bottom)", height: `${NAVBAR_H}px` }}
+        style={{ bottom: 0, height: `${NAVBAR_H}px` }}
       >
         <NavBar height={NAVBAR_H} />
       </div>
