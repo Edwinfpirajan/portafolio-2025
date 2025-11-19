@@ -1,6 +1,16 @@
 // src/apps/projects/projectsData.js
 const projects = [
   {
+    id: "asistencias-smart",
+    title: "Módulo de Asistencias para Colaboradores – Academia de Idiomas SMART",
+    subtitle: "Sistema de control de asistencias para personal institucional",
+    icon: "/icons/smart.png",
+    description:
+      "Desarrollé un módulo completo de control de asistencias para colaboradores de la Academia de Idiomas SMART, orientado a optimizar la gestión del personal, automatizar registros y mejorar la trazabilidad de horarios y jornadas laborales.\n\nEl sistema fue construido con una arquitectura moderna, segura y escalable:\n• Frontend en React: interfaz fluida y responsiva, diseñada para que coordinadores y administradores gestionen asistencias de manera rápida y visual.\n• Backend en Go (Golang): APIs de alto rendimiento para procesamiento eficiente de registros de entrada, salida, ausencias y novedades de personal.\n• Base de datos PostgreSQL: almacenamiento confiable con modelos diseñados para auditoría, reportes y análisis histórico.\n• Despliegue en Oracle Cloud: infraestructura robusta con entornos productivos altamente disponibles y escalables.\n\nFunciones destacadas del módulo:\n• Registro de entrada y salida en tiempo real para todos los colaboradores.\n• Control de horarios, turnos, jornadas especiales y permisos.\n• Alertas y validaciones para retardos, ausencias y anomalías.\n• Panel administrativo para visualizar métricas por sede, colaborador o rango de fechas.\n• Reportes automáticos descargables en distintos formatos.\n• Historial completo para auditoría interna y cumplimiento laboral.\n• Integración con otros sistemas internos como nómina y recursos humanos.\n\nEste módulo permitió profesionalizar la gestión interna de la institución, mejorar la puntualidad, reducir inconsistencias en el registro y centralizar toda la información en una plataforma moderna y confiable.",
+    tags: ["React", "Go", "PostgreSQL", "Oracle Cloud", "Attendance System"],
+    links: [],
+  },
+  {
     id: "scrapeblocker",
     title: "ScrapeBlocker – Sistema Inteligente de Protección y Monitoreo Web",
     subtitle: "Solución antifraude y de ciberseguridad empresarial",
@@ -21,7 +31,7 @@ const projects = [
     links: [],
   },
   {
-    id: "portfolio-2025",
+    id: "CRM-banco-agrario",
     title: "CRM Banco Agrario",
     subtitle: "CRM Institucional para el Banco Agrario de Colombia",
     icon: "/icons/Banco-Agrario.webp",

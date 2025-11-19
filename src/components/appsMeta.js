@@ -13,7 +13,7 @@ export const sharedAppsMeta = {
   },
   projects: {
     titleKey: "windows.projects.title",
-    icon: "/icons/generic.svg",
+    icon: "/icons/projects.png",
     component: ProjectsApp,
     showInStartMenu: true,
     initial: { maximized: true }

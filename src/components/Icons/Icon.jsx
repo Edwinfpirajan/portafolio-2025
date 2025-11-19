@@ -1,6 +1,6 @@
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { selectIcon, clearSelection, setIconPosition } from "../../redux/slices/desktopSlice";
+import { selectIcon, clearSelection, setIconPosition, setDraggingIcon, setDragOffset, clearDrag } from "../../redux/slices/desktopSlice";
 
 const GRID_SIZE = 96; // Must match desktopSlice
 
@@ -9,9 +9,10 @@ export default function Icon({ iconKey, label, iconPath, onDoubleClick, gridX, g
   const themeColor = useSelector((state) => state.ui.colors.mainColor);
   const selected = useSelector((state) => state.desktop.selectedIcon === iconKey);
   const allPositions = useSelector((state) => state.desktop.iconPositions);
+  const draggingIcon = useSelector((state) => state.desktop.draggingIcon);
+  const dragOffset = useSelector((state) => state.desktop.dragOffset);
   
-  const [dragging, setDragging] = useState(false);
-  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
+  const dragging = draggingIcon === iconKey;
   const dragRef = useRef({ startX: 0, startY: 0 });
 
   const handleClick = (e) => {
@@ -28,14 +29,14 @@ export default function Icon({ iconKey, label, iconPath, onDoubleClick, gridX, g
   const handleMouseDown = (e) => {
     if (e.button !== 0) return; // Solo botón izquierdo
     e.preventDefault();
-    setDragging(true);
+    dispatch(setDraggingIcon(iconKey));
     dragRef.current = {
       startX: e.clientX,
       startY: e.clientY,
       initialGridX: gridX,
       initialGridY: gridY
     };
-    setDragOffset({ x: 0, y: 0 });
+    dispatch(setDragOffset({ x: 0, y: 0 }));
     dispatch(selectIcon(iconKey));
   };
 
@@ -43,12 +44,12 @@ export default function Icon({ iconKey, label, iconPath, onDoubleClick, gridX, g
     if (!dragging) return;
     const dx = e.clientX - dragRef.current.startX;
     const dy = e.clientY - dragRef.current.startY;
-    setDragOffset({ x: dx, y: dy });
+    dispatch(setDragOffset({ x: dx, y: dy }));
   };
 
   const handleMouseUp = (e) => {
     if (!dragging) return;
-    setDragging(false);
+    dispatch(clearDrag());
 
     const dx = e.clientX - dragRef.current.startX;
     const dy = e.clientY - dragRef.current.startY;
@@ -72,7 +73,6 @@ export default function Icon({ iconKey, label, iconPath, onDoubleClick, gridX, g
     }
 
     dispatch(setIconPosition({ key: iconKey, x: newGridX, y: newGridY }));
-    setDragOffset({ x: 0, y: 0 });
   };
 
   React.useEffect(() => {

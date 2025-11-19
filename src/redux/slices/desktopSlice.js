@@ -5,6 +5,8 @@ const GRID_SIZE = 96; // Tamaño del bloque del grid (80px icon + 16px gap)
 const initialState = {
   selectedIcon: null,
   iconPositions: {}, // { iconKey: { x: gridX, y: gridY } }
+  draggingIcon: null, // iconKey of the icon being dragged
+  dragOffset: { x: 0, y: 0 }, // Current drag offset
 };
 
 const desktopSlice = createSlice({
@@ -39,6 +41,16 @@ const desktopSlice = createSlice({
     },
     resetIconPositions(state) {
       state.iconPositions = {};
+    },
+    setDraggingIcon(state, { payload }) {
+      state.draggingIcon = payload; // iconKey or null
+    },
+    setDragOffset(state, { payload }) {
+      state.dragOffset = payload; // { x, y }
+    },
+    clearDrag(state) {
+      state.draggingIcon = null;
+      state.dragOffset = { x: 0, y: 0 };
     }
   },
 });
@@ -48,7 +60,10 @@ export const {
   clearSelection, 
   setIconPosition, 
   initializeIconPositions,
-  resetIconPositions 
+  resetIconPositions,
+  setDraggingIcon,
+  setDragOffset,
+  clearDrag
 } = desktopSlice.actions;
 
 export default desktopSlice.reducer;

@@ -1,3 +1,4 @@
+
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { openApp } from "../../../redux/slices/mobileSlice";
@@ -9,15 +10,15 @@ export default function Home() {
   const { t } = useTranslation();
   const available = useSelector((s) => s.mobile.available);
 
+  const theme = useSelector((s) => s.ui.theme);
+
   return (
     <div
       className="w-full h-full content-scroll pb-content-safe"
       style={{
-        // safe areas
         paddingTop: "env(safe-area-inset-top)",
         paddingLeft: "env(safe-area-inset-left)",
         paddingRight: "env(safe-area-inset-right)",
-        // la pb real la aporta pb-content-safe (usa --navbar-h)
       }}
     >
       {/* grid visible desde arriba */}
