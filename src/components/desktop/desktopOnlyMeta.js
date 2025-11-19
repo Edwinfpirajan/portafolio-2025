@@ -20,7 +20,7 @@ export const desktopOnlyMeta = {
   },
   games: {
     titleKey: "windows.games.title",
-    icon: "/icons/games.png",
+    icon: "/icons/joystick.png",
     component: GamesApp,
     showInStartMenu: true,
     initial: { maximized: true }

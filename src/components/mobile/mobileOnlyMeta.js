@@ -11,7 +11,7 @@ export const mobileOnlyMeta = {
   },
   games: {
     titleKey: "windows.games.title",
-    icon: "/icons/games.png",
+    icon: "/icons/joystick.png",
     component: GamesMobile,
     showInStartMenu: true,
   },
