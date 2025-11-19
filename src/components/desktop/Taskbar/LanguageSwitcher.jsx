@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setLanguage, toggleLangMenu, closeLangMenu } from "../../../redux/slices/i18nSlice";
+import { useTranslation } from "react-i18next";
 
 // misma utilidad que en Taskbar
 function darkenColor(hex, percent) {
@@ -24,6 +25,7 @@ function darkenColor(hex, percent) {
 
 export default function LanguageSwitcher() {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const lang = useSelector((s) => s.i18n.lang);
   const open = useSelector((s) => s.i18n.menuOpen);
   const taskbarColor = useSelector((s) => s.ui.colors.mainColor);
@@ -103,7 +105,9 @@ export default function LanguageSwitcher() {
           role="menu"
           className={`absolute bottom-11 right-0 w-48 rounded-md border shadow-lg backdrop-blur-sm overflow-hidden animate-fade-in ${theme==='dark' ? 'bg-[#0f1821]/95 border-white/15 text-white' : 'bg-white border-black/15 text-gray-800'}`}
         >
-          <div className={`px-3 py-2 text-xs uppercase tracking-wide font-semibold opacity-60 ${theme==='dark' ? 'text-teal-200' : 'text-gray-500'}`}>Idioma</div>
+          <div className={`px-3 py-2 text-xs uppercase tracking-wide font-semibold opacity-60 ${theme==='dark' ? 'text-teal-200' : 'text-gray-500'}`}>
+            {t('common.language')}
+          </div>
           <Item code="es" label="Español (ES)" />
           <Item code="en" label="English (EN)" />
         </div>

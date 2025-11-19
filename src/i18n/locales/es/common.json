@@ -54,7 +54,14 @@
       "title": "Proyectos",
       "subtitle": "Aquí verás una lista de proyectos. (placeholder)",
       "back": "Atrás",
-      "empty": "Sin proyectos aún"
+      "empty": "Sin proyectos aún",
+      "links": "Enlaces",
+      "view": "Ver"
+    },
+    "common": {
+      "search": "Buscar",
+      "noResults": "No se encontraron resultados",
+      "language": "Idioma"
     },
     "taskbar": {
       "language": "Idioma",
@@ -65,7 +72,8 @@
         "back": "Atrás",
         "home": "Inicio",
         "recents": "Recientes"
-      }
+      },
+      "noAppsRecent": "No hay apps recientes"
     },
     "personalization": {
       "title": "Personalización",

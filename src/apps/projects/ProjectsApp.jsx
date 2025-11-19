@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setActiveProject, setMobileDetail } from "../../redux/slices/projectsSlice";
 
 function ProjectDetail({ project }) {
+  const { t } = useTranslation();
   const theme = useSelector((s) => s.ui.theme);
   if (!project) return null;
   return (
@@ -15,7 +16,7 @@ function ProjectDetail({ project }) {
           <img src={project.icon} alt="" className="w-12 h-12 object-contain flex-shrink-0" />
         ) : null}
         <div className="flex-1 min-w-0">
-          <h2 className="text-2xl font-bold leading-tight mb-1">{project.title}</h2>
+          <h2 className={`text-2xl font-bold leading-tight mb-1 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>{project.title}</h2>
           {project.subtitle ? (
             <div className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>{project.subtitle}</div>
           ) : null}
@@ -43,7 +44,7 @@ function ProjectDetail({ project }) {
       {/* Links */}
       {Array.isArray(project.links) && project.links.length > 0 ? (
         <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
-          <h3 className={`text-xs font-semibold uppercase tracking-wide mb-3 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>Enlaces</h3>
+          <h3 className={`text-xs font-semibold uppercase tracking-wide mb-3 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>{t('projects.links')}</h3>
           <div className="flex flex-wrap gap-3">
             {project.links.map((l) => (
               <a
@@ -57,7 +58,7 @@ function ProjectDetail({ project }) {
                   <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
                   <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
                 </svg>
-                {l.label || 'Ver'}
+                {l.label || t('projects.view')}
               </a>
             ))}
           </div>
@@ -78,9 +79,9 @@ export default function ProjectsApp() {
 
   if (!items || items.length === 0) {
     return (
-      <div className="w-full h-full p-4">
-        <h1 className="text-2xl font-bold mb-2">{t("projects.title", "Proyectos")}</h1>
-        <p className="text-sm opacity-80">{t("projects.empty", "Sin proyectos aún")}</p>
+      <div className={`w-full h-full p-4 ${theme === 'dark' ? 'text-gray-200' : 'text-gray-900'}`}>
+        <h1 className={`text-2xl font-bold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>{t("projects.title", "Proyectos")}</h1>
+        <p className={`text-sm opacity-80 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>{t("projects.empty", "Sin proyectos aún")}</p>
       </div>
     );
   }
@@ -97,8 +98,8 @@ export default function ProjectsApp() {
                 onClick={() => dispatch(setActiveProject(i.id))}
                 className={`w-full flex items-center gap-3 px-2 py-2 rounded text-left transition ${
                   active === i.id 
-                    ? theme === 'dark' ? 'bg-gray-700 font-medium' : 'bg-gray-200 font-medium'
-                    : theme === 'dark' ? 'hover:bg-gray-700' : 'hover:bg-gray-200'
+                    ? theme === 'dark' ? 'bg-gray-700 font-medium text-white' : 'bg-gray-200 font-medium text-gray-900'
+                    : theme === 'dark' ? 'hover:bg-gray-700 text-gray-300' : 'hover:bg-gray-200 text-gray-900'
                 }`}
               >
                 {i.icon ? (
@@ -123,8 +124,8 @@ export default function ProjectsApp() {
         {!mobileDetail ? (
           <div className="h-full overflow-auto">
             <div className="p-4 pb-2">
-              <h1 className="text-xl font-bold">{t("projects.title", "Proyectos")}</h1>
-              <p className="text-sm opacity-80">
+              <h1 className={`text-xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>{t("projects.title", "Proyectos")}</h1>
+              <p className={`text-sm opacity-80 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
                 {t("projects.subtitle", "Aquí verás una lista de proyectos. (placeholder)")}
               </p>
             </div>
@@ -136,13 +137,13 @@ export default function ProjectsApp() {
                     dispatch(setActiveProject(i.id));
                     dispatch(setMobileDetail(true));
                   }}
-                  className="w-full flex items-center gap-3 px-4 py-3 active:bg-gray-100"
+                  className={`w-full flex items-center gap-3 px-4 py-3 ${theme === 'dark' ? 'active:bg-gray-800' : 'active:bg-gray-100'}`}
                 >
                   {i.icon ? (
                     <img src={i.icon} alt="" className="w-6 h-6 object-contain" />
                   ) : null}
                   <div className="flex-1 text-left min-w-0">
-                    <div className="text-sm font-medium truncate">{i.title}</div>
+                    <div className={`text-sm font-medium truncate ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>{i.title}</div>
                     {i.subtitle ? (
                       <div className={`text-xs truncate ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>{i.subtitle}</div>
                     ) : null}
@@ -165,7 +166,7 @@ export default function ProjectsApp() {
             <div className="sticky top-0 border-b border-gray-200 flex items-center gap-2 p-3" style={{ backgroundColor: 'inherit' }}>
               <button
                 onClick={() => dispatch(setMobileDetail(false))}
-                className={`px-2 py-1 rounded border text-sm ${theme === 'dark' ? 'border-gray-600' : 'border-gray-300'}`}
+                className={`px-2 py-1 rounded border text-sm ${theme === 'dark' ? 'border-gray-600 text-gray-200' : 'border-gray-300 text-gray-900'}`}
               >
                 {t("projects.back", "Atrás")}
               </button>

@@ -52,7 +52,14 @@
       "title": "Projects",
       "subtitle": "You'll see a list of projects here. (placeholder)",
       "back": "Back",
-      "empty": "No projects yet"
+      "empty": "No projects yet",
+      "links": "Links",
+      "view": "View"
+    },
+    "common": {
+      "search": "Search",
+      "noResults": "No results found",
+      "language": "Language"
     },
     "taskbar": {
       "language": "Language",
@@ -63,7 +70,8 @@
         "back": "Back",
         "home": "Home",
         "recents": "Recents"
-      }
+      },
+      "noAppsRecent": "No recent apps"
     },
     "personalization": {
       "title": "Personalization",

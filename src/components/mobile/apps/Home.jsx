@@ -22,7 +22,7 @@ export default function Home() {
       }}
     >
       {/* grid visible desde arriba */}
-      <div className="pt-6 px-5 grid grid-cols-3 [@media(min-width:380px)]:grid-cols-4 sm:grid-cols-5 gap-y-8 gap-x-6 content-start place-items-start">
+      <div className="pt-6 px-6 grid grid-cols-4 gap-y-6 gap-x-4 content-start">
         {available.map((key) => {
           const meta = mobileMeta[key];
           if (!meta) return null;
@@ -32,19 +32,17 @@ export default function Home() {
             <button
               key={key}
               onClick={() => dispatch(openApp(key))}
-              className="flex flex-col items-center justify-start active:scale-[0.98] transition min-w-0"
+              className="flex flex-col items-center justify-start active:scale-95 transition-transform w-full"
             >
-              <img
-                src={meta.icon}
-                alt={label}
-                className="rounded-xl shadow-lg select-none"
-                draggable={false}
-                style={{
-                  width:  "clamp(72px, 22vw, 112px)",
-                  height: "clamp(72px, 22vw, 112px)",
-                }}
-              />
-              <span className="mt-2 text-[14px] sm:text-[15px] text-white/95 text-center leading-tight max-w-[8.5rem] truncate">
+              <div className="w-full aspect-square mb-2 flex items-center justify-center">
+                <img
+                  src={meta.icon}
+                  alt={label}
+                  className="rounded-2xl shadow-lg select-none w-full h-full object-cover"
+                  draggable={false}
+                />
+              </div>
+              <span className="text-xs text-white text-center leading-tight w-full break-words line-clamp-2 px-1">
                 {label}
               </span>
             </button>

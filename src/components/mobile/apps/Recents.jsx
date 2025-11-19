@@ -3,14 +3,17 @@
 import React, { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { closeApp, switchTo } from "../../../redux/slices/mobileSlice";
-import { windowsMeta } from "../../desktop/windowsMeta";
+import { mobileMeta } from "../mobileMeta";
 import { useTranslation } from "react-i18next";
 
 function AppCard({ name, theme }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const meta = windowsMeta[name];
-  const label = meta?.titleKey ? t(meta.titleKey) : (meta?.title || name);
+  const meta = mobileMeta[name];
+  const label = meta
+    ? (meta.titleKey ? t(meta.titleKey) : (meta.title || name))
+    : name;
+  const icon = meta?.icon || "/icons/app.png";
   const Component = meta?.component;
   
   // Swipe up to close logic
@@ -60,10 +63,10 @@ function AppCard({ name, theme }) {
   return (
     <div className="relative flex-shrink-0 w-[85vw] max-w-[380px] mx-4 snap-center flex flex-col items-center justify-center h-full" style={{ minWidth: '300px' }}>
       {/* Título con icono encima de la tarjeta estilo iPhone */}
-      <div className="flex items-center gap-2 mb-4 px-4">
-        <img src={meta?.icon} alt={label} className="w-6 h-6 rounded-lg shadow-md" />
-        <span className="text-white text-sm font-semibold truncate max-w-[280px] drop-shadow-lg">
-          {label}
+      <div className="flex items-center gap-2 mb-4 px-4 relative z-10" style={{minHeight: '32px'}}>
+        <img src={icon} alt={label} className="w-6 h-6 rounded-lg shadow-md" />
+        <span className="text-white text-sm font-semibold drop-shadow-lg bg-black/50 px-2 py-0.5 rounded-md max-w-[220px] overflow-ellipsis whitespace-nowrap overflow-hidden block">
+          {label || '—'}
         </span>
       </div>
       
@@ -119,10 +122,16 @@ export default function Recents() {
 
   const theme = useSelector((s) => s.ui.theme);
 
+  // Log temporal para depuración
+  if (typeof window !== 'undefined') {
+    // eslint-disable-next-line no-console
+    console.log('STACK (Recents):', JSON.stringify(stack));
+  }
+
   if (!stack.length) {
     return (
       <div className="w-full h-full flex items-center justify-center text-white/70">
-        No hay apps recientes
+        {t('mobile.noAppsRecent')}
       </div>
     );
   }
@@ -138,13 +147,13 @@ export default function Recents() {
         msOverflowStyle: 'none'
       }}
     >
-      <style jsx>{`
+      <style>{`
         .scrollbar-hide::-webkit-scrollbar {
           display: none;
         }
       `}</style>
-      {stack.slice().reverse().map(({ name }) => (
-        <AppCard key={name} name={name} theme={theme} />
+      {stack.slice().reverse().map(({ name }, idx) => (
+        <AppCard key={name + '-' + idx} name={name} theme={theme} />
       ))}
     </div>
   );

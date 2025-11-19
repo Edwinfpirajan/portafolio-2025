@@ -18,30 +18,16 @@ export default function AppContainer() {
 
   const theme = useSelector((s) => s.ui.theme);
 
-  const HEADER_H = 40; // px
-
   return (
-    <div className="w-full h-full flex flex-col relative">
-      {/* Fondo sólido absoluto que cubre todo el espacio visible de la app, incluidas safe areas */}
+    <div className="w-full h-full relative">
+      {/* Fondo sólido que cubre todo el espacio */}
       <div
-        className={`fixed inset-0 z-0 ${theme === 'dark' ? 'bg-[#18181b]' : 'bg-white'}`}
-        style={{
-          padding: 0,
-        }}
+        className={`absolute inset-0 ${theme === 'dark' ? 'bg-[#18181b]' : 'bg-white'}`}
         aria-hidden="true"
       />
 
-      {/* Header oculto en mobile, solo se muestra el contenido de la app */}
-
-      {/* contenido scrollable sobre el fondo */}
-      <div
-        className="flex-1 min-h-0 content-scroll pb-navbar-safe relative z-10"
-        style={{
-          paddingTop: `calc(env(safe-area-inset-top) + ${HEADER_H}px)`,
-          paddingLeft: "env(safe-area-inset-left)",
-          paddingRight: "env(safe-area-inset-right)",
-        }}
-      >
+      {/* Contenido con scroll */}
+      <div className="absolute inset-0 overflow-auto">
         <Component />
       </div>
     </div>

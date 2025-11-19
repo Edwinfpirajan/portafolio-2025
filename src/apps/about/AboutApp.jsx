@@ -25,7 +25,7 @@ export default function AboutApp() {
   };
 
   return (
-    <div className="font-serif p-4">
+    <div className={`w-full h-full overflow-auto font-serif p-4 ${theme === 'dark' ? 'text-gray-200' : 'text-gray-900'}`}>
       {/* Logo Wikipedia */}
       <div className="flex justify-start mb-4">
         <img
@@ -50,39 +50,39 @@ export default function AboutApp() {
             />
 
             {/* Información personal */}
-            <div className={`border-t p-3 ${theme === 'dark' ? 'border-gray-600' : 'border-gray-300'}`}>
-              <h3 className={`font-bold text-sm px-2 py-1 mb-2 ${theme === 'dark' ? 'bg-gray-700' : 'bg-gray-100'}`}>
+            <div className={`border-t p-3 ${theme === 'dark' ? 'border-gray-600 text-gray-200' : 'border-gray-300 text-gray-900'}`}>
+              <h3 className={`font-bold text-sm px-2 py-1 mb-2 ${theme === 'dark' ? 'bg-gray-700 text-white' : 'bg-gray-100 text-gray-900'}`}>
                 {t("about.sidebar.personal.title")}
               </h3>
 
-              <p>
+              <p className="text-sm mb-1">
                 <strong>{t("about.sidebar.personal.birthName")}:</strong>{" "}
                 {data.fullName}
               </p>
-              <p>
+              <p className="text-sm mb-1">
                 <strong>{t("about.sidebar.personal.birth")}:</strong>{" "}
                 {data.birthDate}
                 <br />
                 {data.birthPlace}
               </p>
-              <p>
+              <p className="text-sm mb-1">
                 <strong>{t("about.sidebar.personal.height")}:</strong>{" "}
                 {data.height}
               </p>
-              <p>
+              <p className="text-sm mb-1">
                 <strong>{t("about.sidebar.personal.nationality")}:</strong>{" "}
                 {data.nationality}
               </p>
-              <p>
+              <p className="text-sm mb-1">
                 <strong>{t("about.sidebar.personal.religion")}:</strong>{" "}
                 {data.religion}
               </p>
-              <p>
+              <p className="text-sm mb-1">
                 <strong>{t("about.sidebar.personal.education")}:</strong>
                 <br />
                 {data.university}
               </p>
-              <p>
+              <p className="text-sm mb-1">
                 <strong>{t("about.sidebar.personal.parents")}:</strong>
                 <br />
                 {data.parents[0]}
@@ -92,36 +92,36 @@ export default function AboutApp() {
             </div>
 
             {/* Información profesional */}
-            <div className={`border-t p-3 ${theme === 'dark' ? 'border-gray-600' : 'border-gray-300'}`}>
-              <h3 className={`font-bold text-sm px-2 py-1 mb-2 ${theme === 'dark' ? 'bg-gray-700' : 'bg-gray-100'}`}>
+            <div className={`border-t p-3 ${theme === 'dark' ? 'border-gray-600 text-gray-200' : 'border-gray-300 text-gray-900'}`}>
+              <h3 className={`font-bold text-sm px-2 py-1 mb-2 ${theme === 'dark' ? 'bg-gray-700 text-white' : 'bg-gray-100 text-gray-900'}`}>
                 {t("about.sidebar.professional.title")}
               </h3>
-              <p>
+              <p className="text-sm mb-1">
                 <strong>{t("about.sidebar.professional.occupation")}:</strong>
                 <br />
                 {data.role}
               </p>
-              <p>
+              <p className="text-sm mb-1">
                 <strong>{t("about.sidebar.professional.areas")}:</strong>
                 <br />
                 {data.areas}
               </p>
-              <p>
+              <p className="text-sm mb-1">
                 <strong>{t("about.sidebar.professional.languages")}:</strong>
                 <br />
                 {data.langs}
               </p>
-              <p>
+              <p className="text-sm mb-1">
                 <strong>{t("about.sidebar.professional.frameworks")}:</strong>
                 <br />
                 {data.frameworks}
               </p>
-              <p>
+              <p className="text-sm mb-1">
                 <strong>{t("about.sidebar.professional.databases")}:</strong>
                 <br />
                 {data.dbs}
               </p>
-              <p>
+              <p className="text-sm mb-1">
                 <strong>{t("about.sidebar.professional.infrastructure")}:</strong>
                 <br />
                 {data.infra}
@@ -129,8 +129,8 @@ export default function AboutApp() {
             </div>
 
             {/* Firma */}
-            <div className={`border-t p-3 text-center ${theme === 'dark' ? 'border-gray-600' : 'border-gray-300'}`}>
-              <h3 className={`font-bold text-sm px-2 py-1 mb-2 ${theme === 'dark' ? 'bg-gray-700' : 'bg-gray-100'}`}>
+            <div className={`border-t p-3 text-center ${theme === 'dark' ? 'border-gray-600 text-gray-200' : 'border-gray-300 text-gray-900'}`}>
+              <h3 className={`font-bold text-sm px-2 py-1 mb-2 ${theme === 'dark' ? 'bg-gray-700 text-white' : 'bg-gray-100 text-gray-900'}`}>
                 {t("about.sidebar.signature.title")}
               </h3>
               <img
@@ -143,12 +143,12 @@ export default function AboutApp() {
         </aside>
 
         {/* Contenido principal */}
-        <main className="lg:w-2/3 w-full">
-          <h1 className="text-3xl font-serif font-bold mb-4">
+        <main className={`lg:w-2/3 w-full ${theme === 'dark' ? 'text-gray-200' : 'text-gray-900'}`}>
+          <h1 className={`text-3xl font-serif font-bold mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
             {data.fullName}
           </h1>
 
-          <p className="mb-4">
+          <p className="mb-4 text-base">
             <strong>{data.fullName}</strong>{" "}
             {t("about.summary", {
               city: "Bogotá",
@@ -156,15 +156,15 @@ export default function AboutApp() {
             })}
           </p>
 
-          <h2 className="text-xl font-bold mb-2">{t("about.bio.title")}</h2>
+          <h2 className={`text-xl font-bold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>{t("about.bio.title")}</h2>
 
-          <h3 className="font-semibold mt-3">{t("about.bio.starts.title")}</h3>
-          <p className="mb-3">{t("about.bio.starts.body")}</p>
+          <h3 className={`font-semibold mt-3 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-800'}`}>{t("about.bio.starts.title")}</h3>
+          <p className="mb-3 text-base">{t("about.bio.starts.body")}</p>
 
-          <h3 className="font-semibold mt-3">
+          <h3 className={`font-semibold mt-3 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-800'}`}>
             {t("about.bio.devCareer.title")}
           </h3>
-          <p className="mb-3">{t("about.bio.devCareer.body")}</p>
+          <p className="mb-3 text-base">{t("about.bio.devCareer.body")}</p>
         </main>
       </div>
     </div>
