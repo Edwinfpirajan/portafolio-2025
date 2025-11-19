@@ -1,3 +1,4 @@
+
 import React from "react";
 import { useSelector } from "react-redux";
 import { mobileMeta } from "../mobileMeta";
@@ -15,32 +16,34 @@ export default function AppContainer() {
   const Title = meta.titleKey ? t(meta.titleKey) : (meta.title || top.name);
   const Component = meta.component;
 
+  const theme = useSelector((s) => s.ui.theme);
+
   const HEADER_H = 40; // px
 
   return (
-    <div className="w-full h-full relative">
-      {/* mini header fijo */}
+    <div className="w-full h-full flex flex-col relative">
+      {/* Fondo sólido absoluto que cubre todo el espacio visible de la app, incluidas safe areas */}
       <div
-        className="absolute top-0 inset-x-0 bg-black/40 backdrop-blur flex items-center px-3 z-10"
-        style={{ height: `${HEADER_H}px`, paddingTop: "env(safe-area-inset-top)" }}
+        className={`fixed inset-0 z-0 ${theme === 'dark' ? 'bg-[#18181b]' : 'bg-white'}`}
+        style={{
+          padding: 0,
+        }}
+        aria-hidden="true"
+      />
+
+      {/* Header oculto en mobile, solo se muestra el contenido de la app */}
+
+      {/* contenido scrollable sobre el fondo */}
+      <div
+        className="flex-1 min-h-0 content-scroll pb-navbar-safe relative z-10"
+        style={{
+          paddingTop: `calc(env(safe-area-inset-top) + ${HEADER_H}px)`,
+          paddingLeft: "env(safe-area-inset-left)",
+          paddingRight: "env(safe-area-inset-right)",
+        }}
       >
-        <img src={meta.icon} alt={Title} className="w-5 h-5 mr-2" />
-        <span className="text-sm text-white/90">{Title}</span>
+        <Component />
       </div>
-
-      {/* contenido scrollable con safe areas y espacio para NavBar */}
-      <div
-  className="content-scroll pb-navbar-safe"
-  style={{
-    height: "100%",
-    paddingTop: `calc(env(safe-area-inset-top) + ${HEADER_H}px)`,
-    paddingLeft: "env(safe-area-inset-left)",
-    paddingRight: "env(safe-area-inset-right)",
-  }}
->
-  <Component />
-</div>
-
     </div>
   );
 }
