@@ -13,7 +13,6 @@ import AppWrapper from "../components/AppWrapper.jsx";
   <link rel="icon" type="image/png" href="/favicon.png" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
-  <!-- Open Graph for link preview -->
   <meta property="og:image" content="/icons/about.png" />
   <meta property="og:image:type" content="image/png" />
   <meta property="og:image:width" content="512" />
@@ -22,18 +21,15 @@ import AppWrapper from "../components/AppWrapper.jsx";
   <meta property="og:description" content="Portafolio de Edwin Piraján, desarrollador de software especializado en interfaces retro, IA y experiencias interactivas." />
   <meta property="og:url" content="https://portafolio-edwin.up.railway.app/" />
 
-  <!-- Twitter Card for link preview -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:image" content="/icons/about.png" />
   <meta name="twitter:title" content="El Ferchando" />
   <meta name="twitter:description" content="Portafolio de Edwin Piraján, desarrollador de software especializado en interfaces retro, IA y experiencias interactivas." />
 
-  <!-- 👇 ocupa todo el ancho, respeta notch y desactiva zoom -->
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
   />
 </head>
 
-<!-- Monta React una sola vez; AppWrapper elige Desktop/Mobile en cliente -->
 <AppWrapper client:only="react" />
